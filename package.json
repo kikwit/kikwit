@@ -1,0 +1,30 @@
+{
+  "name": "kikwit",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel-core/register test/**/*.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "accepts": "^1.3.0",
+    "babel-core": "^6.3.26",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-es2015-destructuring": "^6.3.15",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.3.16",
+    "babel-plugin-transform-es2015-parameters": "^6.3.26",
+    "babel-plugin-transform-es2015-sticky-regex": "^6.3.13",
+    "babel-plugin-transform-es2015-unicode-regex": "^6.3.13",
+    "babel-plugin-transform-strict-mode": "^6.3.13",
+    "busboy": "^0.2.12",
+    "mime-types": "^2.1.8",
+    "semver": "^5.1.0",
+    "type-is": "^1.6.10"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "chai": "^3.4.1"
+  }
+}
