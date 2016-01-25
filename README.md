@@ -35,7 +35,7 @@ yo kikwit
 * Node.js >= 5.0.0
 
 ### Yo generators
-We recomment you to kickstart your application using the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) .
+We recomment the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for kickstarting new applications.
 
 ```
 npm install generator-kikwit -g
