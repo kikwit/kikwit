@@ -1,3 +1,7 @@
+## Kikwit
+
+Kikwit is the sexiest web application framework in the Local Group if not the entire Universe. 
+
 ### Installation
 ```
 # Create a folder for your project
