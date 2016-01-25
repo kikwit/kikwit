@@ -1,11 +1,11 @@
 ## Installation
 ```
 # Create a folder for you project
-**mkdir /path/to/my/project**
+mkdir /path/to/my/project
 # Install Yeoman and kikwit generator
-**sudo npm install yeoman generator-kikwit -g**
+sudo npm install yeoman generator-kikwit -g
 # Generate you application
-**yo kikwit**
+yo kikwit
 ```
 
 ## Features
