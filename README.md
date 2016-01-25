@@ -1,6 +1,6 @@
 ## Kikwit
 
-Definitely the sexiest web application framework in the Local Group if not the entire Universe. 
+Probably the sexiest web application framework in the Local Group if not the entire Multiverse. 
 
 ### Kickstart
 We recomment the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for generating new applications.
