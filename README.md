@@ -31,7 +31,7 @@ yo kikwit
 * Static files serving
 * Conditional requests handling
 * Available yeoman generator
-* 
+
 ### Prerequisites
 * Node.js >= 5.0.0
 * 
