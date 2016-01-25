@@ -2,10 +2,13 @@
 ```
 # Create a folder for your project
 mkdir /path/to/my/project
+
 # Change to your project folder
 cd /path/to/my/project
+
 # Install yo and kikwit generator
 npm install yo generator-kikwit -g
+
 # kickstart your application
 yo kikwit
 ```
