@@ -34,7 +34,7 @@ yo kikwit
 
 ### Prerequisites
 * Node.js >= 5.0.0
-* 
+
 ### Running your application
 ```
 npm start 
