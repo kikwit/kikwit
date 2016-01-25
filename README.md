@@ -42,7 +42,7 @@ npm install generator-kikwit -g
 ```
 
 ### Running your application
-npm start # by default uses port 3000. The port can be changed in package.json
+```npm start # by default uses port 3000. The port can be changed in package.json```
 
 ### Issue Submission
 
