@@ -31,6 +31,19 @@ yo kikwit
 * Conditional requests handling
 * Available yeoman generator
 
+### Prerequisites
+* Node.js >= 5.0.0
+
+### Yo generators
+We recomment [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for kickstarting your project.
+
+```
+npm install generator-kikwit -g
+```
+
+### Running your application
+npm start # by default uses port 3000. The port can be changed in package.json
+
 ### Issue Submission
 
 
