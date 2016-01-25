@@ -4,7 +4,7 @@
 mkdir /path/to/my/project
 # Install Yeoman and kikwit generator
 sudo npm install yeoman generator-kikwit -g
-# Generate you application
+# kickstart you application
 yo kikwit
 ```
 
