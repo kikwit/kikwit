@@ -25,10 +25,10 @@ yo kikwit
 * Extendended view engines support
 * Content negotiation
 * Version negotiation
-* Modern middlewares support using decorators/annotaions
+* Modern middlewares support using decorators
 * Connect/Express middleware support
-* Static file serving
-* Conditional request handling
+* Static files serving
+* Conditional requests handling
 * Available yeoman generator
 
 ### Issue Submission
