@@ -2,7 +2,7 @@
 
 Definitely the sexiest web application framework in the Local Group if not the entire Universe. 
 
-### Installation
+### Kickstart
 ```
 # Create a folder for your project
 mkdir /path/to/my/project
