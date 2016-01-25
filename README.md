@@ -24,5 +24,11 @@ yo kikwit
 * Conditional request handling
 * Available yeoman generator
 
+## Issue Submission
+
+
+## Feature Requests
+
+
 ## Licence
 [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
