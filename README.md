@@ -1,4 +1,4 @@
-## Installation
+### Installation
 ```
 # Create a folder for your project
 mkdir /path/to/my/project
@@ -13,7 +13,7 @@ npm install yo generator-kikwit -g
 yo kikwit
 ```
 
-## Features
+### Features
 * Modern framework. ES2015, ES2016 support (uses Babel)
 * Awesome routing, versioned routes
 * High performance
@@ -27,11 +27,11 @@ yo kikwit
 * Conditional request handling
 * Available yeoman generator
 
-## Issue Submission
+### Issue Submission
 
 
-## Feature Requests
+### Feature Requests
 
 
-## Licence
+### Licence
 [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
