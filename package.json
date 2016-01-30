@@ -20,10 +20,13 @@
     "babel-plugin-transform-strict-mode": "^6.3.13",
     "bluebird": "^3.1.5",
     "busboy": "^0.2.12",
+    "chai": "^3.5.0",
+    "cookies": "^0.5.1",
     "mime-types": "^2.1.9",
+    "mocha": "^2.4.5",
     "node-uuid": "^1.4.7",
     "semver": "^5.1.0",
-    "type-is": "^1.6.10"
+    "type-is": "^1.6.11"
   },
   "devDependencies": {
     "mocha": "^2.3.4",
