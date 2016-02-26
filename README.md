@@ -1,4 +1,6 @@
-<img src="https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png" alt="Kikwit" width="300" />
+<a href="#">
+    <img src="https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png" alt="Kikwit" width="275" />
+</a>
 
 Probably the sexiest web application framework in the Local Group if not the entire Multiverse. 
 
