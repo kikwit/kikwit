@@ -4,7 +4,7 @@
 
 Probably the sexiest web application framework in the Local Group if not the entire Multiverse. 
 
-### Kickstart
+### Quick Start
 We recomment the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for generating new applications.
 ```
 # Create a folder for your project
