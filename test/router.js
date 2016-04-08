@@ -30,7 +30,7 @@ describe('router', function() {
                     
                     expected: {
                         pattern: new RegExp(`^/users/anonymous/page/default$`, 'i'),
-                        groupNames: []
+                        keys: []
                     },
                 },
                 {
@@ -40,7 +40,7 @@ describe('router', function() {
                     
                     expected: {
                         pattern: new RegExp(`^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`, 'i'),
-                        groupNames: ['userId', 'page']
+                        keys: ['userId', 'page']
                     },
                 },
                 {
@@ -50,7 +50,7 @@ describe('router', function() {
                     
                     expected: {
                         pattern: new RegExp(`^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`),
-                        groupNames: ['userId', 'page']
+                        keys: ['userId', 'page']
                     }
                 },
                 {
@@ -60,7 +60,7 @@ describe('router', function() {
                     
                     expected: {
                         pattern: new RegExp(`^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`, 'i'),
-                        groupNames: ['userId', 'page']
+                        keys: ['userId', 'page']
                     }
                 },
                 {
@@ -70,7 +70,7 @@ describe('router', function() {
                     
                     expected: {
                         pattern: new RegExp(`^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default/$`),
-                        groupNames: ['userId', 'page']
+                        keys: ['userId', 'page']
                     }
                 },
                 {
@@ -80,7 +80,7 @@ describe('router', function() {
                     
                     expected: {
                         pattern: new RegExp(`^/users/(\\d+)/${router.defaultPathPattern}/default$`, 'i'),
-                        groupNames: ['userId', 'page']
+                        keys: ['userId', 'page']
                     },
                 },   
                 {
@@ -90,7 +90,7 @@ describe('router', function() {
                     
                     expected: {
                         pattern: new RegExp(`^/users/(\\d+)/(\\w{8, 10})/default$`, 'i'),
-                        groupNames: ['userId', 'page']
+                        keys: ['userId', 'page']
                     },
                 }, 
                 {
@@ -100,7 +100,7 @@ describe('router', function() {
                     
                     expected: {
                         pattern: new RegExp(`^/users/(\\d+)/view-(\\w{8, 10})/default$`, 'i'),
-                        groupNames: ['userId', 'page']
+                        keys: ['userId', 'page']
                     }
                 }
             ];		
@@ -113,7 +113,7 @@ describe('router', function() {
                 		
                 assert.equal(actual.pattern.source, item.expected.pattern.source);
                 assert.equal(actual.pattern.flags, item.expected.pattern.flags);
-				assert.sameMembers(actual.groupNames, item.expected.groupNames);
+				assert.sameMembers(actual.keys, item.expected.keys);
 			}
 		});		
 	});
@@ -159,22 +159,22 @@ describe('router', function() {
 			const routes = [
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ]
                 },
                 {
                     pattern: new RegExp(`^/users/(\\d+)/(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ]
                 },
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'post' ]
                 },
                 {
                     pattern: new RegExp(`^/usersList/(\\d+)/view-(\\w{7,9})$`),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ]
                 }
             ];	
@@ -198,22 +198,22 @@ describe('router', function() {
 			const routes = [
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'post' ]
                 },
                 {
                     pattern: new RegExp(`^/usersList/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ]
                 },
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ]
                 },
                 {
                     pattern: new RegExp(`^/usersList/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'post' ]
                 }
             ];	
@@ -244,7 +244,7 @@ describe('router', function() {
 			const routes = [
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ],
                     consumes: ['application/json']
                 }
@@ -272,7 +272,7 @@ describe('router', function() {
 			const routes = [
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ],
                     consumes: ['text/html']
                 }
@@ -307,7 +307,7 @@ describe('router', function() {
 			const routes = [
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ],
                     produces: ['application/json']
                 }
@@ -334,7 +334,7 @@ describe('router', function() {
 			const routes = [
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ],
                     produces: ['text/html']
                 }
@@ -368,7 +368,7 @@ describe('router', function() {
 			const routes = [
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ],
                     version: '3.1.6'
                 }
@@ -395,7 +395,7 @@ describe('router', function() {
 			const routes = [
                 {
                     pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    groupNames: ['userId', 'page'],
+                    keys: ['userId', 'page'],
                     httpMethods: [ 'get' ],
                     version: '3.5.6'
                 }
