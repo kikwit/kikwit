@@ -172,7 +172,7 @@ Route parameters can also be specified on the controller level route decorator.
 
 #### Route names
 
-Action routes can specify a route name that can be used to generate URLs targeting the the route. 
+Action routes can specify a route name which helps generate URLs targeting the route. 
 
 Example:
 ```
@@ -189,14 +189,21 @@ export default class Products {
     }
 }
 ```
-A link to the details action's route can be generated using the following
-`ctx.routeURL('productDetails', { id: 34 })`
+The context's `routeURL(name, params, query, validate = true)` method can be called to generate the URL.
+
+i.e. a link to the details action's route can be generated using the following
+```
+ctx.routeURL('productDetails', { id: 34 })
+```
 The above would generate the string _/products/show/34_.
 
 Query strings can be added to the generated URL with the help of the third argument of the context's `routeURL(...)` method.
-`ctx.routeURL('productDetails', { id: 34 }, { offset: 10, pageSize: 20})`
+```
+ctx.routeURL('productDetails', { id: 34 }, { offset: 10, pageSize: 20})
+```
 The above would generate the string _/products/show/34?offeset=10&pageSize=20_.
 
+The _validate_ argument validates params values against route constraints (if any). Passing `false` skips any validation. 
 
 ### Context object
 
