@@ -5,7 +5,7 @@
 Probably the sexiest web application framework in the Local Group if not the entire Multiverse. 
 
 ### Quick Start
-We recomment the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for generating new applications.
+We recommend the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for generating new applications.
 ```
 # Create a folder for your project
 mkdir /path/to/my/project
@@ -32,6 +32,7 @@ yo kikwit
 * Available yeoman generator
 
 ### Controllers
+
 By default controller classes are located in the __APP_ROOT/controllers/__ where __APP_ROOT__ folder. The location can be changed using the `controllersRoot` configuration key.
 All controller classes must be decorated with `@controller`.
 
@@ -45,6 +46,7 @@ export default class Products {
 }
 ```
 ### Actions
+
 Controller methods decorated with at least one HTTP method decorator are treated as actions.
 HTTP method decorators specifiy which HTTP request methods are valid for an action. 
 
@@ -103,7 +105,7 @@ Kikwit supports both explicit and implicit routing.
 
 #### Explicit routing
 
-Explicit routing is when a controller or action is tagged with the `@route` decorator.
+Explicit routing is when a controller or action is tagged with a `@route` decorator.
 
 Example:
 ```
@@ -120,11 +122,11 @@ export default class Products {
     }
 }
 ```
-In the example above, the route url generate for the `list` action is __/prods/catalogue__. 
+In the example above, the route url generated for the `list` action is __/prods/catalogue__. 
 
 #### Implicit routing
 
-Implicit routing is when a controller or action is not tagged with the `@route` decorator.
+Implicit routing is when a controller or action is not tagged with a `@route` decorator.
 
 Example:
 ```
@@ -139,7 +141,7 @@ export default class Products {
     }
 }
 ```
-In the example above, the route url generate for the `list` action is __/products/list__. 
+In the example above, the route url generated for the `list` action is __/products/list__. 
 
 #### Route parameters
 
@@ -169,6 +171,32 @@ In the example above, if the request was `GET /products/show/laptop` then the `c
 Route parameters can also be specified on the controller level route decorator.
 
 #### Route names
+
+Action routes can specify a route name that can be used to generate URLs targeting the the route. 
+
+Example:
+```
+import assert from 'assert';
+import { controller } from 'kikwit';
+
+@controller
+export default class Products {
+
+    @route('/show/:id', 'productDetails')
+    @get
+    details(ctx) {
+        ctx.send(ctx.params.id);
+    }
+}
+```
+A link to the details action's route can be generated using the following
+`ctx.routeURL('productDetails', { id: 34 })`
+The above would generate the string _/products/show/34_.
+
+Query strings can be added to the generated URL with the help of the third argument of the context's `routeURL(...)` method.
+`ctx.routeURL('productDetails', { id: 34 }, { offset: 10, pageSize: 20})`
+The above would generate the string _/products/show/34?offeset=10&pageSize=20_.
+
 
 ### Context object
 
