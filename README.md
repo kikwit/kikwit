@@ -98,8 +98,10 @@ The `@all` decorator makes the decorated action valid for any HTTP request metho
 
 ### Routing
 Kikwit supports both explicit and implicit routing.
+
 #### Explicit routing
-Explicit routing is when a controller and/or action is tagged with the `@route` decorator.
+
+Explicit routing is when a controller or action is tagged with the `@route` decorator.
 
 Example:
 ```
@@ -119,7 +121,8 @@ export default class Products {
 In the example above, the route url generate for the `list` action is __/prods/catalogue__. 
 
 #### Implicit routing
-Implicit routing is when the controller and action are not tagged with the `@route` decorator.
+
+Implicit routing is when a controller or action is not tagged with the `@route` decorator.
 
 Example:
 ```
@@ -135,6 +138,12 @@ export default class Products {
 }
 ```
 In the example above, the route url generate for the `list` action is __/products/list__. 
+
+#### Route parameters
+
+
+#### Route names
+
 
 
 ### Prerequisites
