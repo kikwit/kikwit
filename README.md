@@ -41,7 +41,7 @@ import { controller } from 'kikwit';
 
 @controller
 export default class Products {
-
+    ...
 }
 ```
 ### Actions
@@ -54,22 +54,22 @@ import { controller, get, post } from 'kikwit';
 @controller
 export default class Products {
 
-    @post
-    add(ctx) {
-        ...
-    }
-    
     @get
     list(ctx) {
         ...
     }
+    
+    @post
+    add(ctx) {
+        ...
+    }    
 }
 ```
 
 An action can be decorated by more than one HTTP method decorator.
 
 ```
-import { controller, get, post } from 'kikwit';
+import { controller, put, post } from 'kikwit';
 
 @controller
 export default class Products {
@@ -85,15 +85,15 @@ export default class Products {
 The `@all` decorator makes the decorated action valid for any HTTP request method.
 
 ####List of supported decorators
-|Decorator|HTTP Method   |
-|---------|--------------|
-|@all     |* (Any method)|
-|@delete  |DELETE        |
-|@get     |GET           |
-|@options |OPTIONS       |
-|@post    |POST          |
-|@put     |PUT           |
-|@Head    |HEAD          |
+|Decorator|HTTP Method       |
+|---------|------------------|
+|@all     |* __(Any method)__|
+|@del     |DELETE            |
+|@get     |GET               |
+|@head    |HEAD              |
+|@options |OPTIONS           |
+|@post    |POST              |
+|@put     |PUT               |
 
 ### Prerequisites
 * Node.js >= 5.0.0
