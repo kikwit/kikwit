@@ -45,7 +45,8 @@ export default class Products {
 }
 ```
 ### Actions
-Actions are controller methods decorated with at least one HTTP method decorator which specifies which HTTP request methods are valid for the method to be invoked. 
+Controller methods decorated with at least one HTTP method decorator are treated as actions.
+HTTP method decorators specifiy which HTTP request methods are valid for an action. 
 
 Example:
 ```
@@ -94,6 +95,47 @@ The `@all` decorator makes the decorated action valid for any HTTP request metho
 |@options |OPTIONS           |
 |@post    |POST              |
 |@put     |PUT               |
+
+### Routing
+Kikwit supports both explicit and implicit routing.
+#### Explicit routing
+Explicit routing is when a controller and/or action is tagged with the `@route` decorator.
+
+Example:
+```
+import { controller } from 'kikwit';
+
+@route('/prods')
+@controller
+export default class Products {
+
+    @route('/catalogue')
+    @get
+    list(ctx) {
+        ...
+    }
+}
+```
+In the example above, the route url generate for the `list` action is __/prods/catalogue__. 
+
+#### Implicit routing
+Implicit routing is when the controller and action are not tagged with the `@route` decorator.
+
+Example:
+```
+import { controller } from 'kikwit';
+
+@controller
+export default class Products {
+
+    @get
+    list(ctx) {
+        ...
+    }
+}
+```
+In the example above, the route url generate for the `list` action is __/products/list__. 
+
 
 ### Prerequisites
 * Node.js >= 5.0.0
