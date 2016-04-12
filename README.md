@@ -86,6 +86,7 @@ export default class Products {
 The `@all` decorator makes the decorated action valid for any HTTP request method.
 
 ####List of supported decorators
+
 |Decorator|HTTP Method       |
 |---------|------------------|
 |@all     |* __(Any method)__|
@@ -97,6 +98,7 @@ The `@all` decorator makes the decorated action valid for any HTTP request metho
 |@put     |PUT               |
 
 ### Routing
+
 Kikwit supports both explicit and implicit routing.
 
 #### Explicit routing
@@ -105,7 +107,7 @@ Explicit routing is when a controller or action is tagged with the `@route` deco
 
 Example:
 ```
-import { controller } from 'kikwit';
+import { controller, get, route } from 'kikwit';
 
 @route('/prods')
 @controller
@@ -126,7 +128,7 @@ Implicit routing is when a controller or action is not tagged with the `@route` 
 
 Example:
 ```
-import { controller } from 'kikwit';
+import { controller, get } from 'kikwit';
 
 @controller
 export default class Products {
@@ -141,6 +143,30 @@ In the example above, the route url generate for the `list` action is __/product
 
 #### Route parameters
 
+Routes can define dynamic parts in the following format `:KEY` where _KEY_ is the key used to access the corresponding value from the context.
+
+Example
+```
+import assert from 'assert';
+import { controller } from 'kikwit';
+
+@controller
+export default class Products {
+
+    @route('/show/:id')
+    @get
+    details(ctx) {
+        ctx.send(ctx.params.id);
+    }
+}
+```
+With the route above, a`GET /products/show/34` request will result in a context param's id of _34_.
+
+Route parameters can use regular expressions as constraints in the following format `:KEY<REGEX>` where _REGEX_ is the regular expression constraint.
+
+In the example above, if the request was `GET /products/show/laptop` then the `ctx.params.id` would have been equal _laptop_. But if the action route was `@route('/show/:id<\\d+>')` instead then `GET /products/show/laptop` request would have not been routed to the `details` action. 
+
+Route parameters can also be specified on the controller level route decorator.
 
 #### Route names
 
