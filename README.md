@@ -69,13 +69,13 @@ export default class Products {
 An action can be decorated by more than one HTTP method decorator.
 
 ```
-import { controller, put, post } from 'kikwit';
+import { controller, post, put } from 'kikwit';
 
 @controller
 export default class Products {
 
-    @put
     @post
+    @put
     edit(ctx) {
         ...
     }
