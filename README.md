@@ -207,6 +207,19 @@ The _validate_ argument validates params values against route constraints (if an
 
 ### Context object
 
+Controller actions and all handlers accept a single context argument which provides the following properties and methods:
+
+<dl>
+  <dt>`ctx.host`</dt>
+  <dd>
+    The request HOST header, or _x-forwarded-host_ request header value when `trustProxy` setting is set to `true`, plus the port number, e.g. _192.168.1.8:3000_.
+  </dd>
+  <dt>`ctx.hostname`</dt>
+  <dd>
+    The request HOST header, or _x-forwarded-host_ request header value when `trustProxy` setting is set to `true`, doesn't include the port number, e.g. _192.168.1.8_.
+  </dd>
+</dl>
+
 ### Handlers
 
 #### Before handlers
