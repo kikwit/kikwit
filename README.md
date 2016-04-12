@@ -210,33 +210,39 @@ The _validate_ argument validates params values against route constraints (if an
 Controller actions and all handlers accept a single context argument which provides the following properties and methods:
 
 <dl>
-  <dt>ctx.host</dt>
+  <dt>host</dt>
   <dd>
     The request HOST header, or <em>X-FORWARDED-HOST</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>, plus the port number.
   </dd>
-  <dt>ctx.hostname</dt>
+  <dt>hostname</dt>
   <dd>
     The request HOST header, or <em>X-FORWARDED-HOST</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
   </dd>
-  <dt>ctx.ip</dt>
+  <dt>ip</dt>
   <dd>
     The request client ip address, or the first entry from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
   </dd>
-  <dt>ctx.ips</dt>
+  <dt>ips</dt>
   <dd>
     An array containing the request client ip address, or the all entries from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
   </dd> 
-  <dt>ctx.logger</dt>
+  <dt>logger</dt>
   <dd>
     The logger specified in the configuration file. If no logger is prvided then, when the environment is <em>development</em>, <em>ctx.logger</em> will point to the <em>console</em>.
   </dd> 
-  <dt>ctx.port</dt>
+  <dt>port</dt>
   <dd>
     The request port number, or <em>X-FORWARDED-PORT</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
   </dd>
-  <dt>ctx.protocol</dt>
+  <dt>protocol</dt>
   <dd>
     The request protocol (http or https), or <em>X-FORWARDED-PROTO</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
+  </dd>  
+  <dt>subdomains</dt>
+  <dd>
+    An array containing the request subdomains. By default the domain is the last two parts of the host. The <em>subdomainOffset</em> configuration setting can be used to specify the number of parts that constitutes the application domain. The remaining parts are the subdomains.
+    <br />
+    e.g. for <em>user.api.kikwitjs.com</em> the subdomain would be ['api', 'user'] if <em>subdomainOffset</em> configuration setting is 2 (default) and ['user'] if it's set to 3.
   </dd>  
 </dl>
 
