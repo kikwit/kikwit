@@ -212,12 +212,32 @@ Controller actions and all handlers accept a single context argument which provi
 <dl>
   <dt>ctx.host</dt>
   <dd>
-    The request HOST header, or <em>x-forwarded-host</em> request header value when <em>trustProxy</em> setting is set to <em>true</em>, plus the port number, e.g. <em>192.168.1.8:3000</em>.
+    The request HOST header, or <em>X-FORWARDED-HOST</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>, plus the port number.
   </dd>
   <dt>ctx.hostname</dt>
   <dd>
-    The request HOST header, or <em>x-forwarded-host</em> request header value when <em>trustProxy</em> setting is set to <em>true</em>, e.g. <em>192.168.1.8</em>.
+    The request HOST header, or <em>X-FORWARDED-HOST</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
   </dd>
+  <dt>ctx.ip</dt>
+  <dd>
+    The request client ip address, or the first entry from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
+  </dd>
+  <dt>ctx.ips</dt>
+  <dd>
+    An array containing the request client ip address, or the all entries from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
+  </dd> 
+  <dt>ctx.logger</dt>
+  <dd>
+    The logger specified in the configuration file. If no logger is prvided then, when the environment is <em>development</em>, <em>ctx.logger</em> will point to the <em>console</em>.
+  </dd> 
+  <dt>ctx.port</dt>
+  <dd>
+    The request port number, or <em>X-FORWARDED-PORT</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
+  </dd>
+  <dt>ctx.protocol</dt>
+  <dd>
+    The request protocol (http or https), or <em>X-FORWARDED-PROTO</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
+  </dd>  
 </dl>
 
 ### Handlers
