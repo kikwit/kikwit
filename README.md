@@ -144,6 +144,14 @@ In the example above, the route url generate for the `list` action is __/product
 
 #### Route names
 
+### Context object
+
+### Handlers
+
+#### Before handlers
+
+#### After handlers
+
 
 ### Prerequisites
 * Node.js >= 5.0.0
