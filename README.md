@@ -261,9 +261,7 @@ can be used to specify the number of parts that constitutes the application doma
     e.g. for <em>user.api.kikwitjs.com</em> the subdomain would be ['api', 'user'] if <em>subdomainOffset</em> configuration setting is 2 (default) and 
 
 ['user'] if it's set to 3.
-  </dd>  
-
-
+  </dd>
   <dt>download(path [, filename], [contentType] [, options])</dt>
   <dd>
     Sends the contents of the file at path to for download. 
@@ -292,8 +290,38 @@ generate additional headers.
     </li>
 </ul>
   </dd> 
+  <dt>next()</dt>
+  <dd>
+    Calls the next handlers if any. When called in the last <em>@before</em> handler, this method will call the target action. If called in the last <em>@after</em> handler, the call does 
 
-
+nothing.
+    <br />
+    The <em>next()</em> valid to call in handlers only.
+  </dd> 
+  <dt>redirect(url [, statusCode])</dt>
+  <dd>
+    Redirects the request by setting a <em>LOCATION</em> header.
+    <br />
+    The <em>statusCode</em> argument defaults to 302.
+  </dd>
+  <dt>send(body [, contentType])</dt>
+  <dd>
+    Sends the response using <em>body</em>, converted to string, as content. 
+    <br />
+    The <em>contentType</em> argument, if not provided, defaults to <em>text/plain; charset=utf-8</em>.
+  </dd>
+  <dt>sendJSON(body)</dt>
+  <dd>
+    Sends the response using <em>body</em> as content.
+    <br />
+    The <em>CONTENT-TYPE</em> header, if not set by the calling code, is set to <em>application/json</em>.
+  </dd>
+  <dt>sendJSON(body)</dt>
+  <dd>
+    Sends the response using <em>body</em> as content.
+    <br />
+    The <em>CONTENT-TYPE</em> header, if not set by the calling code, is set to <em>application/json</em>.
+  </dd>
 </dl>
 
 ### Handlers
@@ -320,7 +348,7 @@ npm start
 
 ### Maintainers
 
-* Elondo Mbonze<mbonze.elondo@gmail.com> (Creator)
+* Elondo Mbonze <mbonze.elondo@gmail.com> (Creator)
 
 ### Licence
 [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
