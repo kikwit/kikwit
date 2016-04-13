@@ -33,7 +33,9 @@ yo kikwit
 
 ### Controllers
 
-By default controller classes are located in the __APP_ROOT/controllers/__ where __APP_ROOT__ folder. The location can be changed using the `controllersRoot` configuration key.
+By default controller classes are located in the __APP_ROOT/controllers/__ where __APP_ROOT__ folder. The location can be changed using the 
+
+`controllersRoot` configuration key.
 All controller classes must be decorated with `@controller`.
 
 Example:
@@ -166,7 +168,9 @@ With the route above, a`GET /products/show/34` request will result in a context 
 
 Route parameters can use regular expressions as constraints in the following format `:KEY<REGEX>` where _REGEX_ is the regular expression constraint.
 
-In the example above, if the request was `GET /products/show/laptop` then the `ctx.params.id` would have been equal _laptop_. But if the action route was `@route('/show/:id<\\d+>')` instead then `GET /products/show/laptop` request would have not been routed to the `details` action. 
+In the example above, if the request was `GET /products/show/laptop` then the `ctx.params.id` would have been equal _laptop_. But if the action route was 
+
+`@route('/show/:id<\\d+>')` instead then `GET /products/show/laptop` request would have not been routed to the `details` action. 
 
 Route parameters can also be specified on the controller level route decorator.
 
@@ -212,7 +216,9 @@ Controller actions and all handlers accept a single context argument which provi
 <dl>
   <dt>host</dt>
   <dd>
-    The request HOST header, or <em>X-FORWARDED-HOST</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>, plus the port number.
+    The request HOST header, or <em>X-FORWARDED-HOST</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>, plus 
+
+the port number.
   </dd>
   <dt>hostname</dt>
   <dd>
@@ -220,15 +226,21 @@ Controller actions and all handlers accept a single context argument which provi
   </dd>
   <dt>ip</dt>
   <dd>
-    The request client ip address, or the first entry from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
+    The request client ip address, or the first entry from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is 
+
+set to <em>true</em>.
   </dd>
   <dt>ips</dt>
   <dd>
-    An array containing the request client ip address, or the all entries from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
+    An array containing the request client ip address, or the all entries from <em>X-FORWARDED-FOR</em> request header value (if present) when 
+
+<em>trustProxy</em> setting is set to <em>true</em>.
   </dd> 
   <dt>logger</dt>
   <dd>
-    The logger specified in the configuration file. If no logger is prvided then, when the environment is <em>development</em>, <em>ctx.logger</em> will point to the <em>console</em>.
+    The logger specified in the configuration file. If no logger is prvided then, when the environment is <em>development</em>, <em>ctx.logger</em> will 
+
+point to the <em>console</em>.
   </dd> 
   <dt>port</dt>
   <dd>
@@ -236,14 +248,52 @@ Controller actions and all handlers accept a single context argument which provi
   </dd>
   <dt>protocol</dt>
   <dd>
-    The request protocol (http or https), or <em>X-FORWARDED-PROTO</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
+    The request protocol (http or https), or <em>X-FORWARDED-PROTO</em> request header value (if present) when <em>trustProxy</em> setting is set to 
+
+<em>true</em>.
   </dd>  
   <dt>subdomains</dt>
   <dd>
-    An array containing the request subdomains. By default the domain is the last two parts of the host. The <em>subdomainOffset</em> configuration setting can be used to specify the number of parts that constitutes the application domain. The remaining parts are the subdomains.
+    An array containing the request subdomains. By default the domain is the last two parts of the host. The <em>subdomainOffset</em> configuration setting 
+
+can be used to specify the number of parts that constitutes the application domain. The remaining parts are the subdomains.
     <br />
-    e.g. for <em>user.api.kikwitjs.com</em> the subdomain would be ['api', 'user'] if <em>subdomainOffset</em> configuration setting is 2 (default) and ['user'] if it's set to 3.
+    e.g. for <em>user.api.kikwitjs.com</em> the subdomain would be ['api', 'user'] if <em>subdomainOffset</em> configuration setting is 2 (default) and 
+
+['user'] if it's set to 3.
   </dd>  
+
+
+  <dt>download(path [, filename], [contentType] [, options])</dt>
+  <dd>
+    Sends the contents of the file at path to for download. 
+The base name of the path argument is used as default value for the <em>Content-Disposition</em> header <em>filename</em> value unless <em>filename</em> 
+
+argument is specified.<em>Content-Disposition</em> header is set to <em>attachment</em> unless already set by the calling code.
+The response content type is derived from the file extension but an explicit value can be specified using the <em>contentType</em> argument.
+The optional <em>options</em> argument can specify the following:
+<ul>
+    <li><strong><em>lastModified</em></strong>: if <em>true</em>, set the <em>Last-Modified</em> header to the file's last modified time.</li>
+    <li>
+        <strong><em>root</em></strong>: the root folder containing <em>path</em>. 
+        <br />
+        If <em>root</em> is provided then <em>path</em> is always treated as relative.
+        <br />
+        If <em>root</em> is not provided and <em>path</em> is not absolute then <em>root</em> defaults to the application root folder.
+    </li>
+    <li>
+        <strong><em>headers</em></strong>: additional headers to add to the response.
+        <br />
+        If <em>headers</em> is an object then its keys are used as header names and the corresponding values as header values.
+        <br />
+        If <em>headers</em> is a function then it's called with a single argument representing the full path of the file and any returned object is used to 
+
+generate additional headers.
+    </li>
+</ul>
+  </dd> 
+
+
 </dl>
 
 ### Handlers
@@ -267,6 +317,10 @@ npm start
 ### Issue Submission
 
 ### Feature Requests
+
+### Maintainers
+
+* Elondo Mbonze<mbonze.elondo@gmail.com> (Creator)
 
 ### Licence
 [GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
