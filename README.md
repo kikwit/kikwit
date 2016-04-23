@@ -480,7 +480,7 @@ export default class Products {
 
 
 ### Prerequisites
-* Node.js >= 5.0.0
+* Node.js >= 6.0.0-rc.4
 
 ### Running your application
 ```
@@ -499,4 +499,4 @@ npm start
 * Elondo Mbonze <mbonze.elondo@gmail.com> (Creator)
 
 ### Licence
-[GPLv3](http://www.gnu.org/licenses/gpl-3.0.en.html)
+[AGPL-3.0](https://opensource.org/licenses/AGPL-3.0)
