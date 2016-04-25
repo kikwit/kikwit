@@ -1,8 +1,6 @@
-<a href="#">
-    <img src="https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png" alt="Kikwit" width="275" />
-</a>
+<img src="https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png" alt="Kikwit" width="275" />
 
-Probably the sexiest web application framework in the Local Group if not the entire Multiverse. 
+Modern and fast web framework for nodejs. 
 
 ### Quick Start
 We recommend the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for generating new applications.
