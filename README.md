@@ -1,4 +1,4 @@
-<img src="https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png" alt="Kikwit" width="275" />
+![Kikwit](https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png)
 
 Modern and fast web framework for nodejs. 
 
@@ -423,7 +423,7 @@ Controller actions and all handlers accept a single context argument which provi
 ### Handlers
 
 Handlers are middlewares or filters that are set to run before or after an action. 
-They can be used for logging authorization.
+They can be used for logging, authorization, etc...
 
 Kikwit supports defining handlers using the decorators on the controller or action levels.
 Controller handlers apply to all controller actions. Action handlers apply to the decorated action only.
@@ -476,6 +476,9 @@ export default class Products {
 
 #### After handlers
 
+### Cookies
+
+### Logging
 
 ### Prerequisites
 * Node.js >= 6.0.0-rc.4
