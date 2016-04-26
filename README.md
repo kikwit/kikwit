@@ -1,4 +1,4 @@
-<img src="https://cloud.githubusercontent.com/assets/16418235/14813868/a6a33952-0b9b-11e6-8d2e-d7651b3ebdb3.png" alt="Kikwit" width="275" />
+![Kikwit](https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png)
 
 Modern and fast web framework for nodejs. 
 
@@ -383,7 +383,6 @@ Controller actions and all interceptors accept a single context argument which p
     The `views.root` configuration property defines the root folder for views 
     and defaults to __APP_ROOT/views__ where __APP_ROOT__ is the application's root folder.
     
-
 - **routeURL(name [, params] [, query] [, validate = true])**
   
     Generates a url based on a route `name`. 
@@ -397,7 +396,7 @@ Controller actions and all interceptors accept a single context argument which p
 ### Interceptors
 
 Interceptors are middlewafunctions that are configured to run before or after an action. 
-They can be used for logging authorization.
+They can be used for logging, authorization, etc...
 
 Kikwit supports defining interceptors using decorators on the controller or action levels.
 Controller interceptors apply to all controller actions. Action interceptors apply to the decorated action only.
@@ -490,6 +489,10 @@ export default class Products {
     }  
 }
 ```
+
+### Cookies
+
+### Logging
 
 ### Prerequisites
 * Node.js >= 6.0.0-rc.4
