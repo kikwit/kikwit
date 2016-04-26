@@ -1,4 +1,4 @@
-<img src="https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png" alt="Kikwit" width="275" />
+<img src="https://cloud.githubusercontent.com/assets/16418235/14813868/a6a33952-0b9b-11e6-8d2e-d7651b3ebdb3.png" alt="Kikwit" width="275" />
 
 Modern and fast web framework for nodejs. 
 
@@ -11,8 +11,12 @@ mkdir /path/to/my/project
 cd /path/to/my/project
 # Install yo and kikwit generator
 npm install yo generator-kikwit -g
-# kickstart your application
+# Generate application
 yo kikwit
+# Lauch
+npm start 
+# With the above command the application will listen on port 3000 by default. 
+# The port can be changed in the __APP_ROOT/config.*.js__ environment specific configuration files.
 ```
 
 ### Features
@@ -31,7 +35,7 @@ yo kikwit
 
 ### Controllers
 
-By default controller classes are located in the __APP_ROOT/controllers/__ where __APP_ROOT__ folder. The location can be changed using the 
+By default controller classes are located in the `APP_ROOT/controllers/` where `APP_ROOT` folder. The location can be changed using the 
 
 `controllersRoot` configuration key.
 All controller classes must be decorated with `@controller`.
@@ -67,10 +71,10 @@ export default class Products {
         ...
     }    
 }
+
 ```
 
 An action can be decorated by more than one HTTP method decorator.
-
 ```
 import { controller, post, put } from 'kikwit';
 
@@ -91,7 +95,7 @@ The `@all` decorator makes the decorated action valid for any HTTP request metho
 
 |Decorator|HTTP Method       |
 |---------|------------------|
-|@all     |* __(Any method)__|
+|@all     |* `(Any method)`|
 |@del     |DELETE            |
 |@get     |GET               |
 |@head    |HEAD              |
@@ -122,7 +126,7 @@ export default class Products {
     }
 }
 ```
-In the example above, the route url generated for the `list` action is __/prods/catalogue__. 
+In the example above, the route url generated for the `list` action is `/prods/catalogue`. 
 
 #### Implicit routing
 
@@ -141,7 +145,7 @@ export default class Products {
     }
 }
 ```
-In the example above, the route url generated for the `list` action is __/products/list__. 
+In the example above, the route url generated for the `list` action is `/products/list`. 
 
 #### Route parameters
 
@@ -165,7 +169,7 @@ With the route above, a`GET /products/show/34` request will result in a context 
 
 Route parameters can use regular expressions as constraints in the following format `:KEY<REGEX>` where _REGEX_ is the regular expression constraint.
 
-In the example above, if the request was `GET /products/show/laptop` then the `ctx.params.id` would have been equal _laptop_. But if the action route was 
+In the example above, if the request was `GET /products/show/laptop` then the `ctx.params.id` would have been equal to _laptop_. But if the action route was 
 
 `@route('/show/:id<\\d+>')` instead then `GET /products/show/laptop` request would have not been routed to the `details` action. 
 
@@ -207,232 +211,202 @@ The _validate_ argument validates params values against route constraints (if an
 
 ### Context object
 
-Controller actions and all handlers accept a single context argument which provides the following properties and methods:
+Controller actions and all interceptors accept a single context argument which provides the following properties and methods:
 
-<dl>
+- **host**
+  
+  The request HOST header, or `X-FORWARDED-HOST` request header value (if present) when `trustProxy` setting is set to `true`, plus the port number.
 
-  <dt>host</dt>
-  <dd>
-    The request HOST header, or <em>X-FORWARDED-HOST</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>, plus the port number.
-  </dd>
+- **hostname**
   
-  <dt>hostname</dt>
-  <dd>
-    The request HOST header, or <em>X-FORWARDED-HOST</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
-  </dd>
+  The request HOST header, or `X-FORWARDED-HOST` request header value (if present) when `trustProxy` setting is set to `true`.
   
-  <dt>ip</dt>
-  <dd>
-    The request client ip address, or the first entry from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
-  </dd>
-  <dt>ips</dt>
-  <dd>
-    An array containing the request client ip address, or the all entries from <em>X-FORWARDED-FOR</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
-  </dd> 
+- **ip**
   
-  <dt>logger</dt>
-  <dd>
-    The logger specified in the configuration file. If no logger is prvided then, when the environment is <em>development</em>, <em>ctx.logger</em> will point to the <em>console</em>.
-  </dd> 
+  The request client ip address, or the first entry from `X-FORWARDED-FOR` request header value (if present) when `trustProxy` setting is set to `true`.
+
+- **ips**
   
-  <dt>state</dt>
-  <dd>
+  An array containing the request client ip address, or the all entries from `X-FORWARDED-FOR` request header value (if present) when `trustProxy` setting is set to `true`.
+  
+- **logger**
+  
+    The logger specified in the configuration file. If no logger is prvided then, when the environment is `development`, `ctx.logger` will point to the `console`.  
+  
+- **state**
+
+    The state holds request data that are available to interceptors, action and views. Values stored in the `state` property are specific to the current request only.  
+      
+- **port**
+  
+    The request port number, or `X-FORWARDED-PORT` request header value (if present) when `trustProxy` setting is set to `true`.
+  
+- **protocol**
+  
+    The request protocol (http or https), or `X-FORWARDED-PROTO` request header value (if present) when `trustProxy` setting is set to `true`.
     
+- **subdomains**
+  
+    An array containing the request subdomains. By default the domain is the last two parts of the host. The `subdomainOffset` configuration setting can be used to specify the number of parts that constitutes the application domain. The remaining parts are the subdomains.
     
-  </dd> 
+    e.g. for `user.api.kikwitjs.com` the subdomain would be ['api', 'user'] if `subdomainOffset` configuration setting is 2 (default) and ['user'] if it's set to 3.
   
-  <dt>port</dt>
-  <dd>
-    The request port number, or <em>X-FORWARDED-PORT</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
-  </dd>
+- **statusCode**
   
-  <dt>protocol</dt>
-  <dd>
-    The request protocol (http or https), or <em>X-FORWARDED-PROTO</em> request header value (if present) when <em>trustProxy</em> setting is set to <em>true</em>.
-  </dd>  
-  
-  <dt>subdomains</dt>
-  <dd>
-    An array containing the request subdomains. By default the domain is the last two parts of the host. The <em>subdomainOffset</em> configuration setting can be used to specify the number of parts that constitutes the application domain. The remaining parts are the subdomains.
-    <br />
-    e.g. for <em>user.api.kikwitjs.com</em> the subdomain would be ['api', 'user'] if <em>subdomainOffset</em> configuration setting is 2 (default) and ['user'] if it's set to 3.
-  </dd>
-  
-  <dt>statusCode</dt>
-  <dd>
     Sets the response status code.
-  </dd>
-
-  <dt>statusMessage</dt>
-  <dd>
+  
+- **statusMessage**
+  
     Sets the response status message.
-  </dd>
-    
-  <dt>download(path [, filename], [contentType] [, options])</dt>
-  <dd>
+     
+- **download(path [, filename], [contentType] [, options])**
+  
     Sends the contents of the file at path to for download. 
-    <br />
-    The base name of the path argument is used as default value for the <em>Content-Disposition</em> header <em>filename</em> value unless <em>filename</em> 
-    argument is specified.<em>Content-Disposition</em> header is set to <em>attachment</em> unless already set by the calling code.
-    <br />
-    The response content type is derived from the file extension but an explicit value can be specified using the <em>contentType</em> argument.
-    <br />
-    The optional <em>options</em> argument can specify the following:
-    <ul>
-        <li><strong><em>lastModified</em></strong>: if <em>true</em>, set the <em>Last-Modified</em> header to the file's last modified time.</li>
-        <li>
-            <strong><em>root</em></strong>: the root folder containing <em>path</em>. 
-            <br />
-            If <em>root</em> is provided then <em>path</em> is always treated as relative.
-            <br />
-            If <em>root</em> is not provided and <em>path</em> is not absolute then <em>root</em> defaults to the application root folder.
-        </li>
-        <li>
-            <strong><em>headers</em></strong>: additional headers to add to the response.
-            <br />
-            If <em>headers</em> is an object then its keys are used as header names and the corresponding values as header values.
-            <br />
-            If <em>headers</em> is a function then it's called with a single argument representing the full path of the file and any returned object is used to
-            generate additional headers.
-        </li>
-    </ul>
-  </dd> 
-  
-  <dt>next()</dt>
-  <dd>
-    Calls the next handlers if any. When called in the last <em>@before</em> handler, this method will call the target action. If called in the last <em>@after</em> handler, the call does nothing.
-    <br />
-    The <em>next()</em> valid to call in handlers only.
-  </dd> 
-  
-  <dt>redirect(url [, statusCode])</dt>
-  <dd>
-    Redirects the request by setting a <em>LOCATION</em> header.
-    <br />
-    The <em>statusCode</em> argument defaults to 302.
-  </dd>
-  
-  <dt>send(body [, contentType])</dt>
-  <dd>
-    Sends the response using <em>body</em>, converted to string, as content. 
-    <br />
-    The <em>contentType</em> argument, if not provided, defaults to <em>text/plain; charset=utf-8</em>.
-  </dd>
-  
-  <dt>sendJSON(body)</dt>
-  <dd>
-    Sends a JSON response using <em>body</em> as content.
-    <br />
-    The <em>CONTENT-TYPE</em> header, if not set by the calling code, is set to <em>application/json</em>.
-  </dd>
-  
-  <dt>sendJSONP(body)</dt>
-  <dd>
-    Sends a JSON response with JSONP support.
-    <br />
-    The default JSONP callback name is callback and can be changed using `json.callbackParam` configuration value.
-  </dd>
-  
-  <dt>sendFile(path, contentType, options)</dt>
-  <dd>
-    Pipes the contents of the file at path to the response stream. 
-    <br />
-    The response content type is derived from the file extension but an explicit value can be specified using the <em>contentType</em> argument.
-    <br />
-    The optional <em>options</em> argument can specify the following:
-    <ul>
-        <li><strong><em>lastModified</em></strong>: if <em>true</em>, set the <em>Last-Modified</em> header to the file's last modified time.</li>
-        <li>
-            <strong><em>root</em></strong>: the root folder containing <em>path</em>. 
-            <br />
-            If <em>root</em> is provided then <em>path</em> is always treated as relative.
-            <br />
-            If <em>root</em> is not provided and <em>path</em> is not absolute then <em>root</em> defaults to the application root folder.
-        </li>
-        <li>
-            <strong><em>headers</em></strong>: additional headers to add to the response.
-            <br />
-            If <em>headers</em> is an object then its keys are used as header names and the corresponding values as header values.
-            <br />
-            If <em>headers</em> is a function then it's called with a single argument representing the full path of the file and any returned object is used to
-            generate additional headers.
-        </li>
-    </ul>
-  </dd>
-   
-  <dt>removeHeader(name)</dt>
-  <dd>
-    Removes a response header.
-  </dd> 
-   
-  <dt>setHeader(name, value)</dt>
-  <dd>
-    Sets a response header.
-  </dd>
-  
-  <dt>setHeaders(headers = {})</dt>
-  <dd>
-    Sets response headers. 
-    <br />
-    The <em>headers</em> argument can be a <em>Map</em> or an plain object.
-  </dd> 
-  
-  <dt>skipToAction()</dt>
-  <dd>
-    Skips any remaining <em>@before</em> handlers, if any, and calls the target action.
-    <br />
-    The <em>skipToAction()</em> valid to call in <em>@before</em> handlers only.
-  </dd> 
-
-  <dt>stream(stream, contentType)</dt>
-  <dd>
-    Pipes <em>stream</em> to the response steam.
-    <br />
-    The <em>contentType</em> defaults to <em>application/octet-stream</em>
-  </dd> 
-  
-  <dt>render([viewPath] [, locals] [, contentType])</dt>
-  <dd>
-    Renders a view template.
-    <br />
-    The optional <em>locals</em> argument are provided as the view model.
-    If <em>viewPath</em> is not provided the view is looked up based on the the controller and action name.
-    The default is to look respectively in the follwing folders:
-    <ol>
-        <li><em>APP_ROOT/views/[CONTROLER_NAME]/[ACTION_NAME]</em></li>
-        <li><em>APP_ROOT/views/[CONTROLER_NAME]</em></li>
-        <li><em>APP_ROOT/views</em> folders respectively.</li>        
-    </ol>
-    The <em>views.root</em> configuration property defines the root folder for views 
-    and defaults to <em>APP_ROOT/views</em> where APP_ROOT is the application's root folder.
-  </dd>  
-
-  <dt>routeURL(name [, params] [, query] [, validate = true])</dt>
-  <dd>
-    Generates a url based on a route <em>name</em>. 
-    <br />
-    The <em>params</em> header argument specifies any route parameter values. 
-    <br />
-    <em>query</em> represents an object whose property names are added as the query string keys and corresponding values as query string values.
-    <br />
-    The <em>validate</em> argument indicates whether the route parameters are checked against related patterns if any.
-  </dd>  
+    
+    The base name of the path argument is used as default value for the `Content-Disposition` header `filename` value unless `filename` 
+    argument is specified.`Content-Disposition` header is set to `attachment` unless already set by the calling code.
+    
+    The response content type is derived from the file extension but an explicit value can be specified using the `contentType` argument.
+    
+    The optional `options` argument can specify the following:
+    
+    - __lastModified__: if `true`, set the `Last-Modified` header to the file's last modified time.
+    
+    - __root__: the root folder containing `path`. 
         
-</dl>
+        If `root` is provided then `path` is always treated as relative.
+        
+        If `root` is not provided and `path` is not absolute then `root` defaults to the application root folder.   
+            
+    - __headers__: additional headers to add to the response.
+        
+        If `headers` is an object then its keys are used as header names and the corresponding values as header values.
+        
+        If `headers` is a function then it's called with a single argument representing the full path of the file and 
+        any returned object is used to generate additional headers.
+        
+- **next()**
+  
+    Calls the next interceptor if any. When called in the last `@before` interceptor, this method will call the target action. If called in the last `@after` interceptor, the call does nothing.
+    
+    The `next()` valid to call in interceptors only.
+   
+- **redirect(url [, statusCode])**
+  
+    Redirects the request by setting a `LOCATION` header.
+    
+    The `statusCode` argument defaults to 302.
+  
+  
+- **send(body [, contentType])**
+  
+    Sends the response using `body`, converted to string, as content. 
+    
+    The `contentType` argument, if not provided, defaults to `text/plain; charset=utf-8`.
+  
+  
+- **sendJSON(body)**
+  
+    Sends a JSON response using `body` as content.
+    
+    The `CONTENT-TYPE` header, if not set by the calling code, is set to `application/json`.
+  
+  
+- **sendJSONP(body)**
+  
+    Sends a JSON response with JSONP support.
+    
+    The default JSONP callback name is callback and can be changed using `json.callbackParam` configuration value.
+  
+  
+- **sendFile(path, contentType, options)**
+  
+    Pipes the contents of the file at path to the response stream. 
+    
+    The response content type is derived from the file extension but an explicit value can be specified using the `contentType` argument.
+    
+    The optional `options` argument can specify the following:
+    
+    - __lastModified__: if `true`, set the `Last-Modified` header to the file's last modified time.
+    
+    - __root__: the root folder containing `path`. 
+        
+        If `root` is provided then `path` is always treated as relative.
+        
+        If `root` is not provided and `path` is not absolute then `root` defaults to the application root folder.
+    
+    - __headers__: additional headers to add to the response.
+        
+        If `headers` is an object then its keys are used as header names and the corresponding values as header values.
+        
+        If `headers` is a function then it's called with a single argument representing the full path of the file and any returned object is used to generate additional headers.
+        
+- **removeHeader(name)**
+  
+    Removes a response header.
+     
+- **setHeader(name, value)**
+  
+    Sets a response header. 
+  
+- **setHeaders(headers = {})**
+  
+    Sets response headers. 
+    
+    The `headers` argument can be a `Map` or an plain object.
+  
+- **skipToAction()**
+  
+    Skips any remaining `@before` interceptors, if any, and calls the target action.
+    
+    The `skipToAction()` valid to call in `@before` interceptors only.
+   
+- **stream(stream, contentType)**
+  
+    Pipes `stream` to the response steam.
+    
+    The `contentType` defaults to `application/octet-stream`
+   
+  
+- **render([viewPath] [, locals] [, contentType])**
+  
+    Renders a view template.
+    
+    The optional `locals` argument are provided as the view model.
+    If `viewPath` is not provided the view is looked up based on the the controller and action name.
+    The default is to look respectively in the follwing folders:
 
-### Handlers
+    1. __APP_ROOT/views/[CONTROLER_NAME]/[ACTION_NAME]__
+    2. __APP_ROOT/views/[CONTROLER_NAME]__
+    3. __APP_ROOT/views__.        
+    
+    The `views.root` configuration property defines the root folder for views 
+    and defaults to __APP_ROOT/views__ where __APP_ROOT__ is the application's root folder.
+    
 
-Handlers are middlewares or filters that are set to run before or after an action. 
+- **routeURL(name [, params] [, query] [, validate = true])**
+  
+    Generates a url based on a route `name`. 
+    
+    The `params` header argument specifies any route parameter values. 
+    
+    `query` represents an object whose property names are added as the query string keys and corresponding values as query string values.
+    
+    The `validate` argument indicates whether the route parameters are checked against related patterns if any.
+
+### Interceptors
+
+Interceptors are middlewafunctions that are configured to run before or after an action. 
 They can be used for logging authorization.
 
-Kikwit supports defining handlers using the decorators on the controller or action levels.
-Controller handlers apply to all controller actions. Action handlers apply to the decorated action only.
+Kikwit supports defining interceptors using decorators on the controller or action levels.
+Controller interceptors apply to all controller actions. Action interceptors apply to the decorated action only.
 
-Handlers have the same signature as controller actions, they accept a single Context argument.   
+Interceptors have the same signature as controller actions, they accept a single Context argument.   
 
-#### Before handlers
+#### Before interceptors
 
-Before handlers are specified using the `@before` decorator. 
+Before interceptors are specified using the `@before` decorator. 
 
 ```
 @before(Products.authenticate)
@@ -453,19 +427,29 @@ export default class Products {
 
         myService.deleteProduct(ctx.params.id).then(() = > {
                   
-           ctx.sendJSON(true); 
+           ctx.sendJSON(ctx.locals.userAuth); 
         });
     }
     
+    @before(Products.authorize) 
+    @post
+    updateProduct(ctx) {
+
+        myService.updateProduct(ctx.body.product).then(() = > {
+                  
+           ctx.sendJSON(ctx.locals.userAuth); 
+        });
+    }    
+    
     static authenticate(ctx) {
         
-        ctx.locals.authenticated = Math.random() > 0.5;        
+        ctx.locals.userAuth = Math.random();        
         ctx.next();
     }  
     
     static authorize(ctx) {
         
-        if (!ctx.locals.authenticated) {
+        if (!ctx.locals.userAuth) {
             return ctx.sendStatus(403);
         }
         
@@ -474,19 +458,45 @@ export default class Products {
 }
 ```
 
-#### After handlers
+#### After interceptors
 
+After interceptors are specified using the `@after` decorator. 
+
+```
+@after(Products.addRandomHeader)
+export default class Products {
+
+    @get
+    list(ctx) {
+        
+        myService.getProducts().then(products = > {
+            
+           // HTTP response will contain an 'X-RANDON-NUMBER' header 
+           ctx.sendJSON(products); 
+        });
+    }
+    
+    @get
+    hello(ctx) {
+        
+        // HTTP response will contain an 'X-RANDON-NUMBER' header 
+        ctx.send('Hello'); 
+    }
+    
+    static addRandomHeader(ctx) {
+        
+        ctx.setHeader('X-RANDON-NUMBER', Math.random().toString());       
+        ctx.next();
+    }  
+}
+```
 
 ### Prerequisites
 * Node.js >= 6.0.0-rc.4
 
-### Running your application
-```
-npm start 
-# With the above command the application will listen on port 3000 by default. 
-# The port can be changed in package.json.
-```
 ### Benchmarks
+
+Coming soon... and Kikwit is much faster than Express or Restify!
 
 ### Issue Submission
 
