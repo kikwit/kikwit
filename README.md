@@ -495,7 +495,7 @@ export default class Products {
 ### Logging
 
 ### Prerequisites
-* Node.js >= 6.0.0-rc.4
+* Node.js >= 6.0.0
 
 ### Benchmarks
 
