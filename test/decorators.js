@@ -1,9 +1,13 @@
 'use strict';
-/*
-import { assert } from 'chai';
+
+import * as helpers from './support/helpers'
 
 import * as config from '../lib/config';
 import { action, after, before, bodyParser, consumes, controller, get, post, produces, queryParser } from '../lib';
+
+beforeEach(function(){
+    jasmine.addMatchers(helpers.customMatchers);
+});
 
 describe('decorators', function () {
   
@@ -17,7 +21,7 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        assert.deepEqual(handlers, clazz[config.afterProp]);
+        expect(handlers).toDeepEqual(clazz[config.afterProp]);
       });
     });
     describe('method', function () {
@@ -32,8 +36,8 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        assert.notProperty(clazz, config.afterProp);
-        assert.deepEqual(handlers, descriptor.value[config.afterProp]);
+        expect(clazz[config.afterProp]).toBeUndefined();
+        expect(handlers).toDeepEqual(descriptor.value[config.afterProp]);
       });
     });
   });  
@@ -48,7 +52,7 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        assert.deepEqual(handlers, clazz[config.beforeProp]);
+         expect(handlers).toDeepEqual(clazz[config.beforeProp]);
       });
     });
     describe('method', function () {
@@ -63,8 +67,8 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        assert.notProperty(clazz, config.beforeProp);
-        assert.deepEqual(handlers, descriptor.value[config.beforeProp]);
+        expect(clazz[config.beforeProp]).toBeUndefined();
+        expect(handlers).toDeepEqual(descriptor.value[config.beforeProp]);
       });
     });
   });   
@@ -79,7 +83,7 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        assert.equal(parser, clazz[config.bodyParserProp]);
+        expect(parser).toEqual(clazz[config.bodyParserProp]);
       });
     });
     describe('method', function () {
@@ -94,8 +98,8 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        assert.notProperty(clazz, config.bodyParser);
-        assert.deepEqual(parser, descriptor.value[config.bodyParserProp]);
+        expect(clazz[config.bodyParser]).toBeUndefined();
+        expect(parser).toDeepEqual(descriptor.value[config.bodyParserProp]);
       });
     });
   }); 
@@ -110,7 +114,7 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        assert.deepEqual(mimeTypes, clazz[config.consumesProp]);
+         expect(mimeTypes).toDeepEqual(clazz[config.consumesProp]);
       });
     });
     describe('method', function () {
@@ -125,8 +129,8 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        assert.notProperty(clazz, config.consumesProp);
-        assert.deepEqual(mimeTypes, descriptor.value[config.consumesProp]);
+        expect(clazz[config.consumesProp]).toBeUndefined();
+        expect(mimeTypes).toDeepEqual(descriptor.value[config.consumesProp]);
       });
     });
   });
@@ -138,14 +142,14 @@ describe('decorators', function () {
       
       controller(clazz);
 
-      assert.propertyVal(clazz, config.controllerTag, true);
+      expect(clazz[config.controllerTag]).toBe(true);
     });
     it(`should throw on anonymous class`, function () {
 
       let clazz = class {};
       let fn = () => controller(clazz);
       
-      assert.throws(fn, 'Anonymous controllers not supported');
+      expect(fn).toThrowError('Anonymous controllers not supported');
     });
   });
   
@@ -159,7 +163,7 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        assert.deepEqual(mimeTypes, clazz[config.producesProp]);
+        expect(mimeTypes).toDeepEqual(clazz[config.producesProp]);
       });
     });
     describe('method', function () {
@@ -174,8 +178,8 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        assert.notProperty(clazz, config.producesProp);
-        assert.deepEqual(mimeTypes, descriptor.value[config.producesProp]);
+        expect(clazz[config.producesProp]).toBeUndefined();
+        expect(mimeTypes).toDeepEqual(descriptor.value[config.producesProp]);
       });
     });
   });
@@ -190,7 +194,7 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        assert.equal(parser, clazz[config.queryParserProp]);
+        expect(parser).toEqual(clazz[config.queryParserProp]);
       });
     });
     describe('method', function () {
@@ -205,12 +209,10 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        assert.notProperty(clazz, config.queryParser);
-        assert.deepEqual(parser, descriptor.value[config.queryParserProp]);
+        expect(clazz[config.queryParser]).toBeUndefined();
+        expect(parser).toDeepEqual(descriptor.value[config.queryParserProp]);
       });
     });
   });  
  
 });
-
-*/

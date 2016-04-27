@@ -4,10 +4,10 @@
   "description": "",
   "main": "lib/index.js",
   "engines": {
-    "node": "6.0.0"
+    "node": "^6.0.0"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register test/**/*.js"
+    "test": "jasmine JASMINE_CONFIG_PATH=test/support/jasmine.json"
   },
   "author": "",
   "license": "AGPL-3.0",

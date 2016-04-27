@@ -1,4 +1,4 @@
-![Kikwit](https://cloud.githubusercontent.com/assets/16418235/13359987/c4e5c7ac-dcae-11e5-9f0c-2cca5ddb11c0.png)
+![kikwit](https://cloud.githubusercontent.com/assets/16418235/14813868/a6a33952-0b9b-11e6-8d2e-d7651b3ebdb3.png)
 
 Modern and fast web framework for nodejs. 
 

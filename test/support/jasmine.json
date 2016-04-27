@@ -1,0 +1,11 @@
+{
+  "spec_dir": "test",
+  "spec_files": [
+    "**/*.js"
+  ],
+  "helpers": [
+    "../node_modules/babel-core/register.js"
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": false
+}
