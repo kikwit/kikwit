@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "lib/index.js",
   "engines": {
@@ -13,6 +13,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "accepts": "^1.3.2",
+    "bluebird": "^3.3.5",
     "busboy": "^0.2.13",
     "cookies": "^0.6.1",
     "mime-types": "^2.1.10",
