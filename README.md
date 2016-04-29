@@ -551,8 +551,8 @@ export default class Products {
     @get
     details(ctx) {
         
-        let myNumber = 0;
-        let myOtherNumber = 42 / myNumber;
+        const a = null;
+        const result = a.startsWith('b');
 
         ctx.send('Unreachable');
     } 
