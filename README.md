@@ -414,7 +414,7 @@ export default class Products {
     @get
     list(ctx) {
         
-        myService.getProducts().then(products = > {
+        myService.getProducts().then(products => {
             
            ctx.sendJSON(products); 
         });
@@ -424,7 +424,7 @@ export default class Products {
     @del
     deleteProduct(ctx) {
 
-        myService.deleteProduct(ctx.params.id).then(() = > {
+        myService.deleteProduct(ctx.params.id).then(() => {
                   
            ctx.sendJSON(ctx.locals.userAuth); 
         });
@@ -434,11 +434,17 @@ export default class Products {
     @post
     updateProduct(ctx) {
 
-        myService.updateProduct(ctx.body.product).then(() = > {
+        myService.updateProduct(ctx.body.product).then(() => {
                   
            ctx.sendJSON(ctx.locals.userAuth); 
         });
-    }    
+    }  
+    
+    @before(ctx => {})
+    hello() {
+    
+        ctx.send('Hello World!');
+    }
     
     static authenticate(ctx) {
         
@@ -468,9 +474,9 @@ export default class Products {
     @get
     list(ctx) {
         
-        myService.getProducts().then(products = > {
+        myService.getProducts().then(products => {
             
-           // HTTP response will contain an 'X-RANDON-NUMBER' header 
+           // HTTP response will contain an 'X-RANDOM-NUMBER' header 
            ctx.sendJSON(products); 
         });
     }
@@ -478,17 +484,44 @@ export default class Products {
     @get
     hello(ctx) {
         
-        // HTTP response will contain an 'X-RANDON-NUMBER' header 
+        // HTTP response will contain an 'X-RANDOM-NUMBER' header 
         ctx.send('Hello'); 
     }
     
     static addRandomHeader(ctx) {
         
-        ctx.setHeader('X-RANDON-NUMBER', Math.random().toString());       
+        ctx.setHeader('X-RANDOM-NUMBER', Math.random().toString());       
         ctx.next();
     }  
 }
 ```
+#### Connect/Express middleware support
+
+Connect/Express middlewares are supported via the `@use` decorator. 
+```
+const requestStamp = (req, res, next) => {
+  req.stamp = Date.now();
+  next();
+};
+
+@use(requestStamp)
+export default class Products {
+
+    @get
+    list(ctx) {
+        // ctx.request.stamp is set
+        ctx.send('List');
+    }
+    
+    @get
+    details(ctx) {
+        
+        // ctx.request.stamp is set
+        ctx.send('Details');
+    }    
+}
+```
+Please always use the `Context` helper methods when possible and avoid accessing the underlying request and response objects directly.
 
 ### Cookies
 
@@ -507,7 +540,7 @@ Coming soon... and Kikwit is much faster than Express or Restify!
 
 ### Maintainers
 
-* Elondo Mbonze <mbonze.elondo@gmail.com> (Creator)
+* Bondowe <mbonze.elondo@gmail.com>
 
 ### Licence
 [AGPL-3.0](https://opensource.org/licenses/AGPL-3.0)
