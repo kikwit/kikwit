@@ -393,6 +393,13 @@ Controller actions and all interceptors accept a single context argument which p
     
     The `validate` argument indicates whether the route parameters are checked against related patterns if any.
 
+-- **throw(err)**
+
+   Sends a response with a 500 status code and status text set to `err.message`.
+   When the environement is `development` the error stack trace is also included.
+   
+   You can set the environment using `NODE_ENV` environment variable, e.g. `NODE_ENV=development` or `NODE_ENV=production`.
+
 ### Interceptors
 
 Interceptors are middlewafunctions that are configured to run before or after an action. 
@@ -509,6 +516,7 @@ export default class Products {
 
     @get
     list(ctx) {
+    
         // ctx.request.stamp is set
         ctx.send('List');
     }
@@ -524,6 +532,40 @@ export default class Products {
 Please always use the `Context` helper methods when possible and avoid accessing the underlying request and response objects directly.
 
 ### Cookies
+
+### Error handling
+
+An error handler can be specified using the `@onError` decorator. The error that was raised is accessible via the `Context.error` property.
+```
+@onError(errorHandler)
+export default class Products {
+
+    @get
+    list(ctx) {
+    
+        const nothing = null;
+        
+        ctx.send(nothing.toString());
+    }
+    
+    @get
+    details(ctx) {
+        
+        let myNumber = 0;
+        let myOtherNumber = 42 / myNumber;
+
+        ctx.send('Unreachable');
+    } 
+    
+    // The following handler will be called when an exception in raised in list or details actions 
+    static errorHandler(ctx) {
+    
+        // log ctx.error
+        
+        ctx.render('niceErrorPage', ctx.error);
+    }
+}
+```
 
 ### Logging
 
