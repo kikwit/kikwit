@@ -582,7 +582,7 @@ Coming soon... and Kikwit is much faster than Express or Restify!
 
 ### Maintainers
 
-* Bondowe <mbonze.elondo@gmail.com>
+* Elondo Mbonze
 
 ### Licence
 [AGPL-3.0](https://opensource.org/licenses/AGPL-3.0)
