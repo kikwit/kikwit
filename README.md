@@ -41,7 +41,7 @@ By default controller classes are located in the `APP_ROOT/controllers/` where `
 All controller classes must be decorated with `@controller`.
 
 Example:
-```
+```javascript
 import { controller } from 'kikwit';
 
 @controller
@@ -55,7 +55,7 @@ Controller methods decorated with at least one HTTP method decorator are treated
 HTTP method decorators specifiy which HTTP request methods are valid for an action. 
 
 Example:
-```
+```javascript
 import { controller, get, post } from 'kikwit';
 
 @controller
@@ -75,7 +75,7 @@ export default class Products {
 ```
 
 An action can be decorated by more than one HTTP method decorator.
-```
+```javascript
 import { controller, post, put } from 'kikwit';
 
 @controller
@@ -112,7 +112,7 @@ Kikwit supports both explicit and implicit routing.
 Explicit routing is when a controller or action is tagged with a `@route` decorator.
 
 Example:
-```
+```javascript
 import { controller, get, route } from 'kikwit';
 
 @route('/prods')
@@ -133,7 +133,7 @@ In the example above, the route url generated for the `list` action is `/prods/c
 Implicit routing is when a controller or action is not tagged with a `@route` decorator.
 
 Example:
-```
+```javascript
 import { controller, get } from 'kikwit';
 
 @controller
@@ -152,7 +152,7 @@ In the example above, the route url generated for the `list` action is `/product
 Routes can define dynamic parts in the following format `:KEY` where _KEY_ is the key used to access the corresponding value from the context.
 
 Example
-```
+```javascript
 import { controller } from 'kikwit';
 
 @controller
@@ -180,7 +180,7 @@ Route parameters can also be specified on the controller level route decorator.
 Action routes can specify a route name which helps generate URLs targeting the route. 
 
 Example:
-```
+```javascript
 import { controller } from 'kikwit';
 
 @controller
@@ -414,7 +414,7 @@ Interceptors have the same signature as controller actions, they accept a single
 
 Before interceptors are specified using the `@before` decorator. 
 
-```
+```javascript
 @before(Products.authenticate)
 export default class Products {
     
@@ -474,7 +474,7 @@ export default class Products {
 
 After interceptors are specified using the `@after` decorator. 
 
-```
+```javascript
 @after(Products.addRandomHeader)
 export default class Products {
 
@@ -505,7 +505,7 @@ export default class Products {
 #### Connect/Express middleware support
 
 Connect/Express middlewares are supported via the `@use` decorator. 
-```
+```javascript
 const requestStamp = (req, res, next) => {
   req.stamp = Date.now();
   next();
@@ -536,7 +536,7 @@ Please always use the `Context` helper methods when possible and avoid accessing
 ### Error handling
 
 An error handler can be specified using the `@onError` decorator. The error that was raised is accessible via the `Context.error` property.
-```
+```javascript
 @onError(errorHandler)
 export default class Products {
 

@@ -708,9 +708,34 @@ describe('context', () => {
         });                          
     });
     
-    // describe('get subdomains()', () => {
+    describe('get subdomains()', () => {
         
-        
-    // });        
+        it('should return an empty array when accessing by ipv4', () => {
+            
+            const request = { 
+                url: '/controller/action',
+                headers : {
+                    host: '192.169.10.04'
+                }
+            };
+    
+            const ctx = new Context({}, [], request, {});
+
+            expect(ctx.subdomains).toEqual([]);                    
+        });
+        it('should return an empty array when accessing by ipv6', () => {
+            
+            const request = { 
+                url: '/controller/action',
+                headers : {
+                    host: 'fe80:0000:0000:0000:0204:61ff:254.157.241.86'
+                }
+            };
+    
+            const ctx = new Context({}, [], request, {});
+
+            expect(ctx.subdomains).toEqual([]);                    
+        });        
+    });        
                                            
 });
