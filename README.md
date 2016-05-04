@@ -572,6 +572,10 @@ export default class Products {
 ### Prerequisites
 * Node.js >= 6.0.0
 
+### Tests
+
+`npm test`
+
 ### Benchmarks
 
 Coming soon... and Kikwit is much faster than Express or Restify!

@@ -3,6 +3,7 @@
 import path from 'path';
 import url from 'url';
 
+import * as results from '../lib/actionResults';
 import * as helpers from './support/helpers'
 
 import Context from '../lib/context';
@@ -429,6 +430,87 @@ describe('context', () => {
         });  
     });
     
+    describe('get ip()', () => {
+        
+        it('should return the correct value when trusting proxy and x-forwarded-for', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+                headers : {
+                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                }
+            };
+            
+            const appSettings = {
+                trustProxy: true
+            }
+                    
+            const ctx = new Context(appSettings, [], request, {});
+
+            expect(ctx.ip).toEqual('1.2.3.4');
+        });
+        it('should return the correct value when not trusting proxy (false) and x-forwarded-for', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+                headers : {
+                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                },
+                connection: {
+                    remoteAddress: '1.2.3.4'
+                }
+            };
+            
+            const appSettings = {
+                trustProxy: false
+            }
+                    
+            const ctx = new Context(appSettings, [], request, {});
+
+            expect(ctx.ip).toEqual(request.connection.remoteAddress);
+        });
+        it('should return the correct value when not trusting proxy (falsy) and x-forwarded-for', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+                headers : {
+                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                },
+                connection: {
+                    remoteAddress: '1.2.3.4'
+                }
+            };
+            
+            const appSettings = {
+                trustProxy: ''
+            }
+                    
+            const ctx = new Context(appSettings, [], request, {});
+
+            expect(ctx.ip).toEqual(request.connection.remoteAddress);
+        });  
+        it('should return the correct value when not trusting proxy (undefined) and x-forwarded-for', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+                headers : {
+                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                },
+                connection: {
+                    remoteAddress: '1.2.3.4'
+                }
+            };
+            
+            const appSettings = {
+                trustProxy: undefined
+            }
+                    
+            const ctx = new Context(appSettings, [], request, {});
+
+            expect(ctx.ip).toEqual(request.connection.remoteAddress);
+        });                      
+    });    
+    
     describe('get ips()', () => {
         
         it('should return the correct value when trusting proxy and x-forwarded-for', () => {
@@ -727,15 +809,236 @@ describe('context', () => {
             
             const request = { 
                 url: '/controller/action',
+                headers : { }
+            };
+            
+            const hosts = [
+                '1050:0000:0000:0000:0005:0600:300c:326b',
+                '1050:0:0:0:5:600:300c:326b',
+                '0:0:0:0:0:ffff:192.1.56.10'
+            ];
+    
+            let ctx;
+            
+            for (let host of hosts) {
+                
+                request.headers.host = host;
+                
+                ctx = new Context({}, [], request, {});
+
+                expect(ctx.subdomains).toEqual([]);                
+            }                    
+        });
+        it('should return an empty array when accessing by ipv4', () => {
+            
+            const request = { 
+                url: '/controller/action',
                 headers : {
-                    host: 'fe80:0000:0000:0000:0204:61ff:254.157.241.86'
+                    host: 'sub1.sub2.sub3.example.com'
                 }
             };
+            
+            const appSettings = { };
+            
+            const sample = [
+                {
+                    subdomainOffset: 0,
+                    expected: ['com', 'example', 'sub3', 'sub2', 'sub1']
+                },                
+                {
+                    subdomainOffset: 1,
+                    expected: ['example', 'sub3', 'sub2', 'sub1']
+                },
+                {
+                    subdomainOffset: 2,
+                    expected: ['sub3', 'sub2', 'sub1']
+                },
+                {
+                    subdomainOffset: 3,
+                    expected: ['sub2', 'sub1']
+                },
+                {
+                    subdomainOffset: 4,
+                    expected: ['sub1']
+                },
+                {
+                    subdomainOffset: 5,
+                    expected: []
+                }                                                  
+            ];
     
+            for (let item of sample) {
+             
+                appSettings.subdomainOffset = item.subdomainOffset;
+                
+                const ctx = new Context(appSettings, [], request, {});
+
+                expect(ctx.subdomains).toEqual(item.expected);                   
+            }                 
+        });              
+    });        
+         
+    describe('set statusCode', () => {
+        
+        it('should set the response statusCode', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+
+            const response = {};
+      
+            const ctx = new Context({}, [], request, response);
+            
+            const statusCode = 404;
+            
+            ctx.statusCode = statusCode;
+
+            expect(response.statusCode).toEqual(statusCode);
+        });
+    });
+    
+    describe('set statusMessage', () => {
+        
+        it('should set the response statusMessage', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+
+            const response = {};
+      
+            const ctx = new Context({}, [], request, response);
+            
+            const statusMessage = Math.random().toString();
+            
+            ctx.statusMessage = statusMessage;
+
+            expect(response.statusMessage).toEqual(statusMessage);
+        });
+    }); 
+    
+    describe('download', () => {
+        
+        it('should set the result and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const appSettings = {
+                applicationRoot: '/appRoot'
+            };
+
+            const ctx = new Context(appSettings, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            const filePath = Math.random().toString();
+            const filename = Math.random().toString();
+            const contentType = Math.random().toString();
+            const options = { a: Math.random(), b: Math.random() };
+            
+            ctx.download(filePath, filename, contentType, options);
+            
+            expect(ctx.result instanceof results.DownloadResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    }); 
+    
+    describe('throw', () => {
+        
+        it('should set the result to null and reject', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const error = new Error();
+
             const ctx = new Context({}, [], request, {});
 
-            expect(ctx.subdomains).toEqual([]);                    
-        });        
-    });        
-                                           
+            ctx.reject = (err) => {};
+            
+            spyOn(ctx, 'reject');
+            
+            ctx.throw(error);
+            
+            expect(ctx.result).toBeNull();
+            expect(ctx.reject).toHaveBeenCalledWith(error);
+        });
+    }); 
+    
+    describe('next', () => {
+        
+        it('should set the result to null and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            ctx.next();
+            
+            expect(ctx.result).toBeNull();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    });  
+    
+    describe('redirect', () => {
+        
+        it('should set the result and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            const redirectUrl = '/redirect/url';
+            const statusCode = 307;
+            
+            ctx.redirect(redirectUrl, statusCode);
+            
+            expect(ctx.result instanceof results.RedirectResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    }); 
+
+    describe('removeHeader', () => {
+        
+        it('should remove the response header and return the context', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const response = {
+                removeHeader: () => {}
+            }
+            
+            const ctx = new Context({}, [], request, response);
+            
+            spyOn(ctx.response, 'removeHeader');
+            
+            const headerName = 'X-Useless-Header';
+            
+            const result = ctx.removeHeader(headerName);
+            
+            expect(result).toEqual(ctx);
+            expect(ctx.response.removeHeader).toHaveBeenCalledWith(headerName);
+        });
+    }); 
+                                                                
 });
