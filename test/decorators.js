@@ -2,7 +2,7 @@
 
 import * as helpers from './support/helpers'
 
-import * as config from '../lib/config';
+import * as configurer from '../lib/configurer';
 import { action, after, before, bodyParser, consumes, controller, get, post, produces, queryParser } from '../lib';
 
 beforeEach(function(){
@@ -13,7 +13,7 @@ describe('decorators', function () {
   
   describe('@after', function () {
     describe('class', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.afterProp)}] property on class`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.afterProp)}] property on class`, function () {
 
         let clazz = class {};
         let handlers = [() => {}, () => {}];
@@ -21,11 +21,11 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        expect(handlers).toDeepEqual(clazz[config.afterProp]);
+        expect(handlers).toDeepEqual(clazz[configurer.afterProp]);
       });
     });
     describe('method', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.afterProp)}] property on method`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.afterProp)}] property on method`, function () {
 
         let clazz = class {};
         let descriptor = {
@@ -36,15 +36,15 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        expect(clazz[config.afterProp]).toBeUndefined();
-        expect(handlers).toDeepEqual(descriptor.value[config.afterProp]);
+        expect(clazz[configurer.afterProp]).toBeUndefined();
+        expect(handlers).toDeepEqual(descriptor.value[configurer.afterProp]);
       });
     });
   });  
   
   describe('@before', function () {
     describe('class', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.beforeProp)}] property on class`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.beforeProp)}] property on class`, function () {
 
         let clazz = class {};
         let handlers = [() => {}, () => {}];
@@ -52,11 +52,11 @@ describe('decorators', function () {
 
         fn(clazz);
 
-         expect(handlers).toDeepEqual(clazz[config.beforeProp]);
+         expect(handlers).toDeepEqual(clazz[configurer.beforeProp]);
       });
     });
     describe('method', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.beforeProp)}] property on method`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.beforeProp)}] property on method`, function () {
 
         let clazz = class {};
         let descriptor = {
@@ -67,15 +67,15 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        expect(clazz[config.beforeProp]).toBeUndefined();
-        expect(handlers).toDeepEqual(descriptor.value[config.beforeProp]);
+        expect(clazz[configurer.beforeProp]).toBeUndefined();
+        expect(handlers).toDeepEqual(descriptor.value[configurer.beforeProp]);
       });
     });
   });   
   
   describe('@bodyParser', function () {
     describe('class', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.bodyParserProp)}] property on class`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.bodyParserProp)}] property on class`, function () {
 
         let clazz = class {};
         let parser = (ctx) => {};
@@ -83,11 +83,11 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        expect(parser).toEqual(clazz[config.bodyParserProp]);
+        expect(parser).toEqual(clazz[configurer.bodyParserProp]);
       });
     });
     describe('method', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.bodyParserProp)}] property on method`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.bodyParserProp)}] property on method`, function () {
 
         let clazz = class {};
         let descriptor = {
@@ -98,15 +98,15 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        expect(clazz[config.bodyParser]).toBeUndefined();
-        expect(parser).toDeepEqual(descriptor.value[config.bodyParserProp]);
+        expect(clazz[configurer.bodyParser]).toBeUndefined();
+        expect(parser).toDeepEqual(descriptor.value[configurer.bodyParserProp]);
       });
     });
   }); 
   
   describe('@consumes', function () {
     describe('class', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.consumesProp)}] property on class`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.consumesProp)}] property on class`, function () {
 
         let clazz = class {};
         let mimeTypes = ['text/plain', 'application/json', 'xml'];
@@ -114,11 +114,11 @@ describe('decorators', function () {
 
         fn(clazz);
 
-         expect(mimeTypes).toDeepEqual(clazz[config.consumesProp]);
+         expect(mimeTypes).toDeepEqual(clazz[configurer.consumesProp]);
       });
     });
     describe('method', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.consumesProp)}] property on method`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.consumesProp)}] property on method`, function () {
 
         let clazz = class {};
         let descriptor = {
@@ -129,20 +129,20 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        expect(clazz[config.consumesProp]).toBeUndefined();
-        expect(mimeTypes).toDeepEqual(descriptor.value[config.consumesProp]);
+        expect(clazz[configurer.consumesProp]).toBeUndefined();
+        expect(mimeTypes).toDeepEqual(descriptor.value[configurer.consumesProp]);
       });
     });
   });
 
   describe('@controller', function () {
-    it(`should set the correct value for [${Symbol.keyFor(config.controllerTag)}] property on class`, function () {
+    it(`should set the correct value for [${Symbol.keyFor(configurer.controllerTag)}] property on class`, function () {
 
       let clazz = class clazz{};
       
       controller(clazz);
 
-      expect(clazz[config.controllerTag]).toBe(true);
+      expect(clazz[configurer.controllerTag]).toBe(true);
     });
     it(`should throw on anonymous class`, function () {
 
@@ -155,7 +155,7 @@ describe('decorators', function () {
   
   describe('@produces', function () {
     describe('class', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.producesProp)}] property on class`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.producesProp)}] property on class`, function () {
 
         let clazz = class {};
         let mimeTypes = ['text/plain', 'application/json', 'xml'];
@@ -163,11 +163,11 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        expect(mimeTypes).toDeepEqual(clazz[config.producesProp]);
+        expect(mimeTypes).toDeepEqual(clazz[configurer.producesProp]);
       });
     });
     describe('method', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.producesProp)}] property on method`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.producesProp)}] property on method`, function () {
 
         let clazz = class {};
         let descriptor = {
@@ -178,15 +178,15 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        expect(clazz[config.producesProp]).toBeUndefined();
-        expect(mimeTypes).toDeepEqual(descriptor.value[config.producesProp]);
+        expect(clazz[configurer.producesProp]).toBeUndefined();
+        expect(mimeTypes).toDeepEqual(descriptor.value[configurer.producesProp]);
       });
     });
   });
   
   describe('@queryParser', function () {
     describe('class', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.queryParserProp)}] property on class`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.queryParserProp)}] property on class`, function () {
 
         let clazz = class {};
         let parser = (str) => {};
@@ -194,11 +194,11 @@ describe('decorators', function () {
 
         fn(clazz);
 
-        expect(parser).toEqual(clazz[config.queryParserProp]);
+        expect(parser).toEqual(clazz[configurer.queryParserProp]);
       });
     });
     describe('method', function () {
-      it(`should set the correct value for [${Symbol.keyFor(config.queryParserProp)}] property on method`, function () {
+      it(`should set the correct value for [${Symbol.keyFor(configurer.queryParserProp)}] property on method`, function () {
 
         let clazz = class {};
         let descriptor = {
@@ -209,8 +209,8 @@ describe('decorators', function () {
 
         fn(clazz, 'any', descriptor);
 
-        expect(clazz[config.queryParser]).toBeUndefined();
-        expect(parser).toDeepEqual(descriptor.value[config.queryParserProp]);
+        expect(clazz[configurer.queryParser]).toBeUndefined();
+        expect(parser).toDeepEqual(descriptor.value[configurer.queryParserProp]);
       });
     });
   });  

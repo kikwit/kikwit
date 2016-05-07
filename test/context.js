@@ -1,5 +1,6 @@
 'use strict';
 
+import http from 'http';
 import path from 'path';
 import url from 'url';
 
@@ -16,14 +17,14 @@ describe('context', () => {
     
     describe('constructor', () => {
       
-        it('should set appSettings', () => {
+        it('should set config', () => {
             
-            const appSettings = { a: Math.random(), b: Math.random() };
+            const config = { a: Math.random(), b: Math.random() };
             const request = { url: '/controller/action' };
             
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
             
-            expect(ctx.appSettings).toEqual(appSettings);
+            expect(ctx.config).toEqual(config);
         });
         it('should set routes', () => {
             
@@ -118,7 +119,7 @@ describe('context', () => {
                 b: Math.random().toString()
             }           
 
-            const appSettings = { cookieParser: undefined };
+            const config = { cookieParser: undefined };
             
             const request = { 
                 url: '/controller/action',
@@ -128,7 +129,7 @@ describe('context', () => {
                 } 
             };
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.cookies).toEqual({});            
         });
@@ -140,7 +141,7 @@ describe('context', () => {
                 b: Math.random().toString()
             }           
 
-            const appSettings = { cookieParser: {} };
+            const config = { cookieParser: {} };
             
             const request = { 
                 url: '/controller/action',
@@ -150,7 +151,7 @@ describe('context', () => {
                 } 
             };
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             Object.keys(cookies).forEach(x => {
                 expect(ctx.cookies.get(x)).toEqual(cookies[x]); 
@@ -170,14 +171,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 },
                 trustProxy: true
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.proxied-host.com:3000');
         });
@@ -191,14 +192,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 },
                 trustProxy: false
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         }); 
@@ -212,14 +213,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 },
                 trustProxy: ''
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         }); 
@@ -233,14 +234,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 },
                 trustProxy: undefined
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         });
@@ -255,14 +256,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 },
                 trustProxy: true
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.proxied-host.com:80');
         }); 
@@ -277,14 +278,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 },
                 trustProxy: false
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         });
@@ -299,14 +300,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 },
                 trustProxy: ''
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         }); 
@@ -321,14 +322,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 },
                 trustProxy: undefined
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         });                                                                
@@ -341,13 +342,13 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 server: {
                     port: 3000
                 }
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         });  
@@ -366,11 +367,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: true
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.hostname).toEqual('www.proxied-host.com');
         });
@@ -384,11 +385,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: false
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.hostname).toEqual('www.site.com');
         }); 
@@ -402,11 +403,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: ''
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.hostname).toEqual('www.site.com');
         }); 
@@ -420,11 +421,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: undefined
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.hostname).toEqual('www.site.com');
         });  
@@ -441,11 +442,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: true
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.ip).toEqual('1.2.3.4');
         });
@@ -461,11 +462,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: false
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.ip).toEqual(request.connection.remoteAddress);
         });
@@ -481,11 +482,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: ''
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.ip).toEqual(request.connection.remoteAddress);
         });  
@@ -501,11 +502,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: undefined
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.ip).toEqual(request.connection.remoteAddress);
         });                      
@@ -522,11 +523,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: true
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.ips).toEqual(['1.2.3.4','5.6.7.8','9.1.2.3','4.5.6.7']);
         });
@@ -542,11 +543,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: false
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.ips).toEqual([request.connection.remoteAddress]);
         });
@@ -562,11 +563,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: ''
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.ips).toEqual([request.connection.remoteAddress]);
         });  
@@ -582,11 +583,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: undefined
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.ips).toEqual([request.connection.remoteAddress]);
         });                      
@@ -603,14 +604,14 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: true,
                 server: {
                     port: 3000
                 }                
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.port).toEqual(80);
         });
@@ -623,16 +624,16 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: false,
                 server: {
                     port: 3000
                 }                
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
-            expect(ctx.port).toEqual(appSettings.server.port);
+            expect(ctx.port).toEqual(config.server.port);
         });
         it('should return the correct value when trusting proxy (falsy) and x-forwarded-port', () => {
                    
@@ -643,16 +644,16 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: '',
                 server: {
                     port: 3000
                 }                
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
-            expect(ctx.port).toEqual(appSettings.server.port);
+            expect(ctx.port).toEqual(config.server.port);
         });
         it('should return the correct value when trusting proxy (undefined) and x-forwarded-port', () => {
                    
@@ -663,16 +664,16 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: undefined,
                 server: {
                     port: 3000
                 }                
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
-            expect(ctx.port).toEqual(appSettings.server.port);
+            expect(ctx.port).toEqual(config.server.port);
         });                    
     });
     
@@ -687,11 +688,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: true               
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.protocol).toEqual('https');
         });
@@ -704,11 +705,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: true               
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.protocol).toEqual('http');
         });
@@ -724,11 +725,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: false               
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.protocol).toEqual('https');
         }); 
@@ -744,11 +745,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: false               
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.protocol).toEqual('http');
         });
@@ -762,11 +763,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: false               
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.protocol).toEqual('https');
         }); 
@@ -780,11 +781,11 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = {
+            const config = {
                 trustProxy: false               
             }
                     
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             expect(ctx.protocol).toEqual('http');
         });                          
@@ -838,7 +839,7 @@ describe('context', () => {
                 }
             };
             
-            const appSettings = { };
+            const config = { };
             
             const sample = [
                 {
@@ -869,9 +870,9 @@ describe('context', () => {
     
             for (let item of sample) {
              
-                appSettings.subdomainOffset = item.subdomainOffset;
+                config.subdomainOffset = item.subdomainOffset;
                 
-                const ctx = new Context(appSettings, [], request, {});
+                const ctx = new Context(config, [], request, {});
 
                 expect(ctx.subdomains).toEqual(item.expected);                   
             }                 
@@ -926,11 +927,11 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const appSettings = {
+            const config = {
                 applicationRoot: '/appRoot'
             };
 
-            const ctx = new Context(appSettings, [], request, {});
+            const ctx = new Context(config, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1040,5 +1041,241 @@ describe('context', () => {
             expect(ctx.response.removeHeader).toHaveBeenCalledWith(headerName);
         });
     }); 
-                                                                
+    
+    describe('send', () => {
+        
+        it('should set the result and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            const body = 'Hello';
+            const contentType = 'text/html';
+            
+            ctx.send(body, contentType);
+            
+            expect(ctx.result instanceof results.ContentResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    });     
+    
+    describe('sendJSON', () => {
+        
+        it('should set the result and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            const body = 'Hello';
+            
+            ctx.sendJSON(body);
+            
+            expect(ctx.result instanceof results.JSONResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    });  
+    
+    describe('sendJSONP', () => {
+        
+        it('should set the result and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            const data = { a: Math.random() };
+            
+            ctx.sendJSONP(data)
+            
+            expect(ctx.result instanceof results.JSONPResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    }); 
+    
+    describe('sendFile', () => {
+        
+        it('should set the result and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            const filePath = 'dir1/dir2//file';
+            const contentType = 'text/plain';
+            const options = { root: process.cwd() };
+            
+            ctx.sendFile(filePath, contentType, options);
+            
+            expect(ctx.result instanceof results.FileResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    }); 
+       
+    describe('sendStatus', () => {
+        
+        it('should set the status code and call send', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'send');
+            
+            const code = Math.random().toFixed();
+            const message = Math.random().toString();
+            
+            ctx.sendStatus(code, message);
+            
+            expect(ctx.response.statusCode).toBe(code);
+            expect(ctx.send).toHaveBeenCalledWith(message);
+        });
+        
+        it('should set the status code and call send with default message', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'send');
+            
+            const code = 503;
+            
+            ctx.sendStatus(code);
+            
+            expect(ctx.response.statusCode).toBe(code);
+            expect(ctx.send).toHaveBeenCalledWith(http.STATUS_CODES[code]);
+        });        
+    }); 
+    
+    describe('setHeader', () => {
+        
+        it('should set the header', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const response = {
+                setHeader(headerName, headerValue) {}
+            }
+            
+            spyOn(response, 'setHeader');
+            
+            const ctx = new Context({}, [], request, response);
+            
+            const headerName = Math.random().toString();
+            const headerValue = Math.random().toString();
+            
+            const result = ctx.setHeader(headerName, headerValue);
+            
+            expect(result).toBe(ctx);
+            expect(ctx.response.setHeader).toHaveBeenCalledWith(headerName, headerValue);
+        });
+    });
+    
+    describe('setHeaders', () => {
+        
+        it('should set the headers (Object)', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const response = {
+                setHeader(headerName, headerValue) {}
+            }
+            
+            spyOn(response, 'setHeader');
+            
+            const ctx = new Context({}, [], request, response);
+            
+            const headersArray = [
+                [Math.random().toString(), Math.random().toString()],
+                [Math.random().toString(), Math.random().toString()],
+                [Math.random().toString(), Math.random().toString()],
+                [Math.random().toString(), Math.random().toString()],   
+            ];
+            
+            const headers = {};
+
+            for (let [name, value] of headersArray) {
+                headers[name] = value;
+            }
+                     
+            const result = ctx.setHeaders(headers);
+            
+            expect(result).toBe(ctx);
+            expect(ctx.response.setHeader.calls.count()).toBe(headersArray.length);
+            
+            for (let i = 0; i < headersArray.length; i++) {
+                expect(ctx.response.setHeader.calls.argsFor(i)).toEqual(headersArray[i]);
+            }
+        });
+        it('should set the headers (Map)', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const response = {
+                setHeader(headerName, headerValue) {}
+            }
+            
+            spyOn(response, 'setHeader');
+            
+            const ctx = new Context({}, [], request, response);
+            
+            const headersArray = [
+                [Math.random().toString(), Math.random().toString()],
+                [Math.random().toString(), Math.random().toString()],
+                [Math.random().toString(), Math.random().toString()],
+                [Math.random().toString(), Math.random().toString()],   
+            ];
+                        
+            const headers = new Map(headersArray);
+                   
+            const result = ctx.setHeaders(headers);
+            
+            expect(result).toBe(ctx);
+            expect(ctx.response.setHeader.calls.count()).toBe(headers.size);
+            
+            // for (let entry of headers) {
+            //     expect(ctx.response.setHeader.calls.argsFor(i)).toEqual(entry);
+            // }
+        });
+    });                                                                                 
 });

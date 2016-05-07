@@ -141,7 +141,7 @@ describe('router', function() {
 	describe('findRoute', function() {
 		it('must return undefined when routes not provided', function() {
 			
-            const appSettings = {};
+            const config = {};
 			const routesList = [ undefined, null, []];	
             const request = {};
             const pathname = null;
@@ -150,14 +150,14 @@ describe('router', function() {
 			
 			for (let routes of routesList) {
                 	
-				actual = router.findRoute(appSettings, routes, request);
+				actual = router.findRoute({config, routes, request, pathname});
 		
 				expect(actual).toBeUndefined();
 			}
 		});	
-		it('must return undefined when request url not provided', function() {
+		it('must return undefined when pathname not provided', function() {
 			
-            const appSettings = {};
+            const config = {};
 			const routes = [{}];	
             const requestsList = [ undefined, null, {}, null];
             	
@@ -165,14 +165,14 @@ describe('router', function() {
 			
 			for (let request of requestsList) {
                 	
-				actual = router.findRoute(appSettings, routes, request);
+				actual = router.findRoute({config, routes, request, pathname: undefined});
 		
 				expect(actual).toBeUndefined();
 			}
 		});	
 		it('must return undefined when route not found', function() {
 			
-            const appSettings = {
+            const config = {
                 route: {
                     strict: false
                 }
@@ -212,13 +212,13 @@ describe('router', function() {
             
             const pathname = '/users/649/view-settingsSection';
             	
-            const actual = router.findRoute(appSettings, routes, request, pathname);
+            const actual = router.findRoute({config, routes, request, pathname});
     
             expect(actual).toBeUndefined();
 		});		
 		it('must match the correct route', function() {
 			
-            const appSettings = {
+            const config = {
                 route: {
                     strict: false
                 }
@@ -253,7 +253,7 @@ describe('router', function() {
             
             const pathname = '/users/649/view-settings';
             	
-            const actual = router.findRoute(appSettings, routes, request, pathname);
+            const actual = router.findRoute({config, routes, request, pathname});
     
             expect(actual.route).toDeepEqual(routes[2]);
             
@@ -265,7 +265,7 @@ describe('router', function() {
 		});
 		it('must return undefined when content type not allowed', function() {
 			
-            const appSettings = {
+            const config = {
                 route: {
                     strict: false
                 }
@@ -286,14 +286,16 @@ describe('router', function() {
                     'transfer-encoding': 'chunked'
                 }
             };
+            
+            const pathname = '/users/649/view-settings';
             	
-            const actual = router.findRoute(appSettings, routes, request);
+            const actual = router.findRoute({config, routes, request, pathname});
     
             expect(actual).toBeUndefined();
 		});
 		it('must match the correct route when content type is allowed', function() {
 			
-            const appSettings = {
+            const config = {
                 route: {
                     strict: false
                 }
@@ -317,7 +319,7 @@ describe('router', function() {
             
             const pathname = '/users/649/view-settings';
             
-            const actual = router.findRoute(appSettings, routes, request, pathname);
+            const actual = router.findRoute({config, routes, request, pathname});
     
             expect(actual.route).toDeepEqual(routes[0]);
             
@@ -329,7 +331,7 @@ describe('router', function() {
 		});
 		it('must return undefined when accept not allowed', function() {
 			
-            const appSettings = {
+            const config = {
                 route: {
                     strict: false
                 }
@@ -352,13 +354,13 @@ describe('router', function() {
             	
             const pathname = '/users/649/view-settings';
                 
-            const actual = router.findRoute(appSettings, routes, request, pathname);
+            const actual = router.findRoute({config, routes, request, pathname});
     
             expect(actual).toBeUndefined();
 		});
 		it('must match the correct route when accept is allowed', function() {
 			
-            const appSettings = {
+            const config = {
                 route: {
                     strict: false
                 }
@@ -381,7 +383,7 @@ describe('router', function() {
             	
             const pathname = '/users/649/view-settings';                
                 
-            const actual = router.findRoute(appSettings, routes, request, pathname);
+            const actual = router.findRoute({config, routes, request, pathname});
 
             expect(actual.route).toDeepEqual(routes[0]);
             
@@ -393,7 +395,7 @@ describe('router', function() {
 		});
 		it('must return undefined when accept-version not allowed', function() {
 			
-            const appSettings = {
+            const config = {
                 route: {
                     strict: false
                 }
@@ -416,13 +418,13 @@ describe('router', function() {
             	
             const pathname = '/users/649/view-settings';                
                 
-            const actual = router.findRoute(appSettings, routes, request, pathname);
+            const actual = router.findRoute({config, routes, request, pathname});
     
             expect(actual).toBeUndefined();
 		});
 		it('must match the correct route when accept-version is allowed', function() {
 			
-            const appSettings = {
+            const config = {
                 route: {
                     strict: false
                 }
@@ -445,7 +447,7 @@ describe('router', function() {
             
             const pathname = '/users/649/view-settings';
             	
-            const actual = router.findRoute(appSettings, routes, request, pathname);
+            const actual = router.findRoute({config, routes, request, pathname});
     
             expect(actual.route).toDeepEqual(routes[0]);
             
