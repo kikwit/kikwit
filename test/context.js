@@ -1519,5 +1519,173 @@ describe('context', () => {
             
             expect(url).toBe(routes[0].routePath);
         });        
-    });                                                                                           
+    });  
+    
+    describe('render', () => {
+        
+        it('should throw when viewPath not specified and arguments length is greater than two', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const locals = {};
+            const contentType = 'text/plain';
+            const someArg = '';
+
+            const ctx = new Context({}, [], request, {});
+
+            expect(() => ctx.render(locals, contentType, someArg)).toThrowError('Wrong Arguments: render([viewPath], [locals], [contentType])');
+        });
+        it('should throw when contentType is not a string', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const locals = {};
+            const contentType = {};
+
+            const ctx = new Context({}, [], request, {});
+
+            expect(() => ctx.render(locals, contentType)).toThrowError('Argument error: [contentType]');
+        }); 
+        it('should set the result and resolve when called with no arguments', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+            
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+
+            ctx.render();
+            
+            expect(ctx.result instanceof results.ViewResult).toBe(true);
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+        it('should set the result and resolve when called with viewPath', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+            
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+
+            const viewPath = Math.random().toString();
+
+            ctx.render(viewPath);
+            
+            expect(ctx.result instanceof results.ViewResult).toBe(true);
+            expect(ctx.resolve).toHaveBeenCalled();
+        });    
+        it('should set the result and resolve when called with viewPath and locals', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+            
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+
+            const viewPath = Math.random().toString();
+            const locals = { a: Math.random() };
+            
+            ctx.render(viewPath, locals);
+            
+            expect(ctx.result instanceof results.ViewResult).toBe(true);
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+        it('should set the result and resolve when called with viewPath and contentType', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+            
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+
+            const viewPath = Math.random().toString();
+            const contentType = 'text/html';
+            
+            ctx.render(viewPath, contentType);
+            
+            expect(ctx.result instanceof results.ViewResult).toBe(true);
+            expect(ctx.resolve).toHaveBeenCalled();
+        });          
+        it('should set the result and resolve when called with locals', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+            
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+
+            const locals = { a: Math.random() };
+            
+            ctx.render(locals);
+            
+            expect(ctx.result instanceof results.ViewResult).toBe(true);
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+        it('should set the result and resolve when called with locals and contentType', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+            
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+
+            const locals = { a: Math.random() };
+            const contentType = 'text/html';
+            
+            ctx.render(locals, contentType);
+            
+            expect(ctx.result instanceof results.ViewResult).toBe(true);
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+        it('should set the result and resolve when called with viewPath, locals and contentType', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+            
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+
+            const viewPath = Math.random().toString();
+            const locals = { a: Math.random() };
+            const contentType = 'text/html';
+            
+            ctx.render(viewPath, locals, contentType);
+            
+            expect(ctx.result instanceof results.ViewResult).toBe(true);
+            expect(ctx.resolve).toHaveBeenCalled();
+        });                                                     
+    });
+                                                                                                 
 });
