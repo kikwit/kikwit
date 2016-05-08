@@ -159,6 +159,24 @@ describe('context', () => {
         });        
     }); 
     
+    describe('get headers()', () => {
+        
+        it('should return the request headers', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+                headers : {
+                    host: 'www.site.com',
+                    ['x-forwarded-host']: 'www.proxied-host.com'
+                }
+            };
+                    
+            const ctx = new Context({}, [], request, {});
+
+            expect(ctx.headers).toDeepEqual(request.headers);
+        });
+    });    
+    
     describe('get host()', () => {
         
         it('should return the correct value when trusting proxy and x-forwarded-host', () => {
@@ -791,6 +809,22 @@ describe('context', () => {
         });                          
     });
     
+    describe('get statusCode', () => {
+        
+        it('should return the response status code', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+
+            const response = { statusCode: Math.random() };
+      
+            const ctx = new Context({}, [], request, response);
+
+            expect(ctx.statusCode).toEqual(response.statusCode);
+        });
+    });     
+    
     describe('get subdomains()', () => {
         
         it('should return an empty array when accessing by ipv4', () => {
@@ -949,29 +983,6 @@ describe('context', () => {
         });
     }); 
     
-    describe('throw', () => {
-        
-        it('should set the result to null and reject', () => {
-                   
-            const request = { 
-                url: '/controller/action',
-            };
-            
-            const error = new Error();
-
-            const ctx = new Context({}, [], request, {});
-
-            ctx.reject = (err) => {};
-            
-            spyOn(ctx, 'reject');
-            
-            ctx.throw(error);
-            
-            expect(ctx.result).toBeNull();
-            expect(ctx.reject).toHaveBeenCalledWith(error);
-        });
-    }); 
-    
     describe('next', () => {
         
         it('should set the result to null and resolve', () => {
@@ -1008,15 +1019,67 @@ describe('context', () => {
             spyOn(ctx, 'resolve');
             
             const redirectUrl = '/redirect/url';
-            const statusCode = 307;
+            const statusCode = Math.random();
             
             ctx.redirect(redirectUrl, statusCode);
             
+            expect(ctx.statusCode).toBe(statusCode);
             expect(ctx.result instanceof results.RedirectResult).toBeTruthy();
             expect(ctx.resolve).toHaveBeenCalled();
         });
+        
+        it('should set the result and and default status code and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            const redirectUrl = '/redirect/url';
+            const statusCode = Math.random();
+            
+            ctx.redirect(redirectUrl);
+            
+            expect(ctx.statusCode).toBe(303);
+            expect(ctx.result instanceof results.RedirectResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });        
     }); 
 
+    describe('redirectToRoute', () => {
+        
+        it('should set the result and resolve', () => {
+                  
+            const routeName = 'testRoute';              
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+            
+            const url = Math.random().toString();
+            
+            spyOn(ctx, 'routeURL').and.returnValue(url);
+            spyOn(ctx, 'redirect');
+            
+            const params = { a: Math.random(), b: Math.random() };
+            const query = { c: Math.random(), d: Math.random() }
+            const validate = (Math.random() > 0.5);
+            const statusCode = (Math.random() * 100).toFixed() + 1;       
+
+            ctx.redirectToRoute(routeName, params, query, validate, statusCode);
+            
+            expect(ctx.routeURL).toHaveBeenCalledWith(routeName, params, query, validate);
+            expect(ctx.redirect).toHaveBeenCalledWith(url, statusCode);
+        });
+    }); 
+    
     describe('removeHeader', () => {
         
         it('should remove the response header and return the context', () => {
@@ -1273,9 +1336,188 @@ describe('context', () => {
             expect(result).toBe(ctx);
             expect(ctx.response.setHeader.calls.count()).toBe(headers.size);
             
-            // for (let entry of headers) {
-            //     expect(ctx.response.setHeader.calls.argsFor(i)).toEqual(entry);
-            // }
+            let idx = 0;
+            
+            for (let entry of headers) {
+                expect(ctx.response.setHeader.calls.argsFor(idx++)).toEqual(entry);
+            }
         });
-    });                                                                                 
+    }); 
+    
+    describe('skipToAction', () => {
+        
+        it('should set the result and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            ctx.skipToAction();
+            
+            expect(ctx.result instanceof results.SkipToActionResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    }); 
+    
+    describe('stream', () => {
+        
+        it('should set the result and resolve', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const ctx = new Context({}, [], request, {});
+
+            ctx.resolve = () => {};
+            
+            spyOn(ctx, 'resolve');
+            
+            const stream = {};
+            const contentType = 'text/plain';
+            
+            ctx.stream(stream, contentType);
+            
+            expect(ctx.result instanceof results.StreamResult).toBeTruthy();
+            expect(ctx.resolve).toHaveBeenCalled();
+        });
+    });   
+    
+    describe('throw', () => {
+        
+        it('should set the result to null and reject', () => {
+                   
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const error = new Error();
+
+            const ctx = new Context({}, [], request, {});
+
+            ctx.reject = (err) => {};
+            
+            spyOn(ctx, 'reject');
+            
+            ctx.throw(error);
+            
+            expect(ctx.result).toBeNull();
+            expect(ctx.reject).toHaveBeenCalledWith(error);
+        });
+    });
+    
+    describe('routeURL', () => {
+
+        it('should return route has no params', () => {
+                  
+            const routeName = 'testRoute';
+
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const routes = [{
+                actionRoute: {
+                    name: routeName
+                },
+                keys: ['a', 'b'],
+                routePath: Math.random().toString()
+            }];
+            
+            const ctx = new Context({}, routes, request, {});
+
+            const url = ctx.routeURL(routeName, undefined, {}, true);
+            
+            expect(url).toBe(routes[0].routePath);
+        });
+        it('should throw on invalid param', () => {
+                  
+            const routeName = 'testRoute';
+
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const routes = [{
+                actionRoute: {
+                    name: routeName
+                },
+                keys: ['category', 'section'],
+                routePath: '/products/:category<^[^\\d]+$>/:section'
+            }];
+            
+            const ctx = new Context({}, routes, request, {});
+
+            const params = {
+                category: Math.random().toString(),
+                section: Math.random().toString()
+            }
+            
+            const query = {
+                a: Math.random().toString(),
+                b: Math.random().toString()
+            }
+
+            expect(() => ctx.routeURL(routeName, params, query, true)).toThrowError(`Invalid route param value: ${params.category}`);
+        });            
+        it('should return routePath when route has no keys', () => {
+                  
+            const routeName = 'testRoute';
+
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const routes = [{
+                actionRoute: {
+                    name: routeName
+                },
+                keys: ['category', 'section'],
+                routePath: '/products/:category/:section'
+            }];
+            
+            const ctx = new Context({}, routes, request, {});
+
+            const params = {
+                category: Math.random().toString(),
+                section: Math.random().toString()
+            }
+            
+            const query = {
+                a: Math.random().toString(),
+                b: Math.random().toString()
+            }
+
+            const url = ctx.routeURL(routeName, params, query, true);
+            
+            expect(url).toBe(`/products/${params.category}/${params.section}?a=${query.a}&b=${query.b}`);
+        });
+        it('should return the correct url', () => {
+                  
+            const routeName = 'testRoute';
+
+            const request = { 
+                url: '/controller/action',
+            };
+            
+            const routes = [{
+                actionRoute: {
+                    name: routeName
+                },
+                routePath: Math.random().toString()
+            }];
+            
+            const ctx = new Context({}, routes, request, {});
+
+            const url = ctx.routeURL(routeName, {}, undefined, true);
+            
+            expect(url).toBe(routes[0].routePath);
+        });        
+    });                                                                                           
 });
