@@ -36,7 +36,7 @@ npm start
 
 ### Benchmarks
 
-![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks.png)
+![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks-c.png)
 
 [Benchmark code here](https://github.com/kikwit/benchmarks-kikwit)
 
