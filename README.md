@@ -34,6 +34,12 @@ npm start
 * Conditional requests handling
 * Available yeoman generator
 
+### Benchmarks
+
+![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks.png)
+
+[Benchmark code here](https://github.com/kikwit/benchmarks-kikwit)
+
 ### Controllers
 
 By default controller classes are located in the `APP_ROOT/controllers/` where `APP_ROOT` folder. The location can be changed using the 
