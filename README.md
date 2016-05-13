@@ -36,15 +36,13 @@ npm start
 
 ### Benchmarks
 
-![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks.png)
+![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks-c.png)
 
 [Benchmark code here](https://github.com/kikwit/benchmarks-kikwit)
 
 ### Controllers
 
-By default controller classes are located in the `APP_ROOT/controllers/` where `APP_ROOT` folder. The location can be changed using the 
-
-`controllersRoot` configuration key.
+By default controller classes are located in the `APP_ROOT/controllers/` where `APP_ROOT` is the application base folder. The location can be changed using the `controllersRoot` configuration key.
 All controller classes must be decorated with `@controller`.
 
 Example:
@@ -582,10 +580,6 @@ export default class Products {
 ### Tests
 
 `npm test`
-
-### Benchmarks
-
-Coming soon... and Kikwit is much faster than Express or Restify!
 
 ### Issue Submission
 
