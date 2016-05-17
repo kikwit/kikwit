@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "",
   "main": "lib/index.js",
   "engines": {
@@ -24,6 +24,7 @@
     "busboy": "^0.2.13",
     "cookies": "^0.6.1",
     "mime-types": "^2.1.11",
+    "mustache": "^2.2.1",
     "semver": "^5.1.0",
     "type-is": "^1.6.12"
   },
