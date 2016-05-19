@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "",
   "main": "lib/index.js",
   "engines": {
@@ -20,16 +20,16 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "accepts": "^1.3.3",
-    "bluebird": "^3.3.5",
+    "bluebird": "^3.4.0",
     "busboy": "^0.2.13",
     "cookies": "^0.6.1",
     "mime-types": "^2.1.11",
     "mustache": "^2.2.1",
     "semver": "^5.1.0",
-    "type-is": "^1.6.12"
+    "type-is": "^1.6.13"
   },
   "devDependencies": {
-    "babel-core": "^6.8.0",
+    "babel-core": "^6.9.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
     "jasmine": "^2.4.1"

@@ -1,25 +1,40 @@
  <html>
     <head>
-    
+        <style>
+            html { font-size: 13px; font-family: arial; }
+            h2 { font-size: 1.5em; }   
+            table { border-collapse: collapse; width: 100%; }
+            th, td { text-align: left; padding: 0.8rem; font-size: 1rem; }
+            tr:nth-child(even){background-color: #f2f2f2}
+            th { background-color: #2F4F4F; color: white; }
+        </style>
     </head>
     <body>
         <h2>Routes</h2>
         <table>
             <thead>
                 <tr>
-                    <th>Method</th>
                     <th>Path</th>
+                    <th>Method</th>
+                    <th>Version</th>
+                    <th>Consumes</th>
+                    <th>Produces</th>
                     <th>Controller</th>
                     <th>Action</th>
+                    <th>Controller file</th>
                 </tr>
             </thead>
             <tbody>
             {{#routes}}
                 <tr>
-                    <td>{{httpMethods}}</td>
                     <td>{{routePath}}</td>
+                    <td>{{httpMethods}}</td>
+                    <td>{{version}}</td>
+                    <td>{{consumes}}</td>
+                    <td>{{produces}}</td>
                     <td>{{controllerName}}</td>
                     <td>{{actionName}}</td>
+                    <td>{{controllerFile}}</td>
                 </tr>
             {{/routes}}    
             </tbody>
