@@ -14,10 +14,12 @@ cd /path/to/my/project
 npm install yo generator-kikwit -g
 # Generate application
 yo kikwit
-# Lauch
+# Launch
 npm start 
 # With the above command the application will listen on port 3000 by default. 
 # The port can be changed in the __APP_ROOT/config.*.js__ environment specific configuration files.
+
+# Point your browser to http://locahost:3000/home/index
 ```
 
 ### Features
@@ -38,7 +40,7 @@ npm start
 
 ![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks.png)
 
-(Run on Ubuntu 16.04 LTS 64-bit, Intel® Core™ i7 CPU @ 2.40GHz × 8, 8 GiB RAM, No cluster)
+(Run on Ubuntu 16.04 LTS 64-bit, Intel® Core™ i7 CPU @ 2.40GHz × 8, 8 GiB RAM, No cluster, NodeJS v6.2.0)
 
 [Benchmark code here](https://github.com/kikwit/benchmarks-kikwit)
 
