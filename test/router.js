@@ -45,11 +45,11 @@ describe('router', function() {
                     strict: false,
                     
                     expected: {
-                        pattern: new RegExp(`^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`, 'i'),
+                        pattern: new RegExp(`^/users/(${router.defaultPathPattern})/(${router.defaultPathPattern})/default$`, 'i'),
                         keys: ['userId', 'page']
                     },
                     
-                    patternString: `^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`.toLowerCase()
+                    patternString: `^/users/(${router.defaultPathPattern})/(${router.defaultPathPattern})/default$`.toLowerCase()
                 },
                 {
                     path: '/users/:userId/:page/default',
@@ -57,11 +57,11 @@ describe('router', function() {
                     strict: false,
                     
                     expected: {
-                        pattern: new RegExp(`^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`),
+                        pattern: new RegExp(`^/users/(${router.defaultPathPattern})/(${router.defaultPathPattern})/default$`),
                         keys: ['userId', 'page']
                     },
                     
-                    patternString: `^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`
+                    patternString: `^/users/(${router.defaultPathPattern})/(${router.defaultPathPattern})/default$`
                 },
                 {
                     path: '/users/:userId/:page/default',
@@ -69,11 +69,11 @@ describe('router', function() {
                     strict: true,
                     
                     expected: {
-                        pattern: new RegExp(`^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`, 'i'),
+                        pattern: new RegExp(`^/users/(${router.defaultPathPattern})/(${router.defaultPathPattern})/default$`, 'i'),
                         keys: ['userId', 'page']
                     },
                     
-                    patternString: `^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default$`.toLocaleLowerCase()
+                    patternString: `^/users/(${router.defaultPathPattern})/(${router.defaultPathPattern})/default$`.toLocaleLowerCase()
                 },
                 {
                     path: '/users/:userId/:page/default/',
@@ -81,11 +81,11 @@ describe('router', function() {
                     strict: true,
                     
                     expected: {
-                        pattern: new RegExp(`^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default/$`),
+                        pattern: new RegExp(`^/users/(${router.defaultPathPattern})/(${router.defaultPathPattern})/default/$`),
                         keys: ['userId', 'page']
                     },
                     
-                    patternString: `^/users/${router.defaultPathPattern}/${router.defaultPathPattern}/default/$`
+                    patternString: `^/users/(${router.defaultPathPattern})/(${router.defaultPathPattern})/default/$`
                 },
                 {
                     path: '/users/:userId<\\d+>/:page/default',
@@ -93,11 +93,11 @@ describe('router', function() {
                     strict: false,
                     
                     expected: {
-                        pattern: new RegExp(`^/users/(\\d+)/${router.defaultPathPattern}/default$`, 'i'),
+                        pattern: new RegExp(`^/users/(\\d+)/(${router.defaultPathPattern})/default$`, 'i'),
                         keys: ['userId', 'page']
                     },
                     
-                    patternString: `^/users/(\\d+)/${router.defaultPathPattern}/default$`.toLowerCase()
+                    patternString: `^/users/(\\d+)/(${router.defaultPathPattern})/default$`.toLowerCase()
                 },   
                 {
                     path: '/users/:userId<\\d+>/:page<\\w{8, 10}>/default',
