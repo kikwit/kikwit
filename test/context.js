@@ -22,7 +22,7 @@ describe('context', () => {
             const config = { a: Math.random(), b: Math.random() };
             const request = { url: '/controller/action' };
             
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, null, [], request, {});
             
             expect(ctx.config).toEqual(config);
         });
@@ -31,7 +31,7 @@ describe('context', () => {
             const routes = [ { a: Math.random() }, { b: Math.random() } ];
             const request = { url: 'controller/action' };
             
-            const ctx = new Context({}, routes, request, {});
+            const ctx = new Context({}, null, routes, request, {});
             
             expect(ctx.routes).toEqual(routes);
         });            
@@ -39,7 +39,7 @@ describe('context', () => {
             
             const request = { url: '/controller/action' };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             expect(ctx.request).toEqual(request);
         });
@@ -48,7 +48,7 @@ describe('context', () => {
             const request = { url: '/controller/action' };
             const response = { a: Math.random(), b: Math.random() };
             
-            const ctx = new Context({}, [], request, response);
+            const ctx = new Context({}, null, [], request, response);
             
             expect(ctx.response).toEqual(response);
         }); 
@@ -56,7 +56,7 @@ describe('context', () => {
             
             const request = { url: '/controller/action' };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             expect(ctx.state).toEqual({});
         });
@@ -64,7 +64,7 @@ describe('context', () => {
             
             const request = { url: '/controller/action?dd=gjhkh&df=sgrsjg' };
                     
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(ctx.pathname).toEqual('/controller/action');
         });
@@ -79,7 +79,7 @@ describe('context', () => {
             const request = { url: `/controller/action?a=${query.a}&b=${query.b}&c=${query.c}` };
             const pathname = path.normalize(decodeURI(url.parse(request.url).pathname));
                     
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(ctx.query).toDeepEqual(query);
         });  
@@ -87,7 +87,7 @@ describe('context', () => {
                  
             const request = { url: '/controller/action?a=$kgyhf&b=lhjgh&c=kyjj' };
                     
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(ctx.search).toEqual('?a=$kgyhf&b=lhjgh&c=kyjj');
         });      
@@ -95,7 +95,7 @@ describe('context', () => {
                    
             const request = { url: '/controller/action?a=kjgg&b=$sff&c=hjfhf' };
                     
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(ctx.href).toEqual(request.url);
         }); 
@@ -103,7 +103,7 @@ describe('context', () => {
                    
             const request = { url: '/controller/action?a=kjgg&b=$sff&c=hjfhf' };
                     
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(ctx.path).toEqual('/controller/action?a=kjgg&b=$sff&c=hjfhf');
         });                                     
@@ -129,7 +129,7 @@ describe('context', () => {
                 } 
             };
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, null, [], request, {});
 
             expect(ctx.cookies).toEqual({});            
         });
@@ -151,7 +151,7 @@ describe('context', () => {
                 } 
             };
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, null, [], request, {});
 
             Object.keys(cookies).forEach(x => {
                 expect(ctx.cookies.get(x)).toEqual(cookies[x]); 
@@ -171,7 +171,7 @@ describe('context', () => {
                 }
             };
                     
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(ctx.headers).toDeepEqual(request.headers);
         });
@@ -186,17 +186,19 @@ describe('context', () => {
                 headers : {
                     host: 'www.site.com',
                     ['x-forwarded-host']: 'www.proxied-host.com'
+                }, 
+                connection: {
+                    remoteAddress: '85.211.225.104'
                 }
             };
             
             const config = {
                 server: {
                     port: 3000
-                },
-                trustProxy: true
+                }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, () => true, [], request, {});
 
             expect(ctx.host).toEqual('www.proxied-host.com:3000');
         });
@@ -213,11 +215,10 @@ describe('context', () => {
             const config = {
                 server: {
                     port: 3000
-                },
-                trustProxy: false
+                }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, false, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         }); 
@@ -234,11 +235,10 @@ describe('context', () => {
             const config = {
                 server: {
                     port: 3000
-                },
-                trustProxy: ''
+                }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, 0, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         }); 
@@ -255,11 +255,10 @@ describe('context', () => {
             const config = {
                 server: {
                     port: 3000
-                },
-                trustProxy: undefined
+                }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, undefined, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         });
@@ -271,17 +270,19 @@ describe('context', () => {
                     host: 'www.site.com',
                     ['x-forwarded-host']: 'www.proxied-host.com',
                     ['x-forwarded-port']: '80'
+                }, 
+                connection: {
+                    remoteAddress: '85.211.225.104'
                 }
             };
             
             const config = {
                 server: {
                     port: 3000
-                },
-                trustProxy: true
+                }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, () => true, [], request, {});
 
             expect(ctx.host).toEqual('www.proxied-host.com:80');
         }); 
@@ -299,11 +300,10 @@ describe('context', () => {
             const config = {
                 server: {
                     port: 3000
-                },
-                trustProxy: false
+                }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, false, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         });
@@ -321,11 +321,10 @@ describe('context', () => {
             const config = {
                 server: {
                     port: 3000
-                },
-                trustProxy: ''
+                }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, 0, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         }); 
@@ -343,11 +342,10 @@ describe('context', () => {
             const config = {
                 server: {
                     port: 3000
-                },
-                trustProxy: undefined
+                }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, undefined, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         });                                                                
@@ -366,7 +364,7 @@ describe('context', () => {
                 }
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, null, [], request, {});
 
             expect(ctx.host).toEqual('www.site.com:3000');
         });  
@@ -382,14 +380,13 @@ describe('context', () => {
                 headers : {
                     host: 'www.site.com',
                     ['x-forwarded-host']: 'www.proxied-host.com'
+                }, 
+                connection: {
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: true
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+               
+            const ctx = new Context({}, () => true, [], request, {});
 
             expect(ctx.hostname).toEqual('www.proxied-host.com');
         });
@@ -402,12 +399,8 @@ describe('context', () => {
                     ['x-forwarded-host']: 'www.proxied-host.com'
                 }
             };
-            
-            const config = {
-                trustProxy: false
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+
+            const ctx = new Context({}, false, [], request, {});
 
             expect(ctx.hostname).toEqual('www.site.com');
         }); 
@@ -420,12 +413,8 @@ describe('context', () => {
                     ['x-forwarded-host']: 'www.proxied-host.com'
                 }
             };
-            
-            const config = {
-                trustProxy: ''
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+              
+            const ctx = new Context({}, 0, [], request, {});
 
             expect(ctx.hostname).toEqual('www.site.com');
         }); 
@@ -438,12 +427,8 @@ describe('context', () => {
                     ['x-forwarded-host']: 'www.proxied-host.com'
                 }
             };
-            
-            const config = {
-                trustProxy: undefined
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+     
+            const ctx = new Context({}, undefined, [], request, {});
 
             expect(ctx.hostname).toEqual('www.site.com');
         });  
@@ -456,35 +441,30 @@ describe('context', () => {
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                    ['x-forwarded-for']: '85.211.225.101,85.211.225.102,85.211.225.103'
+                },
+                connection: {
+                    remoteAddress: '85.211.225.104'
                 }
             };
             
-            const config = {
-                trustProxy: true
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context({}, () => true, [], request, {});
 
-            expect(ctx.ip).toEqual('1.2.3.4');
+            expect(ctx.ip).toEqual('85.211.225.101');
         });
         it('should return the correct value when not trusting proxy (false) and x-forwarded-for', () => {
                    
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                    ['x-forwarded-for']: '85.211.225.101,85.211.225.102,85.211.225.103'
                 },
                 connection: {
-                    remoteAddress: '1.2.3.4'
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: false
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+               
+            const ctx = new Context({}, false, [], request, {});
 
             expect(ctx.ip).toEqual(request.connection.remoteAddress);
         });
@@ -493,18 +473,14 @@ describe('context', () => {
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                    ['x-forwarded-for']: '85.211.225.101,85.211.225.102,85.211.225.103'
                 },
                 connection: {
-                    remoteAddress: '1.2.3.4'
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: ''
-            }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context({}, 0, [], request, {});
 
             expect(ctx.ip).toEqual(request.connection.remoteAddress);
         });  
@@ -513,18 +489,14 @@ describe('context', () => {
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                    ['x-forwarded-for']: '85.211.225.101,85.211.225.102,85.211.225.103'
                 },
                 connection: {
-                    remoteAddress: '1.2.3.4'
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: undefined
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+     
+            const ctx = new Context({}, undefined, [], request, {});
 
             expect(ctx.ip).toEqual(request.connection.remoteAddress);
         });                      
@@ -537,35 +509,30 @@ describe('context', () => {
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                    ['x-forwarded-for']: '85.211.225.101,85.211.225.102,85.211.225.103'
+                },
+                connection: {
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: true
-            }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context({}, () => true, [], request, {});
 
-            expect(ctx.ips).toEqual(['1.2.3.4','5.6.7.8','9.1.2.3','4.5.6.7']);
+            expect(ctx.ips).toEqual(['85.211.225.101','85.211.225.102','85.211.225.103','85.211.225.104']);
         });
         it('should return the correct value when not trusting proxy (false) and x-forwarded-for', () => {
                    
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                    ['x-forwarded-for']: '85.211.225.101,85.211.225.102,85.211.225.103'
                 },
                 connection: {
-                    remoteAddress: '1.2.3.4'
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: false
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+             
+            const ctx = new Context({}, false, [], request, {});
 
             expect(ctx.ips).toEqual([request.connection.remoteAddress]);
         });
@@ -574,18 +541,14 @@ describe('context', () => {
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                    ['x-forwarded-for']: '85.211.225.101,85.211.225.102,85.211.225.103'
                 },
                 connection: {
-                    remoteAddress: '1.2.3.4'
+                    remoteAddress: '85.211.225.104'
                 }
             };
             
-            const config = {
-                trustProxy: ''
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context({}, 0, [], request, {});
 
             expect(ctx.ips).toEqual([request.connection.remoteAddress]);
         });  
@@ -594,18 +557,14 @@ describe('context', () => {
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    ['x-forwarded-for']: '1.2.3.4,5.6.7.8,9.1.2.3,4.5.6.7'
+                    ['x-forwarded-for']: '85.211.225.101,85.211.225.102,85.211.225.103'
                 },
                 connection: {
-                    remoteAddress: '1.2.3.4'
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: undefined
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+   
+            const ctx = new Context({}, undefined, [], request, {});
 
             expect(ctx.ips).toEqual([request.connection.remoteAddress]);
         });                      
@@ -619,17 +578,19 @@ describe('context', () => {
                 url: '/controller/action',
                 headers : {
                     ['x-forwarded-port']: '80'
+                }, 
+                connection: {
+                    remoteAddress: '85.211.225.104'
                 }
             };
             
             const config = {
-                trustProxy: true,
                 server: {
                     port: 3000
                 }                
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, () => true, [], request, {});
 
             expect(ctx.port).toEqual(80);
         });
@@ -643,13 +604,12 @@ describe('context', () => {
             };
             
             const config = {
-                trustProxy: false,
                 server: {
                     port: 3000
                 }                
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, false, [], request, {});
 
             expect(ctx.port).toEqual(config.server.port);
         });
@@ -663,13 +623,12 @@ describe('context', () => {
             };
             
             const config = {
-                trustProxy: '',
                 server: {
                     port: 3000
                 }                
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, 0, [], request, {});
 
             expect(ctx.port).toEqual(config.server.port);
         });
@@ -683,13 +642,12 @@ describe('context', () => {
             };
             
             const config = {
-                trustProxy: undefined,
                 server: {
                     port: 3000
                 }                
             }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, undefined, [], request, {});
 
             expect(ctx.port).toEqual(config.server.port);
         });                    
@@ -703,14 +661,13 @@ describe('context', () => {
                 url: '/controller/action',
                 headers : {
                     ['x-forwarded-proto']: 'https'
+                }, 
+                connection: {
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: true               
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+              
+            const ctx = new Context({}, () => true, [], request, {});
 
             expect(ctx.protocol).toEqual('https');
         });
@@ -720,14 +677,13 @@ describe('context', () => {
                 url: '/controller/action',
                 headers : {
                     ['x-forwarded-proto']: 'http'
+                }, 
+                connection: {
+                    remoteAddress: '85.211.225.104'
                 }
             };
-            
-            const config = {
-                trustProxy: true               
-            }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context({}, () => true, [], request, {});
 
             expect(ctx.protocol).toEqual('http');
         });
@@ -742,12 +698,8 @@ describe('context', () => {
                     encrypted: true
                 }
             };
-            
-            const config = {
-                trustProxy: false               
-            }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context({}, false, [], request, {});
 
             expect(ctx.protocol).toEqual('https');
         }); 
@@ -762,12 +714,8 @@ describe('context', () => {
                     encrypted: false
                 }
             };
-            
-            const config = {
-                trustProxy: false               
-            }
-                    
-            const ctx = new Context(config, [], request, {});
+                  
+            const ctx = new Context({}, false, [], request, {});
 
             expect(ctx.protocol).toEqual('http');
         });
@@ -780,12 +728,8 @@ describe('context', () => {
                     encrypted: true
                 }
             };
-            
-            const config = {
-                trustProxy: false               
-            }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context({}, false, [], request, {});
 
             expect(ctx.protocol).toEqual('https');
         }); 
@@ -798,12 +742,8 @@ describe('context', () => {
                     encrypted: false
                 }
             };
-            
-            const config = {
-                trustProxy: false               
-            }
                     
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context({}, false, [], request, {});
 
             expect(ctx.protocol).toEqual('http');
         });                          
@@ -819,7 +759,7 @@ describe('context', () => {
 
             const response = { statusCode: Math.random() };
       
-            const ctx = new Context({}, [], request, response);
+            const ctx = new Context({}, null, [], request, response);
 
             expect(ctx.statusCode).toEqual(response.statusCode);
         });
@@ -836,7 +776,7 @@ describe('context', () => {
                 }
             };
     
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(ctx.subdomains).toEqual([]);                    
         });
@@ -859,7 +799,7 @@ describe('context', () => {
                 
                 request.headers.host = host;
                 
-                ctx = new Context({}, [], request, {});
+                ctx = new Context({}, null, [], request, {});
 
                 expect(ctx.subdomains).toEqual([]);                
             }                    
@@ -906,7 +846,7 @@ describe('context', () => {
              
                 config.subdomainOffset = item.subdomainOffset;
                 
-                const ctx = new Context(config, [], request, {});
+                const ctx = new Context(config, null, [], request, {});
 
                 expect(ctx.subdomains).toEqual(item.expected);                   
             }                 
@@ -923,7 +863,7 @@ describe('context', () => {
 
             const response = {};
       
-            const ctx = new Context({}, [], request, response);
+            const ctx = new Context({}, null, [], request, response);
             
             const statusCode = 404;
             
@@ -943,7 +883,7 @@ describe('context', () => {
 
             const response = {};
       
-            const ctx = new Context({}, [], request, response);
+            const ctx = new Context({}, null, [], request, response);
             
             const statusMessage = Math.random().toString();
             
@@ -965,7 +905,7 @@ describe('context', () => {
                 applicationRoot: '/appRoot'
             };
 
-            const ctx = new Context(config, [], request, {});
+            const ctx = new Context(config, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -991,7 +931,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1012,7 +952,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1034,7 +974,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1061,7 +1001,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             const url = Math.random().toString();
             
@@ -1092,7 +1032,7 @@ describe('context', () => {
                 removeHeader: () => {}
             }
             
-            const ctx = new Context({}, [], request, response);
+            const ctx = new Context({}, null, [], request, response);
             
             spyOn(ctx.response, 'removeHeader');
             
@@ -1113,7 +1053,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1137,7 +1077,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1160,7 +1100,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1183,7 +1123,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1208,7 +1148,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1229,7 +1169,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1258,7 +1198,7 @@ describe('context', () => {
             
             spyOn(response, 'setHeader');
             
-            const ctx = new Context({}, [], request, response);
+            const ctx = new Context({}, null, [], request, response);
             
             const headerName = Math.random().toString();
             const headerValue = Math.random().toString();
@@ -1284,7 +1224,7 @@ describe('context', () => {
             
             spyOn(response, 'setHeader');
             
-            const ctx = new Context({}, [], request, response);
+            const ctx = new Context({}, null, [], request, response);
             
             const headersArray = [
                 [Math.random().toString(), Math.random().toString()],
@@ -1320,7 +1260,7 @@ describe('context', () => {
             
             spyOn(response, 'setHeader');
             
-            const ctx = new Context({}, [], request, response);
+            const ctx = new Context({}, null, [], request, response);
             
             const headersArray = [
                 [Math.random().toString(), Math.random().toString()],
@@ -1352,7 +1292,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1373,7 +1313,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.resolve = () => {};
             
@@ -1399,7 +1339,7 @@ describe('context', () => {
             
             const error = new Error();
 
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             ctx.reject = (err) => {};
             
@@ -1430,7 +1370,7 @@ describe('context', () => {
                 routePath: Math.random().toString()
             }];
             
-            const ctx = new Context({}, routes, request, {});
+            const ctx = new Context({}, null, routes, request, {});
 
             const url = ctx.routeURL(routeName, undefined, {}, true);
             
@@ -1452,7 +1392,7 @@ describe('context', () => {
                 routePath: '/products/:category<^[^\\d]+$>/:section'
             }];
             
-            const ctx = new Context({}, routes, request, {});
+            const ctx = new Context({}, null, routes, request, {});
 
             const params = {
                 category: Math.random().toString(),
@@ -1482,7 +1422,7 @@ describe('context', () => {
                 routePath: '/products/:category/:section'
             }];
             
-            const ctx = new Context({}, routes, request, {});
+            const ctx = new Context({}, null, routes, request, {});
 
             const params = {
                 category: Math.random().toString(),
@@ -1513,7 +1453,7 @@ describe('context', () => {
                 routePath: Math.random().toString()
             }];
             
-            const ctx = new Context({}, routes, request, {});
+            const ctx = new Context({}, null, routes, request, {});
 
             const url = ctx.routeURL(routeName, {}, undefined, true);
             
@@ -1533,7 +1473,7 @@ describe('context', () => {
             const contentType = 'text/plain';
             const someArg = '';
 
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(() => ctx.render(locals, contentType, someArg)).toThrowError('Wrong Arguments: render([viewPath], [locals], [contentType])');
         });
@@ -1546,7 +1486,7 @@ describe('context', () => {
             const locals = {};
             const contentType = {};
 
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
 
             expect(() => ctx.render(locals, contentType)).toThrowError('Argument error: [contentType]');
         }); 
@@ -1556,7 +1496,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             ctx.resolve = () => {};
             
@@ -1573,7 +1513,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             ctx.resolve = () => {};
             
@@ -1592,7 +1532,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             ctx.resolve = () => {};
             
@@ -1612,7 +1552,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             ctx.resolve = () => {};
             
@@ -1632,7 +1572,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             ctx.resolve = () => {};
             
@@ -1651,7 +1591,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             ctx.resolve = () => {};
             
@@ -1671,7 +1611,7 @@ describe('context', () => {
                 url: '/controller/action',
             };
             
-            const ctx = new Context({}, [], request, {});
+            const ctx = new Context({}, null, [], request, {});
             
             ctx.resolve = () => {};
             

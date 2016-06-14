@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "",
   "main": "lib/index.js",
   "engines": {
@@ -25,6 +25,7 @@
     "cookies": "^0.6.1",
     "mime-types": "^2.1.11",
     "mustache": "^2.2.1",
+    "proxy-addr": "^1.1.2",
     "semver": "^5.1.0",
     "type-is": "^1.6.13"
   },
