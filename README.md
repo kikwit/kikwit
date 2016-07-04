@@ -424,13 +424,16 @@ Interceptors have the same signature as controller actions, they accept a single
 Before interceptors are specified using the `@before` decorator. 
 
 ```javascript
+import { before, del, get, inject } from 'kikwit';
+
+@inject('myService')
 @before(Products.authenticate)
 export default class Products {
     
     @get
     list(ctx) {
         
-        myService.getProducts().then(products => {
+        ctx.services.myService.getProducts().then(products => {
             
            ctx.sendJSON(products); 
         });
@@ -440,7 +443,7 @@ export default class Products {
     @del
     deleteProduct(ctx) {
 
-        myService.deleteProduct(ctx.params.id).then(() => {
+        ctx.services.myService.deleteProduct(ctx.params.id).then(() => {
                   
            ctx.sendJSON(ctx.locals.userAuth); 
         });
@@ -450,7 +453,7 @@ export default class Products {
     @post
     updateProduct(ctx) {
 
-        myService.updateProduct(ctx.body.product).then(() => {
+        ctx.services.myService.updateProduct(ctx.body.product).then(() => {
                   
            ctx.sendJSON(ctx.locals.userAuth); 
         });
@@ -484,14 +487,16 @@ export default class Products {
 After interceptors are specified using the `@after` decorator. 
 
 ```javascript
+import { after, get, inject } from 'kikwit';
+
+@inject('myService')
 @after(Products.addRandomHeader)
 export default class Products {
 
     @get
     list(ctx) {
         
-        myService.getProducts().then(products => {
-            
+        ctx.services.myService.getProducts().then(products => {
            // HTTP response will contain an 'X-RANDOM-NUMBER' header 
            ctx.sendJSON(products); 
         });
@@ -499,7 +504,6 @@ export default class Products {
     
     @get
     hello(ctx) {
-        
         // HTTP response will contain an 'X-RANDOM-NUMBER' header 
         ctx.send('Hello'); 
     }
