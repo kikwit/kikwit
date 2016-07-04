@@ -46,7 +46,7 @@ npm start
 
 ### Controllers
 
-By default controller classes are located in the `APP_ROOT/controllers/` where `APP_ROOT` is the application base folder. The location can be changed using the `controllersRoot` configuration key.
+By default controller classes are located in `APP_ROOT/controllers/**/*` where `APP_ROOT` is the application base folder. The location can be changed using the `controllersRoot` configuration key.
 All controller classes must be decorated with `@controller`.
 
 Example:
@@ -382,7 +382,7 @@ Controller actions and all interceptors accept a single context argument which p
     Renders a view template.
     
     The optional `locals` argument are provided as the view model.
-    If `viewPath` is not provided the view is looked up based on the the controller and action name.
+    If `viewPath` is not provided the view is looked up based on the controller and action name.
     The default is to look respectively in the follwing folders:
 
     1. __APP_ROOT/views/[CONTROLER_NAME]/[ACTION_NAME]__
@@ -539,6 +539,123 @@ export default class Products {
 }
 ```
 Please always use the `Context` helper methods when possible and avoid accessing the underlying request and response objects directly.
+
+### Services
+
+By default service classes are located in `APP_ROOT/services/**/*` where `APP_ROOT` is the application base folder. The location can be changed using the `servicesRoot` configuration key.
+All service classes must be decorated with the `@service` decorator.
+The `@service` requires a string argument which defines the key to use when injecting the service using the `@inject([KEY])` decorator. 
+By default each request gets its own instance of the injected service.
+
+Example:
+```javascript
+import { service } from 'kikwit';
+
+@service('adder')
+export default class Adder {
+    
+    add(a, b) {
+        return a + b;
+    }
+}
+```
+```javascript
+import { controller } from 'kikwit';
+
+@inject('adder')
+@controller
+export default class Arithm {
+    
+    sum(ctx) {
+        
+        let a, b = [7, 11];
+        let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('adder')
+      
+        return ctx.sendJSON({ a, b, sum });
+    }
+}
+```
+
+It is possible to get a service injected as a singleton by prefixing the key passed to the `@inject([KEY])` decorator with `@`.
+
+Example:
+```javascript
+import { service } from 'kikwit';
+
+@service('adder')
+export default class Adder {
+    
+    add(a, b) {
+        return a + b;
+    }
+}
+```
+```javascript
+import { controller } from 'kikwit';
+
+@inject('@adder') // '@adder' instead of 'adder'
+@controller
+export default class Arithm {
+    
+    sum(ctx) {
+        
+        let a, b = [7, 11];
+        let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('@adder')
+      
+        return ctx.sendJSON({ a, b, sum });
+    }
+}
+```
+
+It is also possible to get the same instance of a service injected into an action across multiple requests by prefixing the key passed to the `@inject([KEY])` decorator with `@@`.
+
+Example:
+```javascript
+import { service } from 'kikwit';
+
+@service('adder')
+export default class Adder {
+    
+    add(a, b) {
+        return a + b;
+    }
+}
+```
+```javascript
+import { controller } from 'kikwit';
+
+@controller
+export default class Arithm {
+    
+    @inject('@@adder') // '@@adder' instead of 'adder'
+    sum(ctx) {
+        
+        let a, b = [7, 11];
+        let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('@@adder')
+      
+        return ctx.sendJSON({ a, b, sum });
+    }
+}
+```
+In the example above, the instance injected into the `sum` action will only be reused by request to the `sum` action only.
+
+To restrict a service to always be injected as a singleton, please pass `true` as a second argument to `@service([KEY], [SINGLETON])` decorator.
+
+Example:
+```javascript
+import { service } from 'kikwit';
+
+@service('adder', true)
+export default class Adder {
+    
+    add(a, b) {
+        return a + b;
+    }
+}
+```
+In the example above `Adder` will always get injected as a singleton regardless of how the format of the key used at the injection point.
+
+Services injected at controller level are available to all of controller's actions.
 
 ### Cookies
 
