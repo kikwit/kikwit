@@ -1,4 +1,4 @@
-![kikwit](https://cloud.githubusercontent.com/assets/16418235/14813868/a6a33952-0b9b-11e6-8d2e-d7651b3ebdb3.png)
+[![kikwit](https://cloud.githubusercontent.com/assets/16418235/14813868/a6a33952-0b9b-11e6-8d2e-d7651b3ebdb3.png)](https://cloud.githubusercontent.com/assets/16418235/14813868/a6a33952-0b9b-11e6-8d2e-d7651b3ebdb3.png)
 [![Build Status](https://travis-ci.org/kikwit/kikwit.svg?branch=master)](https://travis-ci.org/kikwit/kikwit)
 
 Modern and fast web framework for nodejs. 
