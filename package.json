@@ -1,10 +1,10 @@
 {
   "name": "kikwit",
-  "version": "0.6.1",
+  "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
   "engines": {
-    "node": "^6.0.0"
+    "node": "^6.3.0"
   },
   "scripts": {
     "test": "jasmine JASMINE_CONFIG_PATH=test/support/jasmine.json"
@@ -26,7 +26,7 @@
     "mime-types": "^2.1.11",
     "mustache": "^2.2.1",
     "proxy-addr": "^1.1.2",
-    "semver": "^5.2.0",
+    "semver": "^5.3.0",
     "type-is": "^1.6.13"
   },
   "devDependencies": {
