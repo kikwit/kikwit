@@ -9,7 +9,7 @@ Modern and fast web framework for nodejs.
 
 ### Quick Start
 We recommend the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for generating new applications.
-```
+```bash
 # Create a folder for your project
 mkdir /path/to/my/project
 # Change to your project folder
