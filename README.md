@@ -1,5 +1,8 @@
-[![kikwit](https://cloud.githubusercontent.com/assets/16418235/14813868/a6a33952-0b9b-11e6-8d2e-d7651b3ebdb3.png)](https://github.com/kikwit/kikwit)
-[![Build Status](https://travis-ci.org/kikwit/kikwit.svg?branch=master)](https://travis-ci.org/kikwit/kikwit)
+[![Kikwit][kikwit-image]][kikwit-url]
+[![NPM Version][npm-image]][npm-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+[![Node.js Version][node-version-image]][node-version-url]
+[![Build Status][travis-image]][travis-url]
 
 Modern and fast web framework for nodejs. 
 
@@ -716,3 +719,14 @@ export default class Products {
 
 ### Licence
 [AGPL-3.0](https://opensource.org/licenses/AGPL-3.0)
+
+[kikwit-image]: https://cloud.githubusercontent.com/assets/16418235/14813868/a6a33952-0b9b-11e6-8d2e-d7651b3ebdb3.png
+[kikwit-url]: https://github.com/kikwit/kikwit
+[npm-image]: https://img.shields.io/npm/v/kikwit.svg
+[npm-url]: https://www.npmjs.com/package/kikwit
+[node-version-image]: https://img.shields.io/node/v/kikwit.svg
+[node-version-url]: http://nodejs.org/download/
+[downloads-image]: https://img.shields.io/npm/dm/kikwit.svg
+[downloads-url]: https://npmjs.org/package/kikwit
+[travis-image]: https://travis-ci.org/kikwit/kikwit.svg?branch=master
+[travis-url]: https://travis-ci.org/kikwit/kikwit
