@@ -1,3 +1,4 @@
+
 [![Kikwit][kikwit-image]][kikwit-url]
 
 [![NPM Version][npm-image]][npm-url]
@@ -258,16 +259,16 @@ Controller actions and all interceptors accept a single context argument which p
   
     The request protocol (http or https), or `X-FORWARDED-PROTO` request header value (if present) when `trustProxy` setting is set to `true`.
     
+- **statusCode**
+  
+    Gets or sets the response status code.
+  
 - **subdomains**
   
     An array containing the request subdomains. By default the domain is the last two parts of the host. The `subdomainOffset` configuration setting can be used to specify the number of parts that constitutes the application domain. The remaining parts are the subdomains.
     
     e.g. for `user.api.kikwitjs.com` the subdomain would be ['api', 'user'] if `subdomainOffset` configuration setting is 2 (default) and ['user'] if it's set to 3.
-  
-- **statusCode**
-  
-    Sets the response status code.
-  
+    
 - **statusMessage**
   
     Sets the response status message.
@@ -310,7 +311,37 @@ Controller actions and all interceptors accept a single context argument which p
     
     The `statusCode` argument defaults to 302.
   
+- **redirectToRoute(name, params, query = null, validate = true, statusCode = null)**
+
+- **removeHeader(name)**
   
+    Removes a response header.
+
+- **render([viewPath] [, locals] [, contentType])**
+  
+    Renders a view template.
+    
+    The optional `locals` argument are provided as the view model.
+    If `viewPath` is not provided the view is looked up based on the controller and action name.
+    The default is to look respectively in the follwing folders:
+
+    1. __APP_ROOT/views/[CONTROLER_NAME]/[ACTION_NAME]__
+    2. __APP_ROOT/views/[CONTROLER_NAME]__
+    3. __APP_ROOT/views__.        
+    
+    The `views.root` configuration property defines the root folder for views 
+    and defaults to __APP_ROOT/views__ where __APP_ROOT__ is the application's root folder.
+        
+- **routeURL(name [, params] [, query] [, validate = true])**
+  
+    Generates a url based on a route `name`. 
+    
+    The `params` header argument specifies any route parameter values. 
+    
+    `query` represents an object whose property names are added as the query string keys and corresponding values as query string values.
+    
+    The `validate` argument indicates whether the route parameters are checked against related patterns if any.
+           
 - **send(body [, contentType])**
   
     Sends the response using `body`, converted to string, as content. 
@@ -323,15 +354,13 @@ Controller actions and all interceptors accept a single context argument which p
     Sends a JSON response using `body` as content.
     
     The `CONTENT-TYPE` header, if not set by the calling code, is set to `application/json`.
-  
-  
+   
 - **sendJSONP(body)**
   
     Sends a JSON response with JSONP support.
     
     The default JSONP callback name is callback and can be changed using `json.callbackParam` configuration value.
-  
-  
+         
 - **sendFile(path, contentType, options)**
   
     Pipes the contents of the file at path to the response stream. 
@@ -353,11 +382,9 @@ Controller actions and all interceptors accept a single context argument which p
         If `headers` is an object then its keys are used as header names and the corresponding values as header values.
         
         If `headers` is a function then it's called with a single argument representing the full path of the file and any returned object is used to generate additional headers.
-        
-- **removeHeader(name)**
-  
-    Removes a response header.
-     
+
+- **sendStatus(code, message)**
+
 - **setHeader(name, value)**
   
     Sets a response header. 
@@ -380,32 +407,6 @@ Controller actions and all interceptors accept a single context argument which p
     
     The `contentType` defaults to `application/octet-stream`
    
-  
-- **render([viewPath] [, locals] [, contentType])**
-  
-    Renders a view template.
-    
-    The optional `locals` argument are provided as the view model.
-    If `viewPath` is not provided the view is looked up based on the controller and action name.
-    The default is to look respectively in the follwing folders:
-
-    1. __APP_ROOT/views/[CONTROLER_NAME]/[ACTION_NAME]__
-    2. __APP_ROOT/views/[CONTROLER_NAME]__
-    3. __APP_ROOT/views__.        
-    
-    The `views.root` configuration property defines the root folder for views 
-    and defaults to __APP_ROOT/views__ where __APP_ROOT__ is the application's root folder.
-    
-- **routeURL(name [, params] [, query] [, validate = true])**
-  
-    Generates a url based on a route `name`. 
-    
-    The `params` header argument specifies any route parameter values. 
-    
-    `query` represents an object whose property names are added as the query string keys and corresponding values as query string values.
-    
-    The `validate` argument indicates whether the route parameters are checked against related patterns if any.
-
 -- **throw(err)**
 
    Sends a response with a 500 status code and status text set to `err.message`.
@@ -704,7 +705,7 @@ export default class Products {
 ### Logging
 
 ### Prerequisites
-* Node.js >= 6.0.0
+* Node.js >= 6.3.0
 
 ### Tests
 
