@@ -59,7 +59,7 @@ Example:
 import { controller } from 'kikwit';
 
 @controller
-export default class Products {
+export class Products {
     ...
 }
 ```
@@ -73,7 +73,7 @@ Example:
 import { controller, get, post } from 'kikwit';
 
 @controller
-export default class Products {
+export class Products {
 
     @get
     list(ctx) {
@@ -93,7 +93,7 @@ An action can be decorated by more than one HTTP method decorator.
 import { controller, post, put } from 'kikwit';
 
 @controller
-export default class Products {
+export class Products {
 
     @post
     @put
@@ -131,7 +131,7 @@ import { controller, get, route } from 'kikwit';
 
 @route('/prods')
 @controller
-export default class Products {
+export class Products {
 
     @route('/catalogue')
     @get
@@ -151,7 +151,7 @@ Example:
 import { controller, get } from 'kikwit';
 
 @controller
-export default class Products {
+export class Products {
 
     @get
     list(ctx) {
@@ -170,7 +170,7 @@ Example
 import { controller } from 'kikwit';
 
 @controller
-export default class Products {
+export class Products {
 
     @route('/show/:id')
     @get
@@ -198,7 +198,7 @@ Example:
 import { controller } from 'kikwit';
 
 @controller
-export default class Products {
+export class Products {
 
     @route('/show/:id', 'productDetails')
     @get
@@ -433,7 +433,7 @@ import { before, del, get, inject } from 'kikwit';
 
 @inject('myService')
 @before(Products.authenticate)
-export default class Products {
+export class Products {
     
     @get
     list(ctx) {
@@ -496,7 +496,7 @@ import { after, get, inject } from 'kikwit';
 
 @inject('myService')
 @after(Products.addRandomHeader)
-export default class Products {
+export class Products {
 
     @get
     list(ctx) {
@@ -530,7 +530,7 @@ const requestStamp = (req, res, next) => {
 };
 
 @use(requestStamp)
-export default class Products {
+export class Products {
 
     @get
     list(ctx) {
@@ -561,7 +561,7 @@ Example:
 import { service } from 'kikwit';
 
 @service('adder')
-export default class Adder {
+export class Adder {
     
     add(a, b) {
         return a + b;
@@ -573,7 +573,7 @@ import { controller } from 'kikwit';
 
 @inject('adder')
 @controller
-export default class Arithm {
+export class Arithm {
     
     sum(ctx) {
         
@@ -592,7 +592,7 @@ Example:
 import { service } from 'kikwit';
 
 @service('adder')
-export default class Adder {
+export class Adder {
     
     add(a, b) {
         return a + b;
@@ -604,7 +604,7 @@ import { controller } from 'kikwit';
 
 @inject('@adder') // '@adder' instead of 'adder'
 @controller
-export default class Arithm {
+export class Arithm {
     
     sum(ctx) {
         
@@ -623,7 +623,7 @@ Example:
 import { service } from 'kikwit';
 
 @service('adder')
-export default class Adder {
+export class Adder {
     
     add(a, b) {
         return a + b;
@@ -634,7 +634,7 @@ export default class Adder {
 import { controller } from 'kikwit';
 
 @controller
-export default class Arithm {
+export class Arithm {
     
     @inject('@@adder') // '@@adder' instead of 'adder'
     sum(ctx) {
@@ -655,7 +655,7 @@ Example:
 import { service } from 'kikwit';
 
 @service('adder', true)
-export default class Adder {
+export class Adder {
     
     add(a, b) {
         return a + b;
@@ -673,7 +673,7 @@ Services injected at controller level are available to all of controller's actio
 An error handler can be specified using the `@onError` decorator. The error that was raised is accessible via the `Context.error` property.
 ```javascript
 @onError(errorHandler)
-export default class Products {
+export class Products {
 
     @get
     list(ctx) {
