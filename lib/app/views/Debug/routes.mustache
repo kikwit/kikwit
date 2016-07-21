@@ -22,6 +22,7 @@
                     <th>Controller</th>
                     <th>Action</th>
                     <th>Controller file</th>
+                    <th>Services</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,6 +36,13 @@
                     <td>{{controllerName}}</td>
                     <td>{{actionName}}</td>
                     <td>{{controllerFile}}</td>
+                    <td>
+                        {{#services}}
+                        <div>
+                            {{.}}
+                        </div>
+                        {{/services}}
+                    </td>
                 </tr>
             {{/routes}}    
             </tbody>

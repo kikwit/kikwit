@@ -522,14 +522,14 @@ function addRandomHeader(ctx) {
 ```
 #### Connect/Express middleware support
 
-Connect/Express middlewares are supported via the `@use` decorator. 
-```javascript
-const requestStamp = (req, res, next) => {
-  req.stamp = Date.now();
-  next();
-};
+Connect/Express middlewares are supported via the `use` helper function.
+The `use` function transforms a middleware to a before interceptor.
 
-@use(requestStamp)
+```javascript
+import { before, controller, get, use } from 'kikwit';
+
+@before(use(requestStamp))
+@controller
 export class Products {
 
     @get
@@ -546,6 +546,12 @@ export class Products {
         ctx.send('Details');
     }    
 }
+
+function requestStamp(req, res, next) {
+  
+    req.stamp = Date.now();
+    next();
+};
 ```
 Please always use the `Context` helper methods when possible and avoid accessing the underlying request and response objects directly.
 
