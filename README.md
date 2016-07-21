@@ -432,7 +432,7 @@ Before interceptors are specified using the `@before` decorator.
 import { before, del, get, inject } from 'kikwit';
 
 @inject('myService')
-@before(Products.authenticate)
+@before(authenticate)
 export class Products {
     
     @get
@@ -444,7 +444,7 @@ export class Products {
         });
     }
     
-    @before(Products.authorize) 
+    @before(authorize) 
     @del
     deleteProduct(ctx) {
 
@@ -454,7 +454,7 @@ export class Products {
         });
     }
     
-    @before(Products.authorize) 
+    @before(authorize) 
     @post
     updateProduct(ctx) {
 
@@ -469,21 +469,21 @@ export class Products {
     
         ctx.send('Hello World!');
     }
+}
+
+function authenticate(ctx) {
     
-    static authenticate(ctx) {
-        
-        ctx.locals.userAuth = Math.random();        
-        ctx.next();
-    }  
+    ctx.locals.userAuth = Math.random();        
+    ctx.next();
+}  
+
+function authorize(ctx) {
     
-    static authorize(ctx) {
-        
-        if (!ctx.locals.userAuth) {
-            return ctx.sendStatus(403);
-        }
-        
-        ctx.next();
-    } 
+    if (!ctx.locals.userAuth) {
+        return ctx.sendStatus(403);
+    }
+    
+    ctx.next();
 }
 ```
 
@@ -495,7 +495,7 @@ After interceptors are specified using the `@after` decorator.
 import { after, get, inject } from 'kikwit';
 
 @inject('myService')
-@after(Products.addRandomHeader)
+@after(addRandomHeader)
 export class Products {
 
     @get
@@ -512,13 +512,13 @@ export class Products {
         // HTTP response will contain an 'X-RANDOM-NUMBER' header 
         ctx.send('Hello'); 
     }
-    
-    static addRandomHeader(ctx) {
-        
-        ctx.setHeader('X-RANDOM-NUMBER', Math.random().toString());       
-        ctx.next();
-    }  
 }
+
+function addRandomHeader(ctx) {
+    
+    ctx.setHeader('X-RANDOM-NUMBER', Math.random().toString());       
+    ctx.next();
+}  
 ```
 #### Connect/Express middleware support
 
@@ -672,7 +672,10 @@ Services injected at controller level are available to all of controller's actio
 
 An error handler can be specified using the `@onError` decorator. The error that was raised is accessible via the `Context.error` property.
 ```javascript
-@onError(Products.errorHandler)
+import { controller, get, onError } from 'kikwit';
+
+@onError(errorHandler)
+@controller
 export class Products {
 
     @get
@@ -691,18 +694,14 @@ export class Products {
 
         ctx.send('Unreachable');
     } 
-    
-    // The following handler will be called when an exception in raised in list or details actions 
-    static errorHandler(ctx) {
-    
-        // log ctx.error
-        
-        ctx.render('niceErrorPage', ctx.error);
-    }
+}
+
+// The following handler will be called when an exception in raised in list or details actions 
+function errorHandler(ctx) {
+    // log ctx.error
+    ctx.render('niceErrorPage', ctx.error);
 }
 ```
-
-### Logging
 
 ### Prerequisites
 * Node.js >= 6.3.0
