@@ -133,14 +133,14 @@ import { controller, get, route } from 'kikwit';
 @controller
 export class Products {
 
-    @route('/catalogue')
+    @route('/catalog')
     @get
     list(ctx) {
         ...
     }
 }
 ```
-In the example above, the route url generated for the `list` action is `/prods/catalogue`. 
+In the example above, the route url generated for the `list` action is `/prods/catalog`. 
 
 #### Implicit routing
 
