@@ -672,7 +672,7 @@ Services injected at controller level are available to all of controller's actio
 
 An error handler can be specified using the `@onError` decorator. The error that was raised is accessible via the `Context.error` property.
 ```javascript
-@onError(errorHandler)
+@onError(Products.errorHandler)
 export class Products {
 
     @get
