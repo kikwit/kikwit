@@ -473,7 +473,7 @@ export class Products {
 
 function authenticate(ctx) {
     
-    ctx.locals.userAuth = Math.random();        
+    ctx.locals.userAuth = (Math.trunc(Math.random() * 1000000) % 2 == 0);        
     ctx.next();
 }  
 
