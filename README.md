@@ -45,7 +45,7 @@ npm start
 
 ![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks.png)
 
-(Run on Ubuntu 16.04 LTS 64-bit, Intel® Core™ i7 CPU @ 2.40GHz × 8, 8 GiB RAM, No cluster, NodeJS v6.2.0)
+(Benchmarked on Ubuntu 16.04 LTS 64-bit, Intel® Core™ i7 CPU @ 2.40GHz × 8, 8 GiB RAM, No cluster, NodeJS v6.3.0)
 
 [Benchmark code here](https://github.com/kikwit/benchmarks-kikwit)
 
@@ -429,60 +429,58 @@ Interceptors have the same signature as controller actions, they accept a single
 Before interceptors are specified using the `@before` decorator. 
 
 ```javascript
-import { before, del, get, inject } from 'kikwit';
+'use strict';
 
-@inject('myService')
-@before(authenticate)
-export class Products {
-    
+import { before, controller, get, inject } from 'kikwit';
+
+@before(authenticate) 
+@controller
+export class Home {
+
+    @inject('adder') 
     @get
-    list(ctx) {
-        
-        ctx.services.myService.getProducts().then(products => {
-            
-           ctx.sendJSON(products); 
-        });
-    }
-    
-    @before(authorize) 
-    @del
-    deleteProduct(ctx) {
+    index(ctx) {
 
-        ctx.services.myService.deleteProduct(ctx.params.id).then(() => {
-                  
-           ctx.sendJSON(ctx.locals.userAuth); 
-        });
+        ctx.sendJSON(ctx.locals);     
     }
-    
-    @before(authorize) 
-    @post
-    updateProduct(ctx) {
 
-        ctx.services.myService.updateProduct(ctx.body.product).then(() => {
-                  
-           ctx.sendJSON(ctx.locals.userAuth); 
-        });
+    @before(authorize) 
+    @get
+    details(ctx) {
+
+        ctx.sendJSON(ctx.locals);
+    }
+
+    @before(authorize) 
+    @get
+    info(ctx) {
+
+        ctx.sendJSON(ctx.locals);
     }  
-    
+
     @before(ctx => {})
+    @get
     hello() {
-    
-        ctx.send('Hello World!');
+
+        ctx.sendJSON(ctx.locals);
     }
 }
 
 function authenticate(ctx) {
-    
-    ctx.locals.userAuth = (Math.trunc(Math.random() * 1000000) % 2 == 0);        
+   
+    ctx.locals.userId = Math.trunc(Math.random() * 1000000);     
+       
     ctx.next();
 }  
 
 function authorize(ctx) {
-    
-    if (!ctx.locals.userAuth) {
-        return ctx.sendStatus(403);
+
+    ctx.locals.authorized = (ctx.locals.userId % 2 == 0);   
+
+    if (!ctx.locals.authorized) {
+        return ctx.sendStatus(403, JSON.stringify(ctx.locals));
     }
-    
+
     ctx.next();
 }
 ```
