@@ -458,18 +458,18 @@ export class Home {
         ctx.sendJSON(ctx.locals);
     }  
 
-    @before(ctx => {})
+    @before(ctx => { ctx.locals.greeted = true; return ctx.next(); })
     @get
-    hello() {
+    hello(ctx) {
 
         ctx.sendJSON(ctx.locals);
     }
 }
 
 function authenticate(ctx) {
-   
+
     ctx.locals.userId = Math.trunc(Math.random() * 1000000);     
-       
+
     ctx.next();
 }  
 
