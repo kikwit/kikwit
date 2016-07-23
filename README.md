@@ -140,7 +140,7 @@ export class Products {
     }
 }
 ```
-In the example above, the route url generated for the `list` action is `/prods/catalog`. 
+In the example above, the `list` action will be accessible at `/prods/catalog`. 
 
 #### Implicit routing
 
@@ -159,13 +159,13 @@ export class Products {
     }
 }
 ```
-In the example above, the route url generated for the `list` action is `/products/list`. 
+In the example above, the `list` action will be accessible at `/products/list`. 
 
 #### Route parameters
 
-Routes can define dynamic parts in the following format `:KEY` where _KEY_ is the key used to access the corresponding value from the context.
+Routes can define dynamic parts in the following format `:KEY` where _KEY_ is the key used to access the corresponding value from the request context.
 
-Example
+Example:
 ```javascript
 import { controller } from 'kikwit';
 
@@ -179,13 +179,13 @@ export class Products {
     }
 }
 ```
-With the route above, a`GET /products/show/34` request will result in a context param's id of _34_.
+With the route above, a`GET /products/show/34` request will result in a context params's id of _34_.
 
 Route parameters can use regular expressions as constraints in the following format `:KEY<REGEX>` where _REGEX_ is the regular expression constraint.
 
-In the example above, if the request was `GET /products/show/laptop` then the `ctx.params.id` would have been equal to _laptop_. But if the action route was 
+Using the example above, if the request was `GET /products/show/laptop` then the `ctx.params.id` would be _laptop_. But if the action route was 
 
-`@route('/show/:id<\\d+>')` instead then `GET /products/show/laptop` request would have not been routed to the `details` action. 
+`@route('/show/:id<\\d+>')` instead then `GET /products/show/laptop` request would not be dispatched to the `details` action. 
 
 Route parameters can also be specified on the controller level route decorator.
 
@@ -225,7 +225,7 @@ The _validate_ argument validates params values against route constraints (if an
 
 ### Context object
 
-Controller actions and all interceptors accept a single context argument which provides the following properties and methods:
+Controller actions and all interceptors accept a single request context argument which provides the following properties and methods:
 
 - **host**
   
@@ -411,7 +411,6 @@ Controller actions and all interceptors accept a single context argument which p
 
    Sends a response with a 500 status code and status text set to `err.message`.
    When the environement is `development` the error stack trace is also included.
-   
    You can set the environment using `NODE_ENV` environment variable, e.g. `NODE_ENV=development` or `NODE_ENV=production`.
 
 ### Interceptors
@@ -426,7 +425,13 @@ Interceptors have the same signature as controller actions, they accept a single
 
 #### Before interceptors
 
-Before interceptors are specified using the `@before` decorator. 
+Before interceptors are specified using the `@before(...interceptors)` decorator.
+In a `@before(...interceptors)` interceptor, you are required to call either one of the response replying methods above or any following methods:
+
+|Method name         |Purpose                                                                                                                                             |
+|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+|`next()`             |Execute the next before interceptor in the chain, if any. If the current interceptor was the last before interceptor then execute the target action.|
+|`skipToAction()`     |Execute the target action, skipping any other before interceptors.                                                                                  |
 
 ```javascript
 'use strict';
@@ -458,7 +463,7 @@ export class Home {
         ctx.sendJSON(ctx.locals);
     }  
 
-    @before(ctx => { ctx.locals.greeted = true; return ctx.next(); })
+    @before(greet, authorize)
     @get
     hello(ctx) {
 
@@ -483,11 +488,23 @@ function authorize(ctx) {
 
     ctx.next();
 }
+
+function greet(ctx) {
+
+    ctx.locals.greeted = true;
+    
+    return ctx.skipToAction();
+}  
 ```
 
 #### After interceptors
 
-After interceptors are specified using the `@after` decorator. 
+After interceptors are specified using the `@after(...interceptors)` decorator. 
+In a `@after(...interceptors)` interceptor, you are required to call either one of the response replying methods above or any following methods:
+
+|Method name          |Purpose                                                                                                                                             |
+|---------------------|------------------------------------------------|
+|`next()`             |Execute the next after interceptor in the chain.|
 
 ```javascript
 import { after, get, inject } from 'kikwit';
