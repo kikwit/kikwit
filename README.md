@@ -426,12 +426,6 @@ Interceptors have the same signature as controller actions, they accept a single
 #### Before interceptors
 
 Before interceptors are specified using the `@before(...interceptors)` decorator.
-In a `@before(...interceptors)` interceptor, you are required to call either one of the response replying methods above or any following methods:
-
-|Method name         |Purpose                                                                                                                                             |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-|`next()`             |Execute the next before interceptor in the chain, if any. If the current interceptor was the last before interceptor then execute the target action.|
-|`skipToAction()`     |Execute the target action, skipping any other before interceptors.                                                                                  |
 
 ```javascript
 'use strict';
@@ -500,11 +494,6 @@ function greet(ctx) {
 #### After interceptors
 
 After interceptors are specified using the `@after(...interceptors)` decorator. 
-In a `@after(...interceptors)` interceptor, you are required to call either one of the response replying methods above or any following methods:
-
-|Method name          |Purpose                                                                                                                                             |
-|---------------------|------------------------------------------------|
-|`next()`             |Execute the next after interceptor in the chain.|
 
 ```javascript
 import { after, get, inject } from 'kikwit';
