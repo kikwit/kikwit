@@ -105,7 +105,7 @@ export class Products {
 
 The `@all` decorator makes the decorated action valid for any HTTP request method.
 
-####List of supported decorators
+####List of supported http methods
 
 |Decorator          |HTTP Method                             |
 |-------------------|----------------------------------------|
