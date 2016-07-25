@@ -107,15 +107,39 @@ The `@all` decorator makes the decorated action valid for any HTTP request metho
 
 ####List of supported decorators
 
-|Decorator|HTTP Method       |
-|---------|------------------|
-|@all     |* `(Any method)`|
-|@del     |DELETE            |
-|@get     |GET               |
-|@head    |HEAD              |
-|@options |OPTIONS           |
-|@post    |POST              |
-|@put     |PUT               |
+|Decorator          |HTTP Method                             |
+|-------------------|----------------------------------------|
+|@all               |* `(Any method)`                        |
+|@acl               |ACL                                     |
+|@baselineControl   |BASELINE-CONTROL                        |
+|@checkin           |CHECKIN                                 |
+|@checkout          |CHECKOUT                                |
+|@copy              |COPY                                    |
+|@del               |DELETE                                  |
+|@get               |GET                                     |
+|@head              |HEAD                                    |
+|@label             |LABEL                                   |
+|@lock              |LOCK                                    |
+|@merge             |MERGE                                   |
+|@mkactivity        |MKACTIVITY                              |
+|@mkcol             |MKCOL                                   |
+|@mkworkspace       |MKWORKSPACE                             |
+|@move              |MOVE                                    |
+|@options           |OPTIONS                                 |
+|@orderpatch        |ORDERPATCH                              |
+|@patch             |PATCH                                   |
+|@post              |POST                                    |
+|@propfind          |PROPFIND                                |
+|@proppatch         |PROPPATCH                               |
+|@put               |PUT                                     |
+|@report            |REPORT                                  |
+|@search            |SEARCH                                  |
+|@trace             |TRACE                                   |
+|@unlock            |UNLOCK                                  |
+|@update            |UPDATE                                  |
+|@versionControl    |VERSION-CONTROL                         |
+|@uncheckout        |UNCHECKOUT                              |
+
 
 ### Routing
 
