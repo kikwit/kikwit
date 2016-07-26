@@ -130,7 +130,7 @@ describe('router', function() {
 			for (let item of sample) {
                 	
 				actual = router.parseRoute(item.path, item.caseSensitive, item.strict);
-            		
+         		
                 expect(actual.pattern.source).toEqual(item.expected.pattern.source);
                 expect(actual.pattern.flags).toEqual(item.expected.pattern.flags);
 				expect(actual.keys).toDeepEqual(item.expected.keys);
@@ -385,70 +385,6 @@ describe('router', function() {
                 
             const actual = router.findRoute({config, routes, request, pathname});
 
-            expect(actual.route).toDeepEqual(routes[0]);
-            
-            const actualParamsKeys = Object.keys(actual.params);
-            
-            expect(actualParamsKeys).toDeepEqual(['userId', 'page']);
-            expect(actual.params['userId']).toEqual('649');
-            expect(actual.params['page']).toEqual('settings');
-		});
-		it('must return undefined when accept-version not allowed', function() {
-			
-            const config = {
-                route: {
-                    strict: false
-                }
-            };
-			const routes = [
-                {
-                    pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    keys: ['userId', 'page'],
-                    httpMethods: [ 'get' ],
-                    version: '3.1.6'
-                }
-            ];	
-            const request = {
-                method: 'GET',
-                url: 'http://www.allmy.sites.com/users/649/view-settings',
-                headers: {
-                    'accept-version': '>3.2.5'
-                }
-            };
-            	
-            const pathname = '/users/649/view-settings';                
-                
-            const actual = router.findRoute({config, routes, request, pathname});
-    
-            expect(actual).toBeUndefined();
-		});
-		it('must match the correct route when accept-version is allowed', function() {
-			
-            const config = {
-                route: {
-                    strict: false
-                }
-            };
-			const routes = [
-                {
-                    pattern: new RegExp(`^/users/(\\d+)/view-(\\w{7,9})$`, 'i'),
-                    keys: ['userId', 'page'],
-                    httpMethods: [ 'get' ],
-                    version: '3.5.6'
-                }
-            ];	
-            const request = {
-                method: 'GET',
-                url: 'http://www.allmy.sites.com/users/649/view-settings',
-                headers: {
-                    'accept-version': '>3.2.5'
-                }
-            };
-            
-            const pathname = '/users/649/view-settings';
-            	
-            const actual = router.findRoute({config, routes, request, pathname});
-    
             expect(actual.route).toDeepEqual(routes[0]);
             
             const actualParamsKeys = Object.keys(actual.params);

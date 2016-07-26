@@ -29,12 +29,11 @@ npm start
 
 ### Features
 * Modern framework. ES2015, ES2016 support (uses Babel)
-* Awesome routing, versioned routes
+* Awesome routing
 * High performance
 * HTTP response helpers
 * Extendended view engines support
 * Content negotiation
-* Version negotiation
 * Modern middlewares support using decorators
 * Connect/Express middleware support
 * Static files serving
