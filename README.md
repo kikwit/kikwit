@@ -6,7 +6,7 @@
 [![Node.js Version][node-version-image]][node-version-url]
 [![Build Status][travis-image]][travis-url]
 
-Modern and fast web framework for nodejs. 
+Modern and fast web framework for nodejs.
 
 ### Quick Start
 We recommend the [Official Yo Generator](https://github.com/kikwit/generator-kikwit) for generating new applications.
