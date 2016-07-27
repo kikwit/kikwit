@@ -586,7 +586,7 @@ Please always use the `Context` helper methods when possible and avoid accessing
 
 By default service classes are located in `APP_ROOT/services/**/*` where `APP_ROOT` is the application base folder. The location can be changed using the `servicesRoot` configuration key.
 All service classes must be decorated with the `@service` decorator.
-The `@service` requires a string argument which defines the key to use when injecting the service using the `@inject(...KEY)` decorator. 
+The `@service` requires a string argument which defines the key to use when injecting the service using the `@inject(...KEYS)` decorator. 
 By default each request gets its own instance of the injected service.
 
 Example:
@@ -618,7 +618,7 @@ export class Arithm {
 }
 ```
 
-It is possible to get a service injected as a singleton by prefixing the key passed to the `@inject(...KEY])` decorator with `@`.
+It is possible to get a service injected as a singleton by prefixing the key passed to the `@inject(...KEYS)` decorator with `@`.
 
 Example:
 ```javascript
@@ -649,7 +649,7 @@ export class Arithm {
 }
 ```
 
-It is also possible to get the same instance of a service injected into an action across multiple requests by prefixing the key passed to the `@inject(...KEY)` decorator with `@@`.
+It is also possible to get the same instance of a service injected into an action across multiple requests by prefixing the key passed to the `@inject(...KEYS)` decorator with `@@`.
 
 Example:
 ```javascript
