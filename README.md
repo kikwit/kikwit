@@ -453,13 +453,12 @@ Before interceptors are specified using the `@before(...interceptors)` decorator
 ```javascript
 'use strict';
 
-import { before, controller, get, inject } from 'kikwit';
+import { before, controller, get } from 'kikwit';
 
 @before(authenticate) 
 @controller
 export class Home {
 
-    @inject('adder') 
     @get
     index(ctx) {
 
@@ -521,10 +520,10 @@ After interceptors are specified using the `@after(...interceptors)` decorator.
 ```javascript
 import { after, get, inject } from 'kikwit';
 
-@inject('myService')
 @after(addRandomHeader)
 export class Products {
 
+    @inject('myService')
     @get
     list(ctx) {
         
