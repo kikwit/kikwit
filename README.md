@@ -690,7 +690,7 @@ Services injected at controller level are available to all of controller's actio
 
 ### Cookies
 
-Kikwit supports cookies via the [cookies][cookies-package-url] package which supports cookie signing, to prevent tampering, using the [keygrip][keygrip-package-url] package.
+Kikwit supports cookies via the [cookies][cookies-package-url] package which optionally provides cookie signing, to prevent tampering, using the [keygrip][keygrip-package-url] package.
 
 ```javascript
 import { controller, get } from 'kikwit';
