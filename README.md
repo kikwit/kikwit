@@ -247,10 +247,6 @@ Controller actions and all interceptors accept a single request context argument
 - **config**
 
   The application environment specific configuration.
-
-- **cookies**
-
-  The request cookies. when the request contains no cookies, the cookies object is set to {}.
   
 - **host**
   
