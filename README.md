@@ -690,8 +690,7 @@ Services injected at controller level are available to all of controller's actio
 
 ### Cookies
 
-Kikwit supports cookies via the [cookies][cookies-package-url] package.
-The [cookies][cookies-package-url] package supports cookie signing, to prevent tampering, using the [keygrip][keygrip-package-url] package.
+Kikwit supports cookies via the [cookies][cookies-package-url] package which supports cookie signing, to prevent tampering, using the [keygrip][keygrip-package-url] package.
 
 ```javascript
 import { controller, get } from 'kikwit';
@@ -720,7 +719,7 @@ export class Products {
 ```
 
 The keys used to sign the cookies can be set in the config file using the `cookieParser.keys` entry as follows:
-```
+```javascript
 {
     ...
     cookieParser: {
@@ -731,7 +730,7 @@ The keys used to sign the cookies can be set in the config file using the `cooki
 ```
 
 Cookie parsing can be completely disabled by setting the `cookieParser` to a falsy value.
-```
+```javascript
 {
     ...
     cookieParser: null
