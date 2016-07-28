@@ -244,6 +244,14 @@ The _validate_ argument validates params values against route constraints (if an
 
 Controller actions and all interceptors accept a single request context argument which provides the following properties and methods:
 
+- **config**
+
+  The application environment specific configuration.
+
+- **cookies**
+
+  The request cookies. when the request contains no cookies, the cookies object is set to {}.
+  
 - **host**
   
   The request HOST header, or `X-FORWARDED-HOST` request header value (if present) when `trustProxy` setting is set to `true`, plus the port number.
