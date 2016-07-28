@@ -53,7 +53,6 @@ npm start
 By default controller classes are located in `APP_ROOT/controllers/**/*` where `APP_ROOT` is the application base folder. The location can be changed using the `controllersRoot` configuration key.
 All controller classes must be decorated with `@controller`.
 
-Example:
 ```javascript
 import { controller } from 'kikwit';
 
@@ -67,7 +66,6 @@ export class Products {
 Controller methods decorated with at least one HTTP method decorator are treated as actions.
 HTTP method decorators specifiy which HTTP request methods are valid for an action. 
 
-Example:
 ```javascript
 import { controller, get, post } from 'kikwit';
 
@@ -148,7 +146,6 @@ Kikwit supports both explicit and implicit routing.
 
 Explicit routing is when a controller or action is tagged with a `@route` decorator.
 
-Example:
 ```javascript
 import { controller, get, route } from 'kikwit';
 
@@ -169,7 +166,6 @@ In the example above, the `list` action will be accessible at `/prods/catalog`.
 
 Implicit routing is when a controller or action is not tagged with a `@route` decorator.
 
-Example:
 ```javascript
 import { controller, get } from 'kikwit';
 
@@ -188,7 +184,6 @@ In the example above, the `list` action will be accessible at `/products/list`.
 
 Routes can define dynamic parts in the following format `:KEY` where _KEY_ is the key used to access the corresponding value from the request context.
 
-Example:
 ```javascript
 import { controller } from 'kikwit';
 
@@ -216,7 +211,6 @@ Route parameters can also be specified on the controller level route decorator.
 
 Action routes can specify a route name which helps generate URLs targeting the route. 
 
-Example:
 ```javascript
 import { controller } from 'kikwit';
 
@@ -588,7 +582,6 @@ All service classes must be decorated with the `@service` decorator.
 The `@service` requires a string argument which defines the key to use when injecting the service using the `@inject(...KEYS)` decorator. 
 By default each request gets its own instance of the injected service.
 
-Example:
 ```javascript
 import { service } from 'kikwit';
 
@@ -619,7 +612,6 @@ export class Arithm {
 
 It is possible to get a service injected as a singleton by prefixing the key passed to the `@inject(...KEYS)` decorator with `@`.
 
-Example:
 ```javascript
 import { service } from 'kikwit';
 
@@ -650,7 +642,6 @@ export class Arithm {
 
 It is also possible to get the same instance of a service injected into an action across multiple requests by prefixing the key passed to the `@inject(...KEYS)` decorator with `@@`.
 
-Example:
 ```javascript
 import { service } from 'kikwit';
 
@@ -682,7 +673,6 @@ In the example above, the instance injected into the `sum` action will only be r
 
 To restrict a service to always be injected as a singleton, please pass `true` as a second argument to `@service([KEY], [SINGLETON])` decorator.
 
-Example:
 ```javascript
 import { service } from 'kikwit';
 
@@ -699,6 +689,57 @@ In the example above `Adder` will always get injected as a singleton regardless 
 Services injected at controller level are available to all of controller's actions.
 
 ### Cookies
+
+Kikwit supports cookies via the [cookies][cookies-package-url] package.
+The [cookies][cookies-package-url] package supports cookie signing, to prevent tampering, using the [keygrip][keygrip-package-url] package.
+
+```javascript
+import { controller, get } from 'kikwit';
+
+@controller
+export class Products {
+
+    @get
+    index(ctx) {
+    
+        ctx.cookies.set('unsigned', '12345');
+        ctx.cookies.set('signed', '67890', { signed: true });
+        
+        ctx.redirect('/products/details');
+    }
+    
+    @get
+    details(ctx) {
+        
+        var unsigned = ctx.cookies.get('unsigned');
+        var signed = ctx.cookies.get('signed', { signed: true });
+        
+        ctx.sendJSON({ unsigned, signed });
+    } 
+}
+```
+
+The keys used to sign the cookies can be set in the config file using the `cookieParser.keys` entry as follows:
+```
+{
+    ...
+    cookieParser: {
+        keys: ['~strong-key-01!', '#strong-key-02?']
+    }
+    ...
+}
+```
+
+Cookie parsing can be completely disabled by setting the `cookieParser` to a falsy value.
+```
+{
+    ...
+    cookieParser: null
+    ...
+}
+```
+
+Please refer to the [cookies][cookies-package-url] package for more info regarding additional features for cookies.
 
 ### Error handling
 
@@ -763,3 +804,6 @@ function errorHandler(ctx) {
 [downloads-url]: https://npmjs.org/package/kikwit
 [travis-image]: https://travis-ci.org/kikwit/kikwit.svg?branch=master
 [travis-url]: https://travis-ci.org/kikwit/kikwit
+
+[cookies-package-url]: https://www.npmjs.com/package/cookies
+[keygrip-package-url]: https://www.npmjs.com/package/keygrip
