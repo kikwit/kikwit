@@ -790,10 +790,6 @@ function errorHandler(ctx) {
 
 `npm test`
 
-### Issue Submission
-
-### Feature Requests
-
 ### Maintainers
 
 * Elondo Mbonze
