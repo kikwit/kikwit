@@ -102,7 +102,7 @@ export class Products {
 
 The `@all` decorator makes the decorated action valid for any HTTP request method.
 
-####List of supported http methods
+#### List of supported http methods
 
 |Decorator          |HTTP Method                             |
 |-------------------|----------------------------------------|
@@ -137,6 +137,84 @@ The `@all` decorator makes the decorated action valid for any HTTP request metho
 |@versionControl    |VERSION-CONTROL                         |
 |@uncheckout        |UNCHECKOUT                              |
 
+### Request Data
+
+#### Query strings
+
+Query strings values can be accessed using the `query` property of the request context.
+
+```javascript
+import { controller, get } from 'kikwit';
+
+@controller
+export class Page {
+
+    @get
+    echo(ctx) {
+        
+        const offset = ctx.query.offset;  
+        const limit = Math.min(ctx.query.limit, 50);         
+        const categories = ctx.query.categories;       
+
+        ctx.sendJSON({ offset, limit, categories });
+    }
+} 
+```
+
+A `GET /page/echo?offset=15&limit=20&categories=laptop&categories=phablet` request to the `echo` action above will return the following JSON document
+
+```javascript
+
+{ offset: 15, limit: 20, categories: ['laptop', 'phablet'] }
+```
+
+By default the [querystring][querystring-package-url] package's [parse][querystring-package-parse-url] 
+function is used to parse the query string. 
+You can assign a global custom function for query parsing by setting the `queryParser` configuration key. 
+This function should accept a string and return an object which will accessible via the Context's `query` property:
+
+```javascript
+{
+    ...,
+    queryParser: querystring.parse,
+    ...
+}
+```
+
+When the `queryParser` configuration key is set to `false` the query is not parsed at all.
+
+You also can also assign a custom parser to a specific controller or action only using the `@queryParser` decorator.
+
+```javascript
+import { controller, get, queryParser } from 'kikwit';
+
+@controller
+export class Page {
+
+    @queryParser(myParser)
+    @get
+    echo(ctx) {
+        
+        const offset = ctx.query.offset;  
+        const limit = Math.min(ctx.query.limit, 50);         
+        const categories = ctx.query.categories;       
+
+        ctx.sendJSON({ offset, limit, categories });
+    }
+} 
+
+function myParser(str) {
+
+    let [offset, limit, categories] = str.split('-');
+
+    categories = categories.split(',');
+
+    return { offset, limit, categories };
+}
+```
+
+A `GET /page/echo?15-20-laptop,phablet` request 
+to the `echo` action will return the same result as previously.
 
 ### Routing
 
@@ -236,7 +314,7 @@ Query strings can be added to the generated URL with the help of the third argum
 ```
 ctx.routeURL('productDetails', { id: 34 }, { offset: 10, pageSize: 20})
 ```
-The above would generate the string _/products/show/34?offeset=10&pageSize=20_.
+The above would generate the string _/products/show/34?offset=10&pageSize=20_.
 
 The _validate_ argument validates params values against route constraints (if any). Passing `false` skips any validation. 
 
@@ -803,6 +881,9 @@ function errorHandler(ctx) {
 [downloads-url]: https://npmjs.org/package/kikwit
 [travis-image]: https://travis-ci.org/kikwit/kikwit.svg?branch=master
 [travis-url]: https://travis-ci.org/kikwit/kikwit
+
+[querystring-package-url]:[https://nodejs.org/api/querystring.html]
+[querystring-package-parse-url]:[https://nodejs.org/api/querystring.html#querystring_querystring_parse_str_sep_eq_options]
 
 [cookies-package-url]: https://www.npmjs.com/package/cookies
 [keygrip-package-url]: https://www.npmjs.com/package/keygrip
