@@ -137,85 +137,6 @@ The `@all` decorator makes the decorated action valid for any HTTP request metho
 |@versionControl    |VERSION-CONTROL                         |
 |@uncheckout        |UNCHECKOUT                              |
 
-### Request Data
-
-#### Query strings
-
-Query strings values can be accessed using the `query` property of the request context.
-
-```javascript
-import { controller, get } from 'kikwit';
-
-@controller
-export class Page {
-
-    @get
-    echo(ctx) {
-        
-        const offset = ctx.query.offset;  
-        const limit = Math.min(ctx.query.limit, 50);         
-        const categories = ctx.query.categories;       
-
-        ctx.sendJSON({ offset, limit, categories });
-    }
-} 
-```
-
-A `GET /page/echo?offset=15&limit=20&categories=laptop&categories=phablet` request to the `echo` action above will return the following JSON document
-
-```javascript
-
-{ offset: 15, limit: 20, categories: ['laptop', 'phablet'] }
-```
-
-By default the [querystring][querystring-package-url] package's [parse][querystring-package-parse-url] 
-function is used to parse the query string. 
-You can assign a global custom function for query parsing by setting the `queryParser` configuration key. 
-This function should accept a string and return an object which will accessible via the Context's `query` property:
-
-```javascript
-{
-    ...,
-    queryParser: querystring.parse,
-    ...
-}
-```
-
-When the `queryParser` configuration key is set to `false` the query is not parsed at all.
-
-You also can also assign a custom parser to a specific controller or action only using the `@queryParser` decorator.
-
-```javascript
-import { controller, get, queryParser } from 'kikwit';
-
-@controller
-export class Page {
-
-    @queryParser(myParser)
-    @get
-    echo(ctx) {
-        
-        const offset = ctx.query.offset;  
-        const limit = Math.min(ctx.query.limit, 50);         
-        const categories = ctx.query.categories;       
-
-        ctx.sendJSON({ offset, limit, categories });
-    }
-} 
-
-function myParser(str) {
-
-    let [offset, limit, categories] = str.split('-');
-
-    categories = categories.split(',');
-
-    return { offset, limit, categories };
-}
-```
-
-A `GET /page/echo?15-20-laptop,phablet` request 
-to the `echo` action will return the same result as previously.
-
 ### Routing
 
 Kikwit supports both explicit and implicit routing.
@@ -317,6 +238,184 @@ ctx.routeURL('productDetails', { id: 34 }, { offset: 10, pageSize: 20})
 The above would generate the string _/products/show/34?offset=10&pageSize=20_.
 
 The _validate_ argument validates params values against route constraints (if any). Passing `false` skips any validation. 
+
+### Request Data
+
+#### Query strings
+
+Query strings values can be accessed using the `query` property of the request context.
+
+```javascript
+import { controller, get } from 'kikwit';
+
+@controller
+export class Page {
+
+    @get
+    echo(ctx) {
+        
+        const offset = ctx.query.offset;  
+        const limit = Math.min(ctx.query.limit, 50);         
+        const categories = ctx.query.categories;       
+
+        ctx.sendJSON({ offset, limit, categories });
+    }
+} 
+```
+
+A `GET /page/echo?offset=15&limit=20&categories=laptop&categories=phablet` request to the `echo` action above will return the following JSON document
+
+```javascript
+
+{ offset: 15, limit: 20, categories: ['laptop', 'phablet'] }
+```
+
+By default the [querystring][querystring-package-url] package's [parse][querystring-package-parse-url] 
+function is used to parse the query string. 
+You can assign a global custom function for query parsing by setting the `queryParser` configuration key. 
+This function should accept a string and return an object which will accessible via the Context's `query` property:
+
+E.g.
+```javascript
+{
+    ...,
+    queryParser: querystring.parse,
+    ...
+}
+```
+
+When the `queryParser` configuration key is set to `false` the query string is not parsed at all and the `query` property is not set.
+
+You also can also assign a custom parser to a specific controller or action only using the `@queryParser` decorator.
+
+```javascript
+import { controller, get, queryParser } from 'kikwit';
+
+@controller
+export class Page {
+
+    @queryParser(myParser)
+    @get
+    echo(ctx) {
+        
+        const offset = ctx.query.offset;  
+        const limit = Math.min(ctx.query.limit, 50);         
+        const categories = ctx.query.categories;       
+
+        ctx.sendJSON({ offset, limit, categories });
+    }
+} 
+
+function myParser(str) {
+
+    let [offset, limit, categories] = str.split('-');
+
+    categories = categories.split(',');
+
+    return { offset, limit, categories };
+}
+```
+
+A `GET /page/echo?15-20-laptop,phablet` request 
+to the `echo` action will return the following
+
+```javascript
+
+{ offset: 15, limit: 20, categories: ['laptop', 'phablet'] }
+```
+
+#### Request body
+
+The body of the request can be accessed using the `body` property of the request context.
+
+```javascript
+import { controller, post } from 'kikwit';
+
+@controller
+export class User {
+
+    @post
+    register(ctx) {
+        
+        const username = ctx.body.username;  
+        const gender = ctx.body.gender;      
+
+        ctx.sendJSON({ username, gender });
+    }
+} 
+```
+
+The following request
+
+`curl -X POST -F 'username=Shaka Zulu' -F 'gender=M' http://domain.tld/user/register`
+
+will return
+
+```javascript
+
+{ username: 'Shaka Zulu', gender: 'M' }
+```
+
+|Request Content Type  |Default parser                          |
+|----------------------|----------------------------------------|
+|urlencoded            |Busboy                                  |
+|multipart             |Busboy                                  |
+|Text                  |None. `Context.body` is a `string`      |
+|JSON                  |`JSON.parse`                            |
+|_All others_          |None. `Context.body` is a `Buffer`      |
+
+The body parser can be changed by setting a custom `bodyParser` function in the configuration file.
+This function should accept a request `Context` object and return a promise that resolves to an object 
+containing two properties: `body` and `files`. 
+The `files` property should represent the uploaded files is any.
+
+E.g.
+```javascript
+
+import formidable from 'formidable';
+
+{
+    ...,
+    bodyParser: myParser,
+    ...
+}
+
+function myParser(ctx) {
+
+    return new Promise((resolve, reject) => {
+
+        var form = new formidable.IncomingForm();
+
+        form.parse(ctx.request, function(err, fields, files) {
+
+            if (err) {
+                return reject(err);
+            }
+
+            return resolve({ body: fields, files });
+        });
+    }
+}
+```
+
+When the `bodyParser` configuration key is set to `false` the body is not parsed at all and the `body` property is not set.
+
+You also can also assign a custom parser to a specific controller or action only using the `@bodyParser` decorator.
+
+```javascript
+import { controller, post, bodyParser } from 'kikwit';
+
+@controller
+export class User {
+
+    @bodyParser(myParser)
+    @post
+    register(ctx) {
+        
+        ...
+    }
+} 
+```
 
 ### Context object
 
@@ -858,6 +957,7 @@ function errorHandler(ctx) {
 ```
 
 ### Prerequisites
+
 * Node.js >= 6.3.0
 
 ### Tests
@@ -882,8 +982,8 @@ function errorHandler(ctx) {
 [travis-image]: https://travis-ci.org/kikwit/kikwit.svg?branch=master
 [travis-url]: https://travis-ci.org/kikwit/kikwit
 
-[querystring-package-url]:[https://nodejs.org/api/querystring.html]
-[querystring-package-parse-url]:[https://nodejs.org/api/querystring.html#querystring_querystring_parse_str_sep_eq_options]
+[querystring-package-url]:https://nodejs.org/api/querystring.html
+[querystring-package-parse-url]:https://nodejs.org/api/querystring.html#querystring_querystring_parse_str_sep_eq_options
 
 [cookies-package-url]: https://www.npmjs.com/package/cookies
 [keygrip-package-url]: https://www.npmjs.com/package/keygrip
