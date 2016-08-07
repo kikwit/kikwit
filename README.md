@@ -28,6 +28,7 @@ npm start
 ```
 
 ### Features
+
 * Modern framework. ES2015, ES2016 support (uses Babel)
 * Awesome routing
 * High performance
@@ -36,7 +37,7 @@ npm start
 * Content negotiation
 * Modern middlewares support using decorators
 * Connect/Express middleware support
-* Static files serving
+* Seamless Websockets and Server-sent events support
 * Conditional requests handling
 * Available yeoman generator
 
@@ -502,7 +503,13 @@ Controller actions and all interceptors accept a single request context argument
     Calls the next interceptor if any. When called in the last `@before` interceptor, this method will call the target action. If called in the last `@after` interceptor, the call does nothing.
     
     The `next()` valid to call in interceptors only.
-   
+
+- **noEvent(interval)**
+
+    Signals that there is no server-sent event data to sends to the client.
+        
+    The _interval_ argument specifies the time interval to wait until the next call to generate another event.
+
 - **redirect(url [, statusCode])**
   
     Redirects the request by setting a `LOCATION` header.
@@ -546,7 +553,40 @@ Controller actions and all interceptors accept a single request context argument
     
     The `contentType` argument, if not provided, defaults to `text/plain; charset=utf-8`.
   
-  
+- **sendEvent(event, interval)**
+
+    Sends the specified server-sent event object.
+        
+    The _interval_ argument specifies the time interval to wait until the next call to generate another event.
+    If there is no data to send then the Context's `noEvent(interval)` method should be called. 
+
+    The _event_ argument should have following field names:
+
+    - `type`
+
+        The event's type. If this is specified, an event will be dispatched on the browser to the listener for the specified event name; 
+        This field corresponds to the [Server-sent events standard][server-sent-events-standard]'s _event_ field.
+        the web site source code should use addEventListener() to listen for named events. 
+        The onmessage handler is called if no event name is specified for a message.
+
+    - `data`
+
+        The data field for the message. When the caller's EventSource receives multiple consecutive lines that begin with `data:`,
+        it will concatenate them, inserting a newline character between each one. Trailing newlines are removed.
+
+        This field corresponds to the [Server-sent events standard][server-sent-events-standard]'s _data_ field.
+    
+    - `id`
+
+        The event ID to set the caller's EventSource object's last event ID value.
+        This field corresponds to the [Server-sent events standard][server-sent-events-standard]'s _id_ field.
+    
+    - `retry`
+
+        The reconnection time to use when attempting to send the event. 
+        This must be an integer, specifying the reconnection time in milliseconds.
+        This field corresponds to the [Server-sent events standard][server-sent-events-standard]'s _retry_ field.
+
 - **sendJSON(body)**
   
     Sends a JSON response using `body` as content.
@@ -956,6 +996,66 @@ function errorHandler(ctx) {
 }
 ```
 
+### WebSockets support
+
+/* TODO Update doc */
+
+```javascript
+
+import { controller, get, webSocket } from 'kikwit';
+
+@controller
+export class StockMarket {  
+
+    @get
+    index(ctx) {
+        
+        ctx.send('Index'); 
+    } 
+        
+    @webSocket
+    echo(ctx) {
+
+        ctx.send('Hello World! ' + ctx.message); 
+    }     
+}
+```
+
+### server-sent events support
+
+/* TODO Update doc */
+
+```javascript
+
+import { controller, get } from 'kikwit';
+
+@controller
+export class StockMarket {  
+    
+    @get
+    ticker(ctx) {
+        
+        let lastEventId = ctx.lastEventId || 0;
+        
+        const randomValue = () => Number.parseFloat((Math.random()*2).toFixed(2)) * (Math.random() < 0.5 ? -1 : 1);
+ 
+        const event = { 
+            data: { 
+                DJIA: randomValue(), 
+                Nasdaq: randomValue(), 
+                ['S&P 500']: randomValue(), 
+                GOLD: randomValue() 
+            }, 
+            id: ++lastEventId, 
+            type: 'tick',
+            retry: 5000
+        };
+        
+        ctx.sendEvent(event, 5000); 
+    }      
+}
+```
+
 ### Prerequisites
 
 * Node.js >= 6.3.0
@@ -987,3 +1087,5 @@ function errorHandler(ctx) {
 
 [cookies-package-url]: https://www.npmjs.com/package/cookies
 [keygrip-package-url]: https://www.npmjs.com/package/keygrip
+
+[server-sent-events-standard]: https://html.spec.whatwg.org/multipage/comms.html#server-sent-events

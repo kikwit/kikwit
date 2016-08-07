@@ -51,61 +51,6 @@ describe('context', () => {
             const ctx = new Context({}, null, [], request, response);
             
             expect(ctx.response).toEqual(response);
-        }); 
-        it('should set state', () => {
-            
-            const request = { url: '/controller/action' };
-            
-            const ctx = new Context({}, null, [], request, {});
-            
-            expect(ctx.state).toEqual({});
-        });
-        it('should set pathname', () => {
-            
-            const request = { url: '/controller/action?dd=gjhkh&df=sgrsjg' };
-                    
-            const ctx = new Context({}, null, [], request, {});
-
-            expect(ctx.pathname).toEqual('/controller/action');
-        });
-        it('should set query', () => {
-            
-            let query = {
-                a: Math.random(),
-                b: Math.random(),
-                c: Math.random()
-            };
-            
-            const request = { url: `/controller/action?a=${query.a}&b=${query.b}&c=${query.c}` };
-            const pathname = path.normalize(decodeURI(url.parse(request.url).pathname));
-                    
-            const ctx = new Context({}, null, [], request, {});
-
-            expect(ctx.query).toDeepEqual(query);
-        });  
-        it('should set search', () => {
-                 
-            const request = { url: '/controller/action?a=$kgyhf&b=lhjgh&c=kyjj' };
-                    
-            const ctx = new Context({}, null, [], request, {});
-
-            expect(ctx.search).toEqual('?a=$kgyhf&b=lhjgh&c=kyjj');
-        });      
-        it('should set href', () => {
-                   
-            const request = { url: '/controller/action?a=kjgg&b=$sff&c=hjfhf' };
-                    
-            const ctx = new Context({}, null, [], request, {});
-
-            expect(ctx.href).toEqual(request.url);
-        }); 
-        it('should set path', () => {
-                   
-            const request = { url: '/controller/action?a=kjgg&b=$sff&c=hjfhf' };
-                    
-            const ctx = new Context({}, null, [], request, {});
-
-            expect(ctx.path).toEqual('/controller/action?a=kjgg&b=$sff&c=hjfhf');
         });                                     
     });  
     
