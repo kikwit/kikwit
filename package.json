@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "Modern and fast web framework for nodejs.",
   "main": "lib/index.js",
   "engines": {
