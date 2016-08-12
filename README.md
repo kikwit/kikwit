@@ -1002,22 +1002,21 @@ function errorHandler(ctx) {
 
 ```javascript
 
-import { controller, get, webSocket } from 'kikwit';
+import { controller, webSocket } from 'kikwit';
 
+@webSocket
 @controller
-export class StockMarket {  
+export class Greeter {  
 
-    @get
-    index(ctx) {
-        
-        ctx.send('Index'); 
-    } 
-        
-    @webSocket
-    echo(ctx) {
+    onConnection(ctx) {
 
-        ctx.send('Hello World! ' + ctx.message); 
-    }     
+        ctx.send('Connected!'); 
+    }   
+
+    onMessage(ctx) {
+
+        ctx.send('Hello World! ' + ctx.data); 
+    }  
 }
 ```
 
