@@ -998,8 +998,20 @@ function errorHandler(ctx) {
 
 ### WebSockets support
 
-/* TODO Update doc */
+Annotating a controller with `@webSocket` decorator turns it into a WebSocket handler.
+Certain controller class methods are automatically used as WebSocket event listeners if 
+their name is of the form `on[EVENT_NAME]` where *EVENT_NAME* is the name of a WebSocket event,
+e.g. `onConnection`, `onMessage`, `onClose`, etc...
 
+|Method              |Handled WebSocket event |Context body (`ctx.body`) |                                                                                     |
+|--------------------|------------------------|--------------------------|-------------------------------------------------------------------------------------|
+|`onClose(ctx)`      |`close`                 |`{code, message}`         |Called when the connection is closed. code is defined in the WebSocket specification.|
+|`onConnection(ctx)` |`connection`            |`undefined`               |Called when the connection is established.                                           |
+|`onError(ctx)`      |`error`                 |`undefined`               |Called when the client emits an error.                                               |
+|`onMessage(ctx)`    |`message`               |`{data, flags}`           |Called when data is received. `flags` is an object with member binary.               |
+|`onPing(ctx)`       |`ping`                  |`{data, flags}`           |Called when a ping is received. `flags` is an object with member binary.             |
+|`onPong(ctx)`       |`pong`                  |`{data, flags}`           |Called when a pong is received. `flags` is an object with member binary.             |
+ 
 ```javascript
 
 import { controller, webSocket } from 'kikwit';
@@ -1015,10 +1027,35 @@ export class Greeter {
 
     onMessage(ctx) {
 
-        ctx.send('Hello World! ' + ctx.data); 
+        ctx.send(`Message received [${ctx.body.data}`); 
     }  
+
+    onError(ctx) {
+
+        ctx.send(`Error logged [${ctx.error.message}]`);
+    }    
+
+    onClose(ctx) {
+
+        console.log(`Connection closed. Code: ${ctx.body.code}, message: ${ctx.body.message}`);
+    }        
 }
 ```
+
+The following Context methods are available on WebSocket controllers
+
+|Context method                                       |Description                                                                                                                                                                                                                                   |
+|-----------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|`close([code], [data])`                              |Gracefully closes the connection, after sending a description message.                                                                                                                                                                        |
+|`pause()`                                            |Pause the client stream.                                                                                                                                                                                                                      |  
+|`ping([data], [options], [dontFailWhenClosed])`      |Sends a ping. `data` is sent, `options` is an object with members `mask` and `binary`. `dontFailWhenClosed` indicates whether or not to throw if the connection isn't open.                                                                   |
+|`pong([data], [options], [dontFailWhenClosed])`      |Sends a pong. `data` is sent, `options` is an object with members `mask` and `binary`. `dontFailWhenClosed` indicates whether or not to throw if the connection isn't open.                                                                   |
+|`resume()`                                           |Resume the client stream                                                                                                                                                                                                                      |
+|`send(data, [options], [callback])`                  |Sends `data` through the connection. `options` can be an object with members `mask`, `binary` and `compress`. The optional `callback` is executed after the send completes.                                                                   |
+|`stream([options], callback)`                        |Streams data through calls to a user supplied function. `options` can be an object with members `mask` and `binary`. `callback`, of the form `function (error, send)`, is executed on successive ticks of which `send` is `function (data, final)`.|
+|`terminate()`                                        |Immediately shuts down the connection.                                                                                                                                                                      |
+
+Behind the scenes, Kikwit uses the [ws][ws-package-url] package.
 
 ### server-sent events support
 
@@ -1086,5 +1123,6 @@ export class StockMarket {
 
 [cookies-package-url]: https://www.npmjs.com/package/cookies
 [keygrip-package-url]: https://www.npmjs.com/package/keygrip
+[ws-package-url]: https://github.com/websockets/ws
 
 [server-sent-events-standard]: https://html.spec.whatwg.org/multipage/comms.html#server-sent-events
