@@ -999,7 +999,7 @@ function errorHandler(ctx) {
 ### WebSockets support
 
 Annotating a controller with `@webSocket` decorator turns it into a WebSocket handler.
-Certain controller class methods are automatically used as WebSocket event listeners if 
+Controller class methods are automatically bound as WebSocket event listeners when
 their name is of the form `on[EVENT_NAME]` where *EVENT_NAME* is the name of a WebSocket event,
 e.g. `onConnection`, `onMessage`, `onClose`, etc...
 
@@ -1059,7 +1059,8 @@ Behind the scenes, Kikwit uses the [ws][ws-package-url] package.
 
 ### server-sent events support
 
-/* TODO Update doc */
+Sending a server-sent is as simple as calling `ctx.sendEvent(event, interval)`. 
+Please see the [Context object](#context-object) for more details about the `sendEvent` method.  
 
 ```javascript
 
