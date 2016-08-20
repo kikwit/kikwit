@@ -1042,6 +1042,20 @@ export class Greeter {
 }
 ```
 
+You can use a script similar to the following to call the above WebSocket controller from a web browser
+
+```javascript
+
+var ws = new WebSocket('ws://HOST:PORT/greeter');
+
+ws.onmessage = function(event) {
+    
+    console.log(event.data);
+};
+
+ws.send('Just a test.');
+```
+
 The following Context methods are available on WebSocket controllers
 
 |Context method                                       |Description                                                                                                                                                                                                                                   |
@@ -1090,6 +1104,18 @@ export class StockMarket {
         
         ctx.sendEvent(event, 5000); 
     }      
+}
+```
+
+The client call for the above would be something like
+
+```javascript
+
+var eventSrc = new EventSource('/stockmarket/ticker');
+
+eventSrc.onmessage = function(event) {
+    
+    console.log(event.data);
 }
 ```
 
