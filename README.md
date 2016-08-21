@@ -1071,7 +1071,7 @@ The following Context methods are available on WebSocket controllers
 
 Behind the scenes, Kikwit uses the [ws][ws-package-url] package.
 
-### server-sent events support
+### Server-sent Events support
 
 Sending a server-sent is as simple as calling `ctx.sendEvent(event, interval)`. 
 Please see the [Context object](#context-object) for more details about the `sendEvent` method.  
