@@ -197,7 +197,7 @@ export class Products {
     }
 }
 ```
-With the route above, a`GET /products/show/34` request will result in a context params's id of _34_.
+With the route above, a `GET /products/show/34` request will result in a context params's id of _34_.
 
 Route parameters can use regular expressions as constraints in the following format `:KEY<REGEX>` where _REGEX_ is the regular expression constraint.
 
@@ -823,7 +823,7 @@ export class Arithm {
     
     sum(ctx) {
         
-        let a, b = [7, 11];
+        let [a, b] = [7, 11];
         let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('adder')
       
         return ctx.sendJSON({ a, b, sum });
@@ -853,7 +853,7 @@ export class Arithm {
     
     sum(ctx) {
         
-        let a, b = [7, 11];
+        let [a, b] = [7, 11];
         let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('@adder')
       
         return ctx.sendJSON({ a, b, sum });
@@ -883,7 +883,7 @@ export class Arithm {
     @inject('@@adder') // '@@adder' instead of 'adder'
     sum(ctx) {
         
-        let a, b = [7, 11];
+        let [a, b] = [7, 11];
         let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('@@adder')
       
         return ctx.sendJSON({ a, b, sum });
