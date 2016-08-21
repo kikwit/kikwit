@@ -1,7 +1,10 @@
 {
   "name": "kikwit",
-  "version": "1.4.11",
+  "version": "1.4.12",
   "description": "Modern and fast web framework for nodejs.",
+  "keywords": [
+    "web", "api", "mvc", "router", "routing", "restful", "rest", "framework", "kikwit"
+  ],
   "main": "lib/index.js",
   "engines": {
     "node": "^6.3.0"
