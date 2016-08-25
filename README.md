@@ -1119,6 +1119,50 @@ eventSrc.onmessage = function(event) {
 }
 ```
 
+### HTTPS
+
+To run the server over HTTPS, you need to set the `https` options in your configuration file.
+Internally, the `https` options are passed as first argument to node's `https.createServer(...)` function.
+More details can be found [here][https-package-createServer-url].
+
+The example below assumes you have _server.key_ private key file and _server.crt_ publlic certificate file in the root of your project. 
+
+```javascript
+
+import fs from 'fs';
+
+export default () => ({
+    
+    ...
+    https: {
+      key: fs.readFileSync('server.key'),
+      cert: fs.readFileSync('server.crt')    
+    },
+    ...
+});
+``` 
+
+### Using the cluster module
+
+Your application can take advantage of multi-core systems and run more than one process (using node's `cluster` module).
+The `cluster` option in your configuration file allows you to set the number of processes you want to run.
+
+When the `cluster` option is set to `true` then the number of processes will match the number of cores on your server.
+You can also directly specify the number of processes you want. 
+If that number is less than 1, or if you specify `false`, then you application won't run in a cluster and will just have a single process. 
+If that number is greater than the number of cores then the actual number of cores will be used instead.
+
+```javascript
+
+export default () => ({
+    
+    ...
+    cluster: true, // Use all cores
+    // cluster: 3, // Only use three cores
+    ...
+});
+``` 
+
 ### Prerequisites
 
 * Node.js >= 6.3.0
@@ -1147,6 +1191,7 @@ eventSrc.onmessage = function(event) {
 
 [querystring-package-url]:https://nodejs.org/api/querystring.html
 [querystring-package-parse-url]:https://nodejs.org/api/querystring.html#querystring_querystring_parse_str_sep_eq_options
+[https-package-createServer-url]:https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener
 
 [cookies-package-url]: https://www.npmjs.com/package/cookies
 [keygrip-package-url]: https://www.npmjs.com/package/keygrip
