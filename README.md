@@ -999,46 +999,42 @@ function errorHandler(ctx) {
 ### WebSockets support
 
 Annotating a controller with `@webSocket` decorator turns it into a WebSocket handler.
-Controller class methods are automatically bound as WebSocket event listeners when
-their name is of the form `on[EVENT_NAME]` where *EVENT_NAME* is the name of a WebSocket event,
-e.g. `onConnection`, `onMessage`, `onClose`, etc...
+Controller class methods are automatically used as WebSocket events listeners when
+they are annotated with the following decorators:
 
-|Method              |Handled WebSocket event |Context body (`ctx.body`) |                                                                                     |
-|--------------------|------------------------|--------------------------|-------------------------------------------------------------------------------------|
-|`onClose(ctx)`      |`close`                 |`{code, message}`         |Called when the connection is closed. code is defined in the WebSocket specification.|
-|`onConnection(ctx)` |`connection`            |`undefined`               |Called when the connection is established.                                           |
-|`onError(ctx)`      |`error`                 |`undefined`               |Called when the client emits an error.                                               |
-|`onMessage(ctx)`    |`message`               |`{data, flags}`           |Called when data is received. `flags` is an object with member binary.               |
-|`onPing(ctx)`       |`ping`                  |`{data, flags}`           |Called when a ping is received. `flags` is an object with member binary.             |
-|`onPong(ctx)`       |`pong`                  |`{data, flags}`           |Called when a pong is received. `flags` is an object with member binary.             |
+|Method       |Handled WebSocket event |Context body (`ctx.body`) |                                                                                      |
+|-------------|------------------------|--------------------------|--------------------------------------------------------------------------------------|
+|`@onClose`   |`close`                 |`{code, message}`         |Called when the connection is closed. code is defined in the WebSocket specification. |
+|`@onConnect` |`connection`            |`undefined`               |Called when the connection is established.                                            |
+|`@onMessage` |`message`               |`{data, flags}`           |Called when data is received. `flags` is an object with member binary.                |
+|`@onPing`    |`ping`                  |`{data, flags}`           |Called when a ping is received. `flags` is an object with member binary.              |
+|`@onPong`    |`pong`                  |`{data, flags}`           |Called when a pong is received. `flags` is an object with member binary.              |
  
 ```javascript
 
-import { controller, webSocket } from 'kikwit';
+import { controller, webSocket, onConnect, onMessage, onClose } from 'kikwit';
 
 @webSocket
 @controller
-export class Greeter {  
+export class Forum {  
 
-    onConnection(ctx) {
-
-        ctx.send('Connected!'); 
-    }   
-
-    onMessage(ctx) {
-
-        ctx.send(`Message received [${ctx.body.data}`); 
-    }  
-
-    onError(ctx) {
-
-        ctx.send(`Error logged [${ctx.error.message}]`);
+    @onConnect
+    join(ctx) {
+    
+        ctx.send(`Welcome ${ctx.query.username}!`);
+    }
+    
+    @onMessage
+    receive(ctx) {
+    
+        ctx.send(`You said: ${ctx.body.data}`);
     }    
-
-    onClose(ctx) {
-
-        console.log(`Connection closed. Code: ${ctx.body.code}, message: ${ctx.body.message}`);
-    }        
+    
+    @onClose
+    gone(ctx) {
+    
+        console.log(`${ctx.query.username} has gone`);
+    }      
 }
 ```
 
@@ -1046,14 +1042,14 @@ You can use a script similar to the following to call the above WebSocket contro
 
 ```javascript
 
-var ws = new WebSocket('ws://HOST:PORT/greeter');
+var ws = new WebSocket('ws://HOST[:PORT]/forum?username=mega-mind');
 
 ws.onmessage = function(event) {
     
     console.log(event.data);
 };
 
-ws.send('Just a test.');
+ws.send("I'm bored!");
 ```
 
 The following Context methods are available on WebSocket controllers
