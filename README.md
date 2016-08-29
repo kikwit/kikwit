@@ -553,21 +553,20 @@ Controller actions and all interceptors accept a single request context argument
     
     The `contentType` argument, if not provided, defaults to `text/plain; charset=utf-8`.
   
-- **sendEvent(event, interval)**
+- **sendEvent(eventDetails, interval)**
 
-    Sends the specified server-sent event object.
+    Sends a server-sent event.
         
     The _interval_ argument specifies the time interval to wait until the next call to generate another event.
     If there is no data to send then the Context's `noEvent(interval)` method should be called. 
 
-    The _event_ argument should have following field names:
+    The _eventDetails_ argument should have the following properties:
 
-    - `type`
+    - `event`
 
-        The event's type. If this is specified, an event will be dispatched on the browser to the listener for the specified event name; 
-        This field corresponds to the [Server-sent events standard][server-sent-events-standard]'s _event_ field.
-        the web site source code should use addEventListener() to listen for named events. 
-        The onmessage handler is called if no event name is specified for a message.
+        The event name. If this property is specified, an event will be dispatched on the browser to the listener for the specified event name; 
+        This property corresponds to the [Server-sent events standard][server-sent-events-standard]'s _event_ field.
+        The EventSource's `onmessage` handler is called if no event name is specified for a message.
 
     - `data`
 
@@ -1069,7 +1068,7 @@ Behind the scenes, Kikwit uses the [ws][ws-package-url] package.
 
 ### Server-sent Events support
 
-Sending a server-sent is as simple as calling `ctx.sendEvent(event, interval)`. 
+Sending a server-sent is as simple as calling `ctx.sendEvent(eventDetails, interval)`. 
 Please see the [Context object](#context-object) for more details about the `sendEvent` method.  
 
 ```javascript
@@ -1086,7 +1085,7 @@ export class StockMarket {
         
         const randomValue = () => Number.parseFloat((Math.random()*2).toFixed(2)) * (Math.random() < 0.5 ? -1 : 1);
  
-        const event = { 
+        const eventDetails = { 
             data: { 
                 DJIA: randomValue(), 
                 Nasdaq: randomValue(), 
@@ -1094,11 +1093,11 @@ export class StockMarket {
                 GOLD: randomValue() 
             }, 
             id: ++lastEventId, 
-            type: 'tick',
+            event: 'tick',
             retry: 5000
         };
         
-        ctx.sendEvent(event, 5000); 
+        ctx.sendEvent(eventDetails, 5000); 
     }      
 }
 ```
