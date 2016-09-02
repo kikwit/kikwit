@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Modern and fast web framework for nodejs.",
   "keywords": [
     "web", "api", "mvc", "router", "routing", "restful", "rest", "framework", "kikwit"
@@ -23,7 +23,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "accepts": "^1.3.3",
-    "bluebird": "^3.4.1",
+    "bluebird": "^3.4.6",
     "busboy": "^0.2.13",
     "cookies": "^0.6.1",
     "mime-types": "^2.1.11",
@@ -33,9 +33,9 @@
     "ws": "^1.1.1"
   },
   "devDependencies": {
-    "babel-core": "^6.13.2",
+    "babel-core": "^6.14.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-plugin-transform-es2015-modules-commonjs": "6.11.5",
-    "jasmine": "^2.4.1"
+    "babel-plugin-transform-es2015-modules-commonjs": "6.14.0",
+    "jasmine": "^2.5.0"
   }
 }
