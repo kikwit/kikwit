@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Modern and fast web framework for nodejs.",
   "keywords": [
     "web", "api", "mvc", "router", "routing", "restful", "rest", "framework", "kikwit"
