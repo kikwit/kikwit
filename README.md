@@ -22,7 +22,7 @@ yo kikwit
 # Launch
 npm start 
 # With the above command the application will listen on port 3000 by default. 
-# The port can be changed in the __APP_ROOT/config.*.js__ environment specific configuration files.
+# The port can be changed in your configuration settings.
 
 # Point your browser to http://locahost:3000/home/index
 ```
@@ -51,7 +51,7 @@ npm start
 
 ### Controllers
 
-By default controller classes are located in `APP_ROOT/controllers/**/*` where `APP_ROOT` is the application base folder. The location can be changed using the `controllersRoot` configuration key.
+By default controller classes are located in `APP_ROOT/controllers/**/*` where `APP_ROOT` is the application base folder. The location can be changed using the `controllersRoot` configuration property.
 All controller classes must be decorated with `@controller`.
 
 ```javascript
@@ -273,7 +273,7 @@ A `GET /page/echo?offset=15&limit=20&categories=laptop&categories=phablet` reque
 
 By default the [querystring][querystring-package-url] package's [parse][querystring-package-parse-url] 
 function is used to parse the query string. 
-You can assign a global custom function for query parsing by setting the `queryParser` configuration key. 
+You can assign a global custom function for query parsing by setting the `queryParser` configuration property. 
 This function should accept a string and return an object which will accessible via the Context's `query` property:
 
 E.g.
@@ -285,7 +285,7 @@ E.g.
 }
 ```
 
-When the `queryParser` configuration key is set to `false` the query string is not parsed at all and the `query` property is not set.
+When the `queryParser` configuration property is set to `false` the query string is not parsed at all and the `query` property is not set.
 
 You also can also assign a custom parser to a specific controller or action only using the `@queryParser` decorator.
 
@@ -365,7 +365,7 @@ will return
 |JSON                  |`JSON.parse`                            |
 |_All others_          |None. `Context.body` is a `Buffer`      |
 
-The body parser can be changed by setting a custom `bodyParser` function in the configuration file.
+The body parser can be changed by setting a custom `bodyParser` configuration property.
 This function should accept a request `Context` object and return a promise that resolves to an object 
 containing two properties: `body` and `files`. 
 The `files` property should represent the uploaded files is any.
@@ -399,7 +399,7 @@ function myParser(ctx) {
 }
 ```
 
-When the `bodyParser` configuration key is set to `false` the body is not parsed at all and the `body` property is not set.
+When the `bodyParser` configuration property is set to `false` the body is not parsed at all and the `body` property is not set.
 
 You also can also assign a custom parser to a specific controller or action only using the `@bodyParser` decorator.
 
@@ -424,7 +424,7 @@ Controller actions and all interceptors accept a single request context argument
 
 - **config**
 
-  The application environment specific configuration.
+  The application configuration properties.
   
 - **host**
   
@@ -441,10 +441,6 @@ Controller actions and all interceptors accept a single request context argument
 - **ips**
   
   An array containing the request client ip address, or the all entries from `X-FORWARDED-FOR` request header value (if present) when `trustProxy` setting is set to `true`.
-  
-- **logger**
-  
-    The logger specified in the configuration file. If no logger is prvided then, when the environment is `development`, `ctx.logger` will point to the `console`.  
   
 - **state**
 
@@ -464,9 +460,9 @@ Controller actions and all interceptors accept a single request context argument
   
 - **subdomains**
   
-    An array containing the request subdomains. By default the domain is the last two parts of the host. The `subdomainOffset` configuration setting can be used to specify the number of parts that constitutes the application domain. The remaining parts are the subdomains.
+    An array containing the request subdomains. By default the domain is the last two parts of the host. The `subdomainOffset` configuration property can be used to specify the number of parts that constitutes the application domain. The remaining parts are the subdomains.
     
-    e.g. for `user.api.kikwitjs.com` the subdomain would be ['api', 'user'] if `subdomainOffset` configuration setting is 2 (default) and ['user'] if it's set to 3.
+    e.g. for `user.api.kikwitjs.com` the subdomain would be ['api', 'user'] if `subdomainOffset` configuration property is 2 (default) and ['user'] if it's set to 3.
     
 - **statusMessage**
   
@@ -596,7 +592,7 @@ Controller actions and all interceptors accept a single request context argument
   
     Sends a JSON response with JSONP support.
     
-    The default JSONP callback name is callback and can be changed using `json.callbackParam` configuration value.
+    The default JSONP callback name is callback and can be changed using `json.callbackParam` configuration property.
          
 - **sendFile(path, contentType, options)**
   
@@ -797,7 +793,7 @@ Please always use the `Context` helper methods when possible and avoid accessing
 
 ### Services
 
-By default service classes are located in `APP_ROOT/services/**/*` where `APP_ROOT` is the application base folder. The location can be changed using the `servicesRoot` configuration key.
+By default service classes are located in `APP_ROOT/services/**/*` where `APP_ROOT` is the application base folder. The location can be changed using the `servicesRoot` configuration property.
 All service classes must be decorated with the `@service` decorator.
 The `@service` requires a string argument which defines the key to use when injecting the service using the `@inject(...KEYS)` decorator. 
 By default each request gets its own instance of the injected service.
@@ -1116,7 +1112,7 @@ eventSrc.onmessage = function(event) {
 
 ### HTTPS
 
-To run the server over HTTPS, you need to set the `https` options in your configuration file.
+To run the server over HTTPS, you need to set the `https` configuration property.
 Internally, the `https` options are passed as first argument to node's `https.createServer(...)` function.
 More details can be found [here][https-package-createServer-url].
 
@@ -1126,21 +1122,18 @@ The example below assumes you have _server.key_ private key file and _server.crt
 
 import fs from 'fs';
 
-export default () => ({
-    
     ...
     https: {
-      key: fs.readFileSync('server.key'),
-      cert: fs.readFileSync('server.crt')    
+        key: fs.readFileSync('server.key'),
+        cert: fs.readFileSync('server.crt')    
     },
     ...
-});
 ``` 
 
 ### Using the cluster module
 
 Your application can take advantage of multi-core systems and run more than one process (using node's `cluster` module).
-The `cluster` option in your configuration file allows you to set the number of processes you want to run.
+The configuration `cluster` setting allows you to set the number of processes you want to run.
 
 When the `cluster` option is set to `true` then the number of processes will match the number of cores on your server.
 You can also directly specify the number of processes you want. 
@@ -1149,13 +1142,10 @@ If that number is greater than the number of cores then the actual number of cor
 
 ```javascript
 
-export default () => ({
-    
     ...
     cluster: true, // Use all cores
     // cluster: 3, // Only use three cores
     ...
-});
 ``` 
 
 ### Prerequisites
