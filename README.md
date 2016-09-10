@@ -1177,7 +1177,7 @@ server.configure(config => {
     if (config.isEnvironment('development')) {
     
         // Merge user configuration settings.
-        //   More details on services can be found below.
+        //   More details on services can be found at https://github.com/kikwit/kikwit#user-configuration-tool
         config.addUserConfig();
     }
     
