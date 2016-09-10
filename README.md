@@ -1242,7 +1242,7 @@ To clear all settings:
 
 `yo kikwit:user-config clear`
 
-Use the following to add your user configuration isettings in your application:
+Use the following to add your user configuration settings in your application:
 
 ```javascript
 // app.js file
