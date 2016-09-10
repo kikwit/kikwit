@@ -32,3 +32,4 @@ npm-debug.log
 .vscode
 jsconfig.json
 typings
+typings.json

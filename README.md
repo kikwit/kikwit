@@ -1125,10 +1125,10 @@ import fs from 'fs';
     ...
     https: {
         key: fs.readFileSync('server.key'),
-        cert: fs.readFileSync('server.crt')    
+        cert: fs.readFileSync('server.crt') 
     },
     ...
-``` 
+```
 
 ### Using the cluster module
 
@@ -1146,7 +1146,121 @@ If that number is greater than the number of cores then the actual number of cor
     cluster: true, // Use all cores
     // cluster: 3, // Only use three cores
     ...
-``` 
+```
+
+### Configuration
+
+Configuration is highly flexible and settings can be read from different sources like JSON, environment variables, service class files, etc.
+
+```javascript
+// app.js file
+'use strict';
+
+import { Server } from 'kikwit';
+ 
+const server = new Server();
+
+server.configure(config => {
+
+    // Merge settings from the specified json file.
+    //   You can pass a secong argument to indicate 
+    //   whether an exception should be thrown if the file cannot be read.    
+    config.addJsonFile('config/default.json') // Fails if the file is missing or not readable
+    config.addJsonFile(`config/${config.environement}.json`, true)
+    
+    // Merge the object returned by the `configuration` property 
+    //  of the service decorated with `@service('defaultConfiguration')`.
+    //   More details on services can be fount at https://github.com/kikwit/kikwit#services
+    config.addService('defaultConfiguration');
+    config.addService(`${config.environment}Configuration`);
+ 
+    if (config.isEnvironment('development')) {
+    
+        // Merge user configuration settings.
+        //   More details on services can be found below.
+        config.addUserConfig();
+    }
+    
+    // Merge environment variables. A string argument (prefix) can be passed to add only the variables
+    //  that start with  the specified prefix. The prefix is removed from the variable name when 
+    //  the variable is added to the configuration. 
+    //  Use double underscores (__) to create a hierarchy.
+    //    E.g. 'DB__HOST:ALPHA' gets added as { DB: { HOST: 'ALPHA' } }
+    // config.addEnvironmentVariables();
+    config.addEnvironmentVariables('APP_'); 
+
+    // Merge the specified object
+    config.merge({
+        randomFlag: true,
+        log: {
+            level: 'debug',
+            dest: 'file'
+        }
+    });
+
+    // Read config entries with `config.get(KEY)`
+    config.get('log.dest') == 'file';
+     
+});
+
+server.start().then(() => {
+    console.log(`Server started`);
+});
+```
+
+To avoid storing sensitive data in your code base you can pass them to your program by the use of environement variables
+or, when in development, by using the User Configuration tool.
+
+#### User Configuration tool
+
+The User configuration tool is used to managed user specific configuration settings.
+This tool is included in the official Kikwit __yo__ generator.
+
+You need to run this too in your project root folder.
+
+To read all settings:
+```yo kikwit:user-config```
+
+To set seetings:
+`yo kikwit:user-config set db.Host GAMMA`
+`yo kikwit:user-config set db.Port 8885`
+
+To read a specific settings:
+`yo kikwit:user-config get db`
+`yo kikwit:user-config get db.Port`
+
+To remove a specific settings:
+`yo kikwit:user-config remove db.Port`
+
+To clear all settings:
+`yo kikwit:user-config clear`
+
+Use the following to add your user configuration isettings in your application:
+
+```javascript
+// app.js file
+'use strict';
+
+import { Server } from 'kikwit';
+ 
+const server = new Server();
+
+server.configure(config => {
+
+    // ...
+    if (config.isEnvironment('development')) {
+    
+        // Merge user configuration settings.
+        //   More details on services can be found below.
+        config.addUserConfig();
+    }
+    // ... 
+});
+
+server.start().then(() => {
+    console.log(`Server started`);
+});
+```
 
 ### Prerequisites
 
