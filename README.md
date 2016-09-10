@@ -1223,10 +1223,12 @@ To read all settings:
 
 To set seetings:
 `yo kikwit:user-config set db.Host GAMMA`
+
 `yo kikwit:user-config set db.Port 8885`
 
 To read a specific settings:
 `yo kikwit:user-config get db`
+
 `yo kikwit:user-config get db.Port`
 
 To remove a specific settings:
