@@ -1177,7 +1177,7 @@ server.configure(config => {
     if (config.isEnvironment('development')) {
     
         // Merge user configuration settings.
-        //   More details on services can be found below.
+        //   More details on services can be found at https://github.com/kikwit/kikwit#user-configuration-tool
         config.addUserConfig();
     }
     
@@ -1219,23 +1219,30 @@ This tool is included in the official Kikwit __yo__ generator.
 You need to run this too in your project root folder.
 
 To read all settings:
+
 ```yo kikwit:user-config```
 
 To set seetings:
+
 `yo kikwit:user-config set db.Host GAMMA`
+
 `yo kikwit:user-config set db.Port 8885`
 
 To read a specific settings:
+
 `yo kikwit:user-config get db`
+
 `yo kikwit:user-config get db.Port`
 
 To remove a specific settings:
+
 `yo kikwit:user-config remove db.Port`
 
 To clear all settings:
+
 `yo kikwit:user-config clear`
 
-Use the following to add your user configuration isettings in your application:
+Use the following to add your user configuration settings in your application:
 
 ```javascript
 // app.js file
