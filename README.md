@@ -1208,8 +1208,7 @@ server.start().then(() => {
 });
 ```
 
-To avoid storing sensitive data in your code base you can pass them to your program by the use of environement variables
-or, when in development, by using the User Configuration tool.
+To avoid storing sensitive data in your code and source control, you can pass them to your program by the use of environment variables or, when in development, by using the User Configuration tool.
 
 #### User Configuration tool
 
@@ -1258,7 +1257,7 @@ server.configure(config => {
     if (config.isEnvironment('development')) {
     
         // Merge user configuration settings.
-        //   More details on services can be found below.
+        //   More details on services can be found at https://github.com/kikwit/kikwit#services
         config.addUserConfig();
     }
     // ... 
