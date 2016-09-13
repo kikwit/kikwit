@@ -1221,19 +1221,19 @@ To read all settings:
 
 ```yo kikwit:user-config```
 
-To set seetings:
+To set a setting:
 
 `yo kikwit:user-config set db.Host GAMMA`
 
 `yo kikwit:user-config set db.Port 8885`
 
-To read a specific settings:
+To read a setting:
 
 `yo kikwit:user-config get db`
 
 `yo kikwit:user-config get db.Port`
 
-To remove a specific settings:
+To remove a setting:
 
 `yo kikwit:user-config remove db.Port`
 
@@ -1241,7 +1241,7 @@ To clear all settings:
 
 `yo kikwit:user-config clear`
 
-Use the following to add your user configuration settings in your application:
+Use the following to add user configuration settings in your application:
 
 ```javascript
 // app.js file
