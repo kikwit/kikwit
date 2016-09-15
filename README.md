@@ -648,7 +648,7 @@ Controller actions and all interceptors accept a single request context argument
 
 ### Interceptors
 
-Interceptors are middlewafunctions that are configured to run before or after an action. 
+Interceptors are middlere wafunctions that are configured to run before or after an action. 
 They can be used for logging, authorization, etc...
 
 Kikwit supports defining interceptors using decorators on the controller or action levels.
@@ -945,7 +945,7 @@ The keys used to sign the cookies can be set in the config file using the `cooki
 }
 ```
 
-Cookie parsing can be completely disabled by setting the `cookieParser` to a falsy value.
+Cookie parsing can be disabled by setting the `cookieParser` to a falsy value.
 ```javascript
 {
     ...
