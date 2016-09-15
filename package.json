@@ -2,6 +2,7 @@
   "name": "kikwit",
   "version": "3.3.0",
   "description": "Modern and fast web framework for nodejs.",
+  "homepage": "https://kikwit.gitbooks.io/kikwit/content/",
   "keywords": [
     "web", "api", "mvc", "router", "routing", "restful", "rest", "framework", "kikwit"
   ],
