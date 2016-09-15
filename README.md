@@ -74,12 +74,12 @@ import { controller, get, post } from 'kikwit';
 export class Products {
 
     @get
-    list(ctx) {
+    list(context) {
         ...
     }
     
     @post
-    add(ctx) {
+    add(context) {
         ...
     }    
 }
@@ -95,7 +95,7 @@ export class Products {
 
     @post
     @put
-    edit(ctx) {
+    edit(context) {
         ...
     }
 }
@@ -155,7 +155,7 @@ export class Products {
 
     @route('/catalog')
     @get
-    list(ctx) {
+    list(context) {
         ...
     }
 }
@@ -173,7 +173,7 @@ import { controller, get } from 'kikwit';
 export class Products {
 
     @get
-    list(ctx) {
+    list(context) {
         ...
     }
 }
@@ -192,8 +192,8 @@ export class Products {
 
     @route('/show/:id')
     @get
-    details(ctx) {
-        ctx.send(ctx.params.id);
+    details(context) {
+        context.send(context.params.id);
     }
 }
 ```
@@ -201,7 +201,7 @@ With the route above, a `GET /products/show/34` request will result in a context
 
 Route parameters can use regular expressions as constraints in the following format `:KEY<REGEX>` where _REGEX_ is the regular expression constraint.
 
-Using the example above, if the request was `GET /products/show/laptop` then the `ctx.params.id` would be _laptop_. But if the action route was 
+Using the example above, if the request was `GET /products/show/laptop` then the `context.params.id` would be _laptop_. But if the action route was 
 
 `@route('/show/:id<\\d+>')` instead then `GET /products/show/laptop` request would not be dispatched to the `details` action. 
 
@@ -219,8 +219,8 @@ export class Products {
 
     @route('/show/:id', 'productDetails')
     @get
-    details(ctx) {
-        ctx.send(ctx.params.id);
+    details(context) {
+        context.send(context.params.id);
     }
 }
 ```
@@ -228,13 +228,13 @@ The context's `routeURL(name [, params] [, query] [, validate = true])` method c
 
 i.e. a link to the details action's route can be generated using the following
 ```
-ctx.routeURL('productDetails', { id: 34 })
+context.routeURL('productDetails', { id: 34 })
 ```
 The above would generate the string _/products/show/34_.
 
 Query strings can be added to the generated URL with the help of the third argument of the context's `routeURL(...)` method.
 ```
-ctx.routeURL('productDetails', { id: 34 }, { offset: 10, pageSize: 20})
+context.routeURL('productDetails', { id: 34 }, { offset: 10, pageSize: 20})
 ```
 The above would generate the string _/products/show/34?offset=10&pageSize=20_.
 
@@ -253,13 +253,13 @@ import { controller, get } from 'kikwit';
 export class Page {
 
     @get
-    echo(ctx) {
+    echo(context) {
         
-        const offset = ctx.query.offset;  
-        const limit = Math.min(ctx.query.limit, 50);         
-        const categories = ctx.query.categories;       
+        const offset = context.query.offset;  
+        const limit = Math.min(context.query.limit, 50);         
+        const categories = context.query.categories;       
 
-        ctx.sendJSON({ offset, limit, categories });
+        context.sendJSON({ offset, limit, categories });
     }
 } 
 ```
@@ -297,13 +297,13 @@ export class Page {
 
     @queryParser(myParser)
     @get
-    echo(ctx) {
+    echo(context) {
         
-        const offset = ctx.query.offset;  
-        const limit = Math.min(ctx.query.limit, 50);         
-        const categories = ctx.query.categories;       
+        const offset = context.query.offset;  
+        const limit = Math.min(context.query.limit, 50);         
+        const categories = context.query.categories;       
 
-        ctx.sendJSON({ offset, limit, categories });
+        context.sendJSON({ offset, limit, categories });
     }
 } 
 
@@ -336,12 +336,12 @@ import { controller, post } from 'kikwit';
 export class User {
 
     @post
-    register(ctx) {
+    register(context) {
         
-        const username = ctx.body.username;  
-        const gender = ctx.body.gender;      
+        const username = context.body.username;  
+        const gender = context.body.gender;      
 
-        ctx.sendJSON({ username, gender });
+        context.sendJSON({ username, gender });
     }
 } 
 ```
@@ -381,13 +381,13 @@ import formidable from 'formidable';
     ...
 }
 
-function myParser(ctx) {
+function myParser(context) {
 
     return new Promise((resolve, reject) => {
 
         var form = new formidable.IncomingForm();
 
-        form.parse(ctx.request, function(err, fields, files) {
+        form.parse(context.request, function(err, fields, files) {
 
             if (err) {
                 return reject(err);
@@ -411,7 +411,7 @@ export class User {
 
     @bodyParser(myParser)
     @post
-    register(ctx) {
+    register(context) {
         
         ...
     }
@@ -648,7 +648,7 @@ Controller actions and all interceptors accept a single request context argument
 
 ### Interceptors
 
-Interceptors are middlewafunctions that are configured to run before or after an action. 
+Interceptors are middlere wafunctions that are configured to run before or after an action. 
 They can be used for logging, authorization, etc...
 
 Kikwit supports defining interceptors using decorators on the controller or action levels.
@@ -670,56 +670,56 @@ import { before, controller, get } from 'kikwit';
 export class Home {
 
     @get
-    index(ctx) {
+    index(context) {
 
-        ctx.sendJSON(ctx.locals);     
+        context.sendJSON(context.locals);     
     }
 
     @before(authorize) 
     @get
-    details(ctx) {
+    details(context) {
 
-        ctx.sendJSON(ctx.locals);
+        context.sendJSON(context.locals);
     }
 
     @before(authorize) 
     @get
-    info(ctx) {
+    info(context) {
 
-        ctx.sendJSON(ctx.locals);
+        context.sendJSON(context.locals);
     }  
 
     @before(greet, authorize)
     @get
-    hello(ctx) {
+    hello(context) {
 
-        ctx.sendJSON(ctx.locals);
+        context.sendJSON(context.locals);
     }
 }
 
-function authenticate(ctx) {
+function authenticate(context) {
 
-    ctx.locals.userId = Math.trunc(Math.random() * 1000000);     
+    context.locals.userId = Math.trunc(Math.random() * 1000000);     
 
-    ctx.next();
+    context.next();
 }  
 
-function authorize(ctx) {
+function authorize(context) {
 
-    ctx.locals.authorized = (ctx.locals.userId % 2 == 0);   
+    context.locals.authorized = (context.locals.userId % 2 == 0);   
 
-    if (!ctx.locals.authorized) {
-        return ctx.sendStatus(403, JSON.stringify(ctx.locals));
+    if (!context.locals.authorized) {
+        return context.sendStatus(403, JSON.stringify(context.locals));
     }
 
-    ctx.next();
+    context.next();
 }
 
-function greet(ctx) {
+function greet(context) {
 
-    ctx.locals.greeted = true;
+    context.locals.greeted = true;
     
-    return ctx.skipToAction();
+    return context.skipToAction();
 }  
 ```
 
@@ -735,25 +735,25 @@ export class Products {
 
     @inject('myService')
     @get
-    list(ctx) {
+    list(context) {
         
-        ctx.services.myService.getProducts().then(products => {
+        context.services.myService.getProducts().then(products => {
            // HTTP response will contain an 'X-RANDOM-NUMBER' header 
-           ctx.sendJSON(products); 
+           context.sendJSON(products); 
         });
     }
     
     @get
-    hello(ctx) {
+    hello(context) {
         // HTTP response will contain an 'X-RANDOM-NUMBER' header 
-        ctx.send('Hello'); 
+        context.send('Hello'); 
     }
 }
 
-function addRandomHeader(ctx) {
+function addRandomHeader(context) {
     
-    ctx.setHeader('X-RANDOM-NUMBER', Math.random().toString());       
-    ctx.next();
+    context.setHeader('X-RANDOM-NUMBER', Math.random().toString());       
+    context.next();
 }  
 ```
 #### Connect/Express middleware support
@@ -769,17 +769,17 @@ import { before, controller, get, use } from 'kikwit';
 export class Products {
 
     @get
-    list(ctx) {
+    list(context) {
     
-        // ctx.request.stamp is set
-        ctx.send('List');
+        // context.request.stamp is set
+        context.send('List');
     }
     
     @get
-    details(ctx) {
+    details(context) {
         
-        // ctx.request.stamp is set
-        ctx.send('Details');
+        // context.request.stamp is set
+        context.send('Details');
     }    
 }
 
@@ -816,12 +816,12 @@ import { controller } from 'kikwit';
 @controller
 export class Arithm {
     
-    sum(ctx) {
+    sum(context) {
         
         let [a, b] = [7, 11];
-        let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('adder')
+        let sum = context.services.adder.add(a, b); // context.services.adder from @inject('adder')
       
-        return ctx.sendJSON({ a, b, sum });
+        return context.sendJSON({ a, b, sum });
     }
 }
 ```
@@ -846,12 +846,12 @@ import { controller } from 'kikwit';
 @controller
 export class Arithm {
     
-    sum(ctx) {
+    sum(context) {
         
         let [a, b] = [7, 11];
-        let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('@adder')
+        let sum = context.services.adder.add(a, b); // context.services.adder from @inject('@adder')
       
-        return ctx.sendJSON({ a, b, sum });
+        return context.sendJSON({ a, b, sum });
     }
 }
 ```
@@ -876,12 +876,12 @@ import { controller } from 'kikwit';
 export class Arithm {
     
     @inject('@@adder') // '@@adder' instead of 'adder'
-    sum(ctx) {
+    sum(context) {
         
         let [a, b] = [7, 11];
-        let sum = ctx.services.adder.add(a, b); // ctx.services.adder from @inject('@@adder')
+        let sum = context.services.adder.add(a, b); // context.services.adder from @inject('@@adder')
       
-        return ctx.sendJSON({ a, b, sum });
+        return context.sendJSON({ a, b, sum });
     }
 }
 ```
@@ -915,21 +915,21 @@ import { controller, get } from 'kikwit';
 export class Products {
 
     @get
-    index(ctx) {
+    index(context) {
     
-        ctx.cookies.set('unsigned', '12345');
-        ctx.cookies.set('signed', '67890', { signed: true });
+        context.cookies.set('unsigned', '12345');
+        context.cookies.set('signed', '67890', { signed: true });
         
-        ctx.redirect('/products/details');
+        context.redirect('/products/details');
     }
     
     @get
-    details(ctx) {
+    details(context) {
         
-        var unsigned = ctx.cookies.get('unsigned');
-        var signed = ctx.cookies.get('signed', { signed: true });
+        var unsigned = context.cookies.get('unsigned');
+        var signed = context.cookies.get('signed', { signed: true });
         
-        ctx.sendJSON({ unsigned, signed });
+        context.sendJSON({ unsigned, signed });
     } 
 }
 ```
@@ -945,7 +945,7 @@ The keys used to sign the cookies can be set in the config file using the `cooki
 }
 ```
 
-Cookie parsing can be completely disabled by setting the `cookieParser` to a falsy value.
+Cookie parsing can be disabled by setting the `cookieParser` to a falsy value.
 ```javascript
 {
     ...
@@ -967,27 +967,27 @@ import { controller, get, onError } from 'kikwit';
 export class Products {
 
     @get
-    list(ctx) {
+    list(context) {
     
         const nothing = null;
         
-        ctx.send(nothing.toString());
+        context.send(nothing.toString());
     }
     
     @get
-    details(ctx) {
+    details(context) {
         
         const a = null;
         const result = a.startsWith('b');
 
-        ctx.send('Unreachable');
+        context.send('Unreachable');
     } 
 }
 
 // The following handler will be called when an exception in raised in list or details actions 
-function errorHandler(ctx) {
-    // log ctx.error
-    ctx.render('niceErrorPage', ctx.error);
+function errorHandler(context) {
+    // log context.error
+    context.render('niceErrorPage', context.error);
 }
 ```
 
@@ -997,7 +997,7 @@ Annotating a controller with `@webSocket` decorator turns it into a WebSocket ha
 Controller class methods are automatically used as WebSocket events listeners when
 they are annotated with the following decorators:
 
-|Method       |Handled WebSocket event |Context body (`ctx.body`) |                                                                                      |
+|Method       |Handled WebSocket event |Context body (`context.body`) |                                                                                      |
 |-------------|------------------------|--------------------------|--------------------------------------------------------------------------------------|
 |`@onClose`   |`close`                 |`{code, message}`         |Called when the connection is closed. code is defined in the WebSocket specification. |
 |`@onConnect` |`connection`            |`undefined`               |Called when the connection is established.                                            |
@@ -1014,21 +1014,21 @@ import { controller, webSocket, onConnect, onMessage, onClose } from 'kikwit';
 export class Forum {  
 
     @onConnect
-    join(ctx) {
+    join(context) {
     
-        ctx.send(`Welcome ${ctx.query.username}!`);
+        context.send(`Welcome ${context.query.username}!`);
     }
     
     @onMessage
-    receive(ctx) {
+    receive(context) {
     
-        ctx.send(`You said: ${ctx.body.data}`);
+        context.send(`You said: ${context.body.data}`);
     }    
     
     @onClose
-    gone(ctx) {
+    gone(context) {
     
-        console.log(`${ctx.query.username} has gone`);
+        console.log(`${context.query.username} has gone`);
     }      
 }
 ```
@@ -1064,7 +1064,7 @@ Behind the scenes, Kikwit uses the [ws][ws-package-url] package.
 
 ### Server-sent Events support
 
-Sending a server-sent is as simple as calling `ctx.sendEvent(eventDetails, interval)`. 
+Sending a server-sent is as simple as calling `context.sendEvent(eventDetails, interval)`. 
 Please see the [Context object](#context-object) for more details about the `sendEvent` method.  
 
 ```javascript
@@ -1075,9 +1075,9 @@ import { controller, get } from 'kikwit';
 export class StockMarket {  
     
     @get
-    ticker(ctx) {
+    ticker(context) {
         
-        let lastEventId = ctx.lastEventId || 0;
+        let lastEventId = context.lastEventId || 0;
         
         const randomValue = () => Number.parseFloat((Math.random()*2).toFixed(2)) * (Math.random() < 0.5 ? -1 : 1);
  
@@ -1093,7 +1093,7 @@ export class StockMarket {
             retry: 5000
         };
         
-        ctx.sendEvent(eventDetails, 5000); 
+        context.sendEvent(eventDetails, 5000); 
     }      
 }
 ```
@@ -1208,8 +1208,7 @@ server.start().then(() => {
 });
 ```
 
-To avoid storing sensitive data in your code base you can pass them to your program by the use of environement variables
-or, when in development, by using the User Configuration tool.
+To avoid storing sensitive data in your code and source control, you can pass them to your program by the use of environment variables or, when in development, by using the User Configuration tool.
 
 #### User Configuration tool
 
@@ -1222,19 +1221,19 @@ To read all settings:
 
 ```yo kikwit:user-config```
 
-To set seetings:
+To set a setting:
 
 `yo kikwit:user-config set db.Host GAMMA`
 
 `yo kikwit:user-config set db.Port 8885`
 
-To read a specific settings:
+To read a setting:
 
 `yo kikwit:user-config get db`
 
 `yo kikwit:user-config get db.Port`
 
-To remove a specific settings:
+To remove a setting:
 
 `yo kikwit:user-config remove db.Port`
 
@@ -1242,7 +1241,7 @@ To clear all settings:
 
 `yo kikwit:user-config clear`
 
-Use the following to add your user configuration settings in your application:
+Use the following to add user configuration settings in your application:
 
 ```javascript
 // app.js file
@@ -1258,7 +1257,7 @@ server.configure(config => {
     if (config.isEnvironment('development')) {
     
         // Merge user configuration settings.
-        //   More details on services can be found below.
+        //   More details on services can be found at https://github.com/kikwit/kikwit#services
         config.addUserConfig();
     }
     // ... 
