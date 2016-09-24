@@ -1,10 +1,18 @@
 {
   "name": "kikwit",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Modern and fast web framework for nodejs.",
   "homepage": "https://kikwit.gitbooks.io/kikwit/content/",
   "keywords": [
-    "web", "api", "mvc", "router", "routing", "restful", "rest", "framework", "kikwit"
+    "web",
+    "api",
+    "mvc",
+    "router",
+    "routing",
+    "restful",
+    "rest",
+    "framework",
+    "kikwit"
   ],
   "main": "lib/index.js",
   "engines": {
@@ -27,7 +35,7 @@
     "bluebird": "^3.4.6",
     "busboy": "^0.2.13",
     "cookies": "^0.6.1",
-    "mime-types": "^2.1.11",
+    "mime-types": "^2.1.12",
     "mustache": "^2.2.1",
     "proxy-addr": "^1.1.2",
     "type-is": "^1.6.13",
