@@ -1168,11 +1168,11 @@ server.configure(config => {
     config.addJsonFile('config/default.json'); // Fails if the file is missing
     config.addJsonFile(`config/${config.environement}.json`, true); // Doesn't fail if the file is missing
     
-    // Merge the object returned by the `configuration` property 
-    //  of the service decorated with `@service('defaultConfiguration')`.
-    //   More details on services can be found at https://github.com/kikwit/kikwit#services
-    config.addService('defaultConfiguration'); // Fails if the service cannot be resolved
-    config.addService(`${config.environment}Configuration`, true); // Doesn't fail if the service cannot be resolved
+    // Merge settings from the specified javascript file.
+    //   You can pass a second argument to indicate whether an exception
+    //   should NOT be thrown if the file is missing.       
+    config.addJavaScriptFile('config/default.js');
+    config.addJavaScriptFile(`config/${config.environment}.js`, true);
  
     if (config.isEnvironment('development')) {
     
