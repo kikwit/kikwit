@@ -1,0 +1,82 @@
+{{> header}}
+
+<h2>Overview</h2>
+
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#routes" aria-controls="routes" role="tab" data-toggle="tab">Route Table</a>
+        </li>
+        <li role="presentation">
+            <a href="#services" aria-controls="services" role="tab" data-toggle="tab">Services</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="routes">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Path</th>
+                        <th>Method</th>
+                        <th>Controller</th>
+                        <th>Action</th>
+                        <th>File</th>
+                        <th>Injected Services</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {{#routes}}
+                    <tr>
+                        <td>{{routePath}}</td>
+                        <td>{{httpMethods}}</td>
+                        <td>{{controllerName}}</td>
+                        <td>{{actionName}}</td>
+                        <td>{{filePath}}</td>
+                        <td>
+                            {{#injectedServices}}
+                                <span class="badge">{{.}}</span>
+                            {{/injectedServices}}
+                        </td>
+                    </tr>
+                {{/routes}}    
+                </tbody>
+            </table>                 
+        </div>
+        <div role="tabpanel" class="tab-pane fade in" id="services">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Class</th>
+                        <th>Force Singleton</th>
+                        <th>File Path</th>
+                        <th>Injected Services</th>
+                    <tr>
+                <thead>
+                <tbody>
+                    {{#services}}
+                        <tr>                            
+                            <td>{{key}}</td>
+                            <td>{{serviceName}}</td>
+                            <td>{{singleton}}</td>
+                            <td>{{serviceFile}}</td>
+                            <td>
+                                {{#injectedServices}}
+                                    <span class="badge">{{.}}</span>
+                                {{/injectedServices}}                                
+                            </td>                                                               
+                        </tr>
+                    {{/services}}                                                             
+                </tbody>
+            </table>                                                          
+        </div>
+
+    </div>
+
+</div>
+
+{{> footer}}

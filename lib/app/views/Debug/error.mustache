@@ -1,89 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    </head>
-    <body>
-        <div class="container">
-            <h4 class="alert alert-danger">
-                {{message}}
-            </h4>
+{{> header}}
 
-            <div>
+<h4 class="alert alert-danger">
+    {{message}}
+</h4>
 
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#stackTrace" aria-controls="home" role="tab" data-toggle="tab">Stack Trace</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#cookies" aria-controls="profile" role="tab" data-toggle="tab">Cookies</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#headers" aria-controls="messages" role="tab" data-toggle="tab">Headers</a>
-                    </li>
-                </ul>
+<div>
 
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade in active" id="stackTrace">
-                        <table class="table table-striped">
-                            <tbody>
-                                {{#stack}}
-                                <tr>
-                                    <td>{{.}}</td>
-                                </tr>
-                                {{/stack}}
-                            </tbody>
-                        </table>                    
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade in" id="cookies">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Value</th>
-                                <tr>
-                            <thead>
-                            <tbody>
-                                <tr>                            
-                                {{#cookies}}
-                                    <td>{{name}}</td>
-                                    <td>{{value}}</td>
-                                {{/cookies}}
-                                {{^cookies}}
-                                    <td colspan="2" class="alert alert-info">No cookies</td>
-                                {{/cookies}}                                                                 
-                                </tr>                                                                
-                            </tbody>
-                        </table>                                                          
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade in" id="headers">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Value</th>
-                                <tr>
-                            <thead>
-                            <tbody>
-                                {{#headers}}
-                                <tr>
-                                    <td>{{name}}</td>
-                                    <td>{{value}}</td>
-                                </tr>
-                                {{/headers}}
-                            </tbody>
-                        </table>   
-                    </div>
-                </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#stackTrace" aria-controls="home" role="tab" data-toggle="tab">Stack Trace</a>
+        </li>
+        <li role="presentation">
+            <a href="#cookies" aria-controls="profile" role="tab" data-toggle="tab">Cookies</a>
+        </li>
+        <li role="presentation">
+            <a href="#headers" aria-controls="messages" role="tab" data-toggle="tab">Headers</a>
+        </li>
+    </ul>
 
-            </div>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="stackTrace">
+            <table class="table table-striped">
+                <tbody>
+                    {{#stack}}
+                    <tr>
+                        <td>{{.}}</td>
+                    </tr>
+                    {{/stack}}
+                </tbody>
+            </table>                    
         </div>
+        <div role="tabpanel" class="tab-pane fade in" id="cookies">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                    <tr>
+                <thead>
+                <tbody>
+                    <tr>                            
+                    {{#cookies}}
+                        <td>{{name}}</td>
+                        <td>{{value}}</td>
+                    {{/cookies}}
+                    {{^cookies}}
+                        <td colspan="2" class="alert alert-info">No cookies</td>
+                    {{/cookies}}                                                                 
+                    </tr>                                                                
+                </tbody>
+            </table>                                                          
+        </div>
+        <div role="tabpanel" class="tab-pane fade in" id="headers">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Value</th>
+                    <tr>
+                <thead>
+                <tbody>
+                    {{#headers}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {{/headers}}
+                </tbody>
+            </table>   
+        </div>
+    </div>
 
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>        
-    </body>
- </html>
+</div>
+        
+{{> footer}}        
