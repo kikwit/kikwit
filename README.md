@@ -1119,15 +1119,17 @@ More details can be found [here][https-package-createServer-url].
 The example below assumes you have _server.key_ private key file and _server.crt_ publlic certificate file in the root of your project. 
 
 ```javascript
-
+// config/production.js
 import fs from 'fs';
 
+export default {
     ...
     https: {
         key: fs.readFileSync('server.key'),
         cert: fs.readFileSync('server.crt') 
     },
     ...
+}    
 ```
 
 ### Using the cluster module
@@ -1141,11 +1143,13 @@ If that number is less than 1, or if you specify `false`, then you application w
 If that number is greater than the number of cores then the actual number of cores will be used instead.
 
 ```javascript
-
+// config/production.js
+export default {
     ...
     cluster: true, // Use all cores
     // cluster: 3, // Only use three cores
     ...
+}    
 ```
 
 ### Configuration
@@ -1168,11 +1172,11 @@ server.configure(config => {
     config.addJsonFile('config/default.json'); // Fails if the file is missing
     config.addJsonFile(`config/${config.environement}.json`, true); // Doesn't fail if the file is missing
     
-    // Merge the object returned by the `configuration` property 
-    //  of the service decorated with `@service('defaultConfiguration')`.
-    //   More details on services can be found at https://github.com/kikwit/kikwit#services
-    config.addService('defaultConfiguration'); // Fails if the service cannot be resolved
-    config.addService(`${config.environment}Configuration`, true); // Doesn't fail if the service cannot be resolved
+    // Merge settings from the specified javascript file.
+    //   You can pass a second argument to indicate whether an exception
+    //   should NOT be thrown if the file is missing.       
+    config.addJavaScriptFile('config/default.js');
+    config.addJavaScriptFile(`config/${config.environment}.js`, true);
  
     if (config.isEnvironment('development')) {
     
@@ -1257,7 +1261,7 @@ server.configure(config => {
     if (config.isEnvironment('development')) {
     
         // Merge user configuration settings.
-        //   More details on services can be found at https://github.com/kikwit/kikwit#services
+        //   More details on services can be found at https://github.com/kikwit/kikwit#user-configuration-tool
         config.addUserConfig();
     }
     // ... 
