@@ -1119,15 +1119,17 @@ More details can be found [here][https-package-createServer-url].
 The example below assumes you have _server.key_ private key file and _server.crt_ publlic certificate file in the root of your project. 
 
 ```javascript
-
+// config/production.js
 import fs from 'fs';
 
+export default {
     ...
     https: {
         key: fs.readFileSync('server.key'),
         cert: fs.readFileSync('server.crt') 
     },
     ...
+}    
 ```
 
 ### Using the cluster module
@@ -1141,11 +1143,13 @@ If that number is less than 1, or if you specify `false`, then you application w
 If that number is greater than the number of cores then the actual number of cores will be used instead.
 
 ```javascript
-
+// config/production.js
+export default {
     ...
     cluster: true, // Use all cores
     // cluster: 3, // Only use three cores
     ...
+}    
 ```
 
 ### Configuration
