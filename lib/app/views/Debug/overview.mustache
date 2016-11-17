@@ -24,7 +24,7 @@
                         <th>Method</th>
                         <th>Controller</th>
                         <th>Action</th>
-                        <th>File</th>
+                        <th>File name</th>
                         <th>Injected Services</th>
                     </tr>
                 </thead>
@@ -38,13 +38,20 @@
                         <td>{{filePath}}</td>
                         <td>
                             {{#injectedServices}}
-                                <span class="badge">{{.}}</span>
+                                <span 
+                                    class="label-service label label-{{#singleton}}default{{/singleton}}{{#routeScope}}primary{{/routeScope}}{{#prototype}}success{{/prototype}}"
+                                    title="{{lifetime}}">
+                                    {{key}}
+                                </span>
                             {{/injectedServices}}
                         </td>
                     </tr>
                 {{/routes}}    
                 </tbody>
-            </table>                 
+            </table>
+            <ul>
+                <li>Controllers root folder: <em>{{controllersRoot}}</em></li>
+            </ul>                         
         </div>
         <div role="tabpanel" class="tab-pane fade in" id="services">
             <table class="table table-striped">
@@ -53,7 +60,7 @@
                         <th>Key</th>
                         <th>Class</th>
                         <th>Force Singleton</th>
-                        <th>File Path</th>
+                        <th>File name</th>
                         <th>Injected Services</th>
                     <tr>
                 <thead>
@@ -62,17 +69,31 @@
                         <tr>                            
                             <td>{{key}}</td>
                             <td>{{serviceName}}</td>
-                            <td>{{singleton}}</td>
+                            <td>
+                                {{#singleton}}
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                {{/singleton}}
+                                {{^singleton}}
+                                    No
+                                {{/singleton}}                                
+                            </td>
                             <td>{{serviceFile}}</td>
                             <td>
-                                {{#injectedServices}}
-                                    <span class="badge">{{.}}</span>
-                                {{/injectedServices}}                                
+                            {{#injectedServices}}
+                                <span 
+                                    class="label-service label label-{{#singleton}}default{{/singleton}}{{#prototype}}success{{/prototype}}"
+                                    title="{{lifetime}}">
+                                    {{key}}
+                                </span>
+                            {{/injectedServices}}                            
                             </td>                                                               
                         </tr>
                     {{/services}}                                                             
                 </tbody>
-            </table>                                                          
+            </table>
+            <ul>
+                <li>Services root folder: <em>{{servicesRoot}}</em></li>
+            </ul>                                                                   
         </div>
 
     </div>

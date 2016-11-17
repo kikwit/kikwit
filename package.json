@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "3.4.3",
+  "version": "3.5.0",
   "description": "Modern and fast web framework for nodejs.",
   "homepage": "https://kikwit.gitbooks.io/kikwit/content/",
   "keywords": [
@@ -16,7 +16,7 @@
   ],
   "main": "lib/index.js",
   "engines": {
-    "node": "^6.3.0"
+    "node": "^7.0.0"
   },
   "scripts": {
     "test": "jasmine JASMINE_CONFIG_PATH=test/support/jasmine.json"
@@ -34,9 +34,9 @@
     "accepts": "^1.3.3",
     "bluebird": "^3.4.6",
     "busboy": "^0.2.13",
-    "cookies": "^0.6.1",
+    "cookies": "^0.6.2",
     "mime-types": "^2.1.12",
-    "mustache": "^2.2.1",
+    "mustache": "^2.3.0",
     "proxy-addr": "^1.1.2",
     "type-is": "^1.6.13",
     "ws": "^1.1.1"

@@ -717,7 +717,7 @@ describe('context', () => {
             const request = { 
                 url: '/controller/action',
                 headers : {
-                    host: '192.169.10.04'
+                    host: '192.169.0.45'
                 }
             };
     

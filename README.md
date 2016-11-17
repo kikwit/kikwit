@@ -904,6 +904,16 @@ In the example above `Adder` will always get injected as a singleton regardless 
 
 Services injected at controller level are available to all of controller's actions.
 
+## Routes and services overview page
+
+An overview of an application's routes and services can be accessed at `/_debug/overview` url path when running the application 
+with the _development_ environment (default).
+The overview page is not available with other environments.
+
+![debug_overview-controllers](https://cloud.githubusercontent.com/assets/1747482/20391988/d40d138a-accd-11e6-9312-f5764d9677f6.png)
+
+![debug_overview-services](https://cloud.githubusercontent.com/assets/1747482/20391989/d40ed828-accd-11e6-84f8-0b9cc49d16c5.png)
+
 ### Cookies
 
 Kikwit supports cookies via the [cookies][cookies-package-url] package which optionally provides cookie signing, to prevent tampering, using the [keygrip][keygrip-package-url] package.
@@ -1274,7 +1284,7 @@ server.start().then(() => {
 
 ### Prerequisites
 
-* Node.js >= 6.3.0
+* Node.js >= 7.0.0
 
 ### Tests
 
