@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "description": "Modern and fast web framework for nodejs.",
   "homepage": "https://kikwit.gitbooks.io/kikwit/content/",
   "keywords": [
@@ -35,10 +35,10 @@
     "bluebird": "^3.4.6",
     "busboy": "^0.2.13",
     "cookies": "^0.6.2",
-    "mime-types": "^2.1.12",
+    "mime-types": "^2.1.13",
     "mustache": "^2.3.0",
     "proxy-addr": "^1.1.2",
-    "type-is": "^1.6.13",
+    "type-is": "^1.6.14",
     "ws": "^1.1.1"
   },
   "devDependencies": {

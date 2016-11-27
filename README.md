@@ -207,6 +207,28 @@ Using the example above, if the request was `GET /products/show/laptop` then the
 
 Route parameters can also be specified on the controller level route decorator.
 
+#### Route tokens
+
+Tokens can be used to dynamically reference the controller and action names so you don't have to update
+the route paths when they are renamed.
+
+```javascript
+import { controller, get, route } from 'kikwit';
+
+@route('/api/[controller]')
+@controller
+export class Products {
+
+    @route('/[action]/all')
+    @get
+    list(context) {
+        context.send('Products list');
+    }
+}
+```
+
+The _details_ action can be accessed at `/api/products/details/all`.
+
 #### Route names
 
 Action routes can specify a route name which helps generate URLs targeting the route. 
