@@ -227,7 +227,7 @@ export class Products {
 }
 ```
 
-The _details_ action can be accessed at `/api/products/details/all`.
+The _list_ action can be accessed at `/api/products/list/all`.
 
 #### Route names
 
