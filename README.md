@@ -45,7 +45,7 @@ npm start
 
 ![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks.png)
 
-(Benchmarked on Ubuntu 16.04 LTS 64-bit, Intel® Core™ i7 CPU @ 2.40GHz × 8, 8 GiB RAM, No cluster, NodeJS v6.3.0)
+(Benchmarked on Ubuntu 16.10 LTS 64-bit, Intel® Core™ i7 CPU @ 2.40GHz × 8, 8 GiB RAM, No cluster, NodeJS v7.2.0)
 
 [Benchmark code here](https://github.com/kikwit/benchmarks-kikwit)
 
