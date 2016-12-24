@@ -1,0 +1,27 @@
+{{> header}}
+
+<h2>
+    Directory: 
+    {{#directories}}/<a href="../">{{.}}</a>{{/directories}}/{{currentDirectory}}
+</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Last Modified</th>
+            <th>Size (bytes)</th>
+        </tr>
+    </thead>
+    <tbody>
+    {{#stats}}
+        <tr>
+            <td><a href="{{fileURL}}">{{fileName}}</a></td>
+            <td>{{lastModified}}</td>
+            <td>{{fileSize}}</td>
+        </tr>
+    {{/stats}}    
+    </tbody>
+</table>
+
+{{> footer}}
