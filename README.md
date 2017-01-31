@@ -1246,6 +1246,62 @@ server.start().then(() => {
 
 To avoid storing sensitive data in your code and source control, you can pass them to your program by the use of environment variables or, when in development, by using the User Configuration tool.
 
+### Static Files
+
+Any files located under `APP_ROOT`/public are available to any user under the `/public/` path.
+The directory for static files can be changed by setting the `staticFiles.root` configuration key.
+
+For example, to set the static files folder to be served from a folder called _assets_ you can use the following configuration.
+The configuration below exposes static files under `/assets/*`.
+```javascript
+    {
+        staticFiles: {
+            root: assets
+        }
+    }
+```
+
+#### Directory browsing
+
+Directory browsing allows users of your web app to see a list of directories and files within the static files folder.
+Directory browsing is disabled by default. To enable directory browsing, set the `staticFiles.directoryBrowsing` 
+configuration key. Setting it to `true` enables directory browsing for all static files directories.
+
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: true
+        }
+    }
+```
+
+Alternatively, `directoryBrowsing` can be set to an array of paths of the only folders to expose. 
+In this case the paths are relative to and must be located under the `staticFiles.root` folder.
+Any leading or trailing slashes are ignored.
+
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: [ 'images/', 'scripts', '/styles' ] 
+        }
+    }
+```
+
+When `directoryBrowsing` is enabled for a folder, you can set an `indexFile` file to display when the user requests the directory.
+
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: true,
+            indexFile: 'index.html'
+        }
+    }
+```
+
+When the index file is not set, or when it cannot be found in the requested  directory,
+an auto-generated file is used instead.
+![directory-browser](https://cloud.githubusercontent.com/assets/16418235/22479623/5f59e60e-e7e6-11e6-8d4a-9d6052fbfa5c.png)
+
 #### User Configuration tool
 
 The User configuration tool is used to managed user specific configuration settings.
