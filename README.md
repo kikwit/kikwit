@@ -1256,7 +1256,7 @@ The configuration below exposes static files under `/assets/*`.
 ```javascript
     {
         staticFiles: {
-            root: assets
+            root: 'assets'
         }
     }
 ```
