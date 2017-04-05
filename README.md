@@ -1287,8 +1287,9 @@ Any leading or trailing slashes are ignored.
     }
 ```
 
-Alternatively, `directoryBrowsing` can be set to a predicate function that accepts
-a context object and returns true to allow browsing, or false to disable it.
+For more control, `directoryBrowsing` can be set to a predicate function that accepts
+a folder path and returns true to allow browsing, or false to disable it.
+The folder path is relative to the static folder path setting.
 In the example below, only requested folders with names starting with `_` will be browsable.
 
 ```javascript
