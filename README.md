@@ -33,7 +33,7 @@ npm start
 * Awesome routing
 * High performance
 * HTTP response helpers
-* Extendended view engines support
+* Extended view engines support
 * Content negotiation
 * Modern middlewares support using decorators
 * Connect/Express middleware support
@@ -1256,7 +1256,7 @@ The configuration below exposes static files under `/assets/*`.
 ```javascript
     {
         staticFiles: {
-            root: assets
+            root: 'assets'
         }
     }
 ```
