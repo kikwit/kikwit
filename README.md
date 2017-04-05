@@ -1275,7 +1275,7 @@ configuration key. Setting it to `true` enables directory browsing for all stati
     }
 ```
 
-Alternatively, `directoryBrowsing` can be set to an array of paths of the only folders to expose. 
+Secondly, `directoryBrowsing` can be set to an array of paths of the only folders to expose. 
 In this case the paths are relative to and must be located under the `staticFiles.root` folder.
 Any leading or trailing slashes are ignored.
 
@@ -1283,6 +1283,18 @@ Any leading or trailing slashes are ignored.
     {
         staticFiles: {
             directoryBrowsing: [ 'images/', 'scripts', '/styles' ] 
+        }
+    }
+```
+
+Alternatively, `directoryBrowsing` can be set to a predicate function that accepts
+a context object and returns true to allow browsing, or false to disable it.
+In the example below, only requested folders with names starting with `_` will be browsable.
+
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: (folder) => folder.startsWith('_')
         }
     }
 ```
