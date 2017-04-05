@@ -1142,6 +1142,111 @@ eventSrc.onmessage = function(event) {
 }
 ```
 
+### Static Files
+
+Any files located under `APP_ROOT`/public are available to any user under the `/public/` path.
+The directory for static files can be changed by setting the `staticFiles.root` configuration key.
+
+For example, to set the static files folder to be served from a folder called _assets_ you can use the following configuration.
+The configuration below exposes static files under `/assets/*`.
+```javascript
+    {
+        staticFiles: {
+            root: 'assets'
+        }
+    }
+```
+
+#### Directory browsing
+
+Directory browsing allows users of your web app to see a list of directories and files within the static files folder.
+Directory browsing is disabled by default. To enable directory browsing, set the `staticFiles.directoryBrowsing` 
+configuration key. Setting it to `true` enables directory browsing for all static files directories.
+
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: true
+        }
+    }
+```
+
+Secondly, `directoryBrowsing` can be set to an array of paths of the only folders to expose. 
+In this case the paths are relative to and must be located under the `staticFiles.root` folder.
+Any leading or trailing slashes are ignored.
+
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: [ 'images/', 'scripts', '/styles' ] 
+        }
+    }
+```
+
+For more control, `directoryBrowsing` can be set to a predicate function that accepts
+a folder path and returns true to allow browsing, or false to disable it.
+The folder path is relative to the static folder path setting.
+In the example below, only requested folders with names starting with `_` will be browsable.
+
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: (folder) => folder.startsWith('_')
+        }
+    }
+```
+
+When `directoryBrowsing` is enabled for a folder, you can set an `indexFile` file to display when the user requests the directory.
+
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: true,
+            indexFile: 'index.html'
+        }
+    }
+```
+
+When the index file is not set, or when it cannot be found in the requested  directory,
+an auto-generated file is used instead.
+![directory-browser](https://cloud.githubusercontent.com/assets/16418235/22479623/5f59e60e-e7e6-11e6-8d4a-9d6052fbfa5c.png)
+
+#### Custom HTTP headers
+
+Custom headers can be added to static files responses using the `staticFiles.headers` configuration key.
+
+To add headers using an object use the following:
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: true,
+            headers: {
+                'SOME-HEADER': 'Value',
+                'OTHER-HEADER': 'Other Value',
+            },
+        },
+    }
+```
+
+Alternatively, a function can be added for more flexibility:
+```javascript
+    {
+        staticFiles: {
+            directoryBrowsing: true,
+            headers: (file) => {
+                // the [file] argument is the requested file path relative to the static files root.
+                // Compute headers here, for example based of the type of [file].
+                const hdrs = {
+                    'SOME-HEADER': 'Value',
+                    'OTHER-HEADER': 'Other Value',
+                };
+
+                return hdrs;          
+            },
+        },
+    }
+```
+
 ### HTTPS
 
 To run the server over HTTPS, you need to set the `https` configuration property.
@@ -1245,75 +1350,6 @@ server.start().then(() => {
 ```
 
 To avoid storing sensitive data in your code and source control, you can pass them to your program by the use of environment variables or, when in development, by using the User Configuration tool.
-
-### Static Files
-
-Any files located under `APP_ROOT`/public are available to any user under the `/public/` path.
-The directory for static files can be changed by setting the `staticFiles.root` configuration key.
-
-For example, to set the static files folder to be served from a folder called _assets_ you can use the following configuration.
-The configuration below exposes static files under `/assets/*`.
-```javascript
-    {
-        staticFiles: {
-            root: 'assets'
-        }
-    }
-```
-
-#### Directory browsing
-
-Directory browsing allows users of your web app to see a list of directories and files within the static files folder.
-Directory browsing is disabled by default. To enable directory browsing, set the `staticFiles.directoryBrowsing` 
-configuration key. Setting it to `true` enables directory browsing for all static files directories.
-
-```javascript
-    {
-        staticFiles: {
-            directoryBrowsing: true
-        }
-    }
-```
-
-Secondly, `directoryBrowsing` can be set to an array of paths of the only folders to expose. 
-In this case the paths are relative to and must be located under the `staticFiles.root` folder.
-Any leading or trailing slashes are ignored.
-
-```javascript
-    {
-        staticFiles: {
-            directoryBrowsing: [ 'images/', 'scripts', '/styles' ] 
-        }
-    }
-```
-
-For more control, `directoryBrowsing` can be set to a predicate function that accepts
-a folder path and returns true to allow browsing, or false to disable it.
-The folder path is relative to the static folder path setting.
-In the example below, only requested folders with names starting with `_` will be browsable.
-
-```javascript
-    {
-        staticFiles: {
-            directoryBrowsing: (folder) => folder.startsWith('_')
-        }
-    }
-```
-
-When `directoryBrowsing` is enabled for a folder, you can set an `indexFile` file to display when the user requests the directory.
-
-```javascript
-    {
-        staticFiles: {
-            directoryBrowsing: true,
-            indexFile: 'index.html'
-        }
-    }
-```
-
-When the index file is not set, or when it cannot be found in the requested  directory,
-an auto-generated file is used instead.
-![directory-browser](https://cloud.githubusercontent.com/assets/16418235/22479623/5f59e60e-e7e6-11e6-8d4a-9d6052fbfa5c.png)
 
 #### User Configuration tool
 
