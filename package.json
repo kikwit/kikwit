@@ -16,7 +16,7 @@
   ],
   "main": "lib/index.js",
   "engines": {
-    "node": "^8.6.0"
+    "node": "^9.2.0"
   },
   "scripts": {
     "test": "jasmine JASMINE_CONFIG_PATH=test/support/jasmine.json"
