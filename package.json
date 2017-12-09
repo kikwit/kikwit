@@ -1,6 +1,6 @@
 {
   "name": "kikwit",
-  "version": "3.10.0",
+  "version": "4.0.0",
   "description": "Modern and fast web framework for nodejs.",
   "homepage": "https://kikwit.gitbooks.io/kikwit/content/",
   "keywords": [
