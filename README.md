@@ -29,9 +29,8 @@ npm start
 
 ### Features
 
-* Modern framework. ES2015, ES2016 support (uses Babel)
+* HTTP2 support
 * Awesome routing
-* High performance
 * HTTP response helpers
 * Extended view engines support
 * Content negotiation
@@ -39,13 +38,12 @@ npm start
 * Connect/Express middleware support
 * Seamless Websockets and Server-sent events support
 * Conditional requests handling
-* Available yeoman generator
 
 ### Benchmarks
 
 ![Benchmarks](https://raw.githubusercontent.com/kikwit/benchmarks-kikwit/master/benchmarks-nodejs-frameworks.png)
 
-(Benchmarked on Ubuntu 16.10 LTS 64-bit, Intel® Core™ i7 CPU @ 2.40GHz × 8, 8 GiB RAM, No cluster, NodeJS v7.2.0)
+(Benchmarked on Ubuntu 16.10 LTS 64-bit, Intel® Core™ i7 CPU @ 2.40GHz × 8, 8 GiB RAM, No cluster, NodeJS v9.2.0)
 
 [Benchmark code here](https://github.com/kikwit/benchmarks-kikwit)
 
@@ -527,6 +525,16 @@ Controller actions and all interceptors accept a single request context argument
     Signals that there is no server-sent event data to sends to the client.
         
     The _interval_ argument specifies the time interval to wait until the next call to generate another event.
+
+- **push(filePath [, contentType])**
+  
+    Pushes a file to the client.
+    Only works when the client request is sent using HTTP2.
+    
+    When `contentType` argument is not specified or `undefined`, a value is derived from the `filePath` extension, if any. `text/plain` is used when no valid match exists.
+
+    Please note that the file is actually pushed only if when calls to push 
+    are followed by a call to `context.render(...)`. 
 
 - **redirect(url [, statusCode])**
   
@@ -1247,7 +1255,39 @@ Alternatively, a function can be added for more flexibility:
     }
 ```
 
-### HTTPS
+### HTTP Port
+
+The default http port number is `3000`.
+
+To select a different port number update the config as follows
+
+```javascript
+// config/default.js
+import fs from 'fs';
+
+export default {
+    ...
+    http: {
+        port: 8080,
+    },
+    ...
+}    
+```
+
+If you want to disable HTTP, because you're using HTTPS only, set the `http` setting to `false`.
+
+```javascript
+// config/default.js
+import fs from 'fs';
+
+export default {
+    ...
+    http: false
+    ...
+}    
+```
+
+### HTTPS Support
 
 To run the server over HTTPS, you need to set the `https` configuration property.
 Internally, the `https` options are passed as first argument to node's `https.createServer(...)` function.
@@ -1256,15 +1296,49 @@ More details can be found [here][https-package-createServer-url].
 The example below assumes you have _server.key_ private key file and _server.crt_ publlic certificate file in the root of your project. 
 
 ```javascript
-// config/production.js
+// config/default.js
 import fs from 'fs';
 
 export default {
     ...
     https: {
+        port: 3001, // default if not specified
         key: fs.readFileSync('server.key'),
-        cert: fs.readFileSync('server.crt') 
+        cert: fs.readFileSync('server.crt'),
+        // pfx: fs.readFileSync('server.pfx'),
     },
+    ...
+}    
+```
+
+### HTTP2 Support
+
+HTTP2 is disabled by default. To enable it, you need to set the `http2` configuration property.
+
+When set to `true`, HTTP2 is supported with fallback to HTTP1 for clients that don't support HTTP2.
+
+```javascript
+// config/default.js
+import fs from 'fs';
+
+export default {
+    ...
+    http2: true,
+    ...
+}    
+```
+
+To support HTTP2 only, please configure as follows
+
+```javascript
+// config/default.js
+import fs from 'fs';
+
+export default {
+    ...
+    http2: {
+        allowHTTP1: false
+    }
     ...
 }    
 ```
