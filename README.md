@@ -1485,7 +1485,7 @@ server.start().then(() => {
 
 ### Prerequisites
 
-* Node.js >= 7.0.0
+* Node.js >= 9.2
 
 ### Tests
 
