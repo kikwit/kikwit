@@ -529,7 +529,7 @@ Controller actions and all interceptors accept a single request context argument
 - **push(filePath [, contentType])**
   
     Pushes a file to the client.
-    Only works when the client request is sent using HTTP2.
+    Only works when HTTP/2 is enabled.
     
     When `contentType` argument is not specified or `undefined`, a value is derived from the `filePath` extension, if any. `text/plain` is used when no valid match exists.
 
@@ -1311,11 +1311,12 @@ export default {
 }    
 ```
 
-### HTTP2 Support
+### HTTP/2 Support
 
-HTTP2 is disabled by default. To enable it, you need to set the `http2` configuration property.
+HTTP/2 is disabled by default. To enable it, you need to set the `http2` configuration property.
 
-When set to `true`, HTTP2 is supported with fallback to HTTP1 for clients that don't support HTTP2.
+When set to `true`, HTTP/2 is supported with fallback to HTTP/1 for clients that don't support it.
+Some major browsers support HPP/2 only when used with HTTPS, so HTTP should be explicitely disabled.
 
 ```javascript
 // config/default.js
@@ -1323,12 +1324,18 @@ import fs from 'fs';
 
 export default {
     ...
-    http2: true,
+    http: false, // disables http
+    https: {
+        port: 3001,        
+        cert: fs.readFileSync('./certificates/pub.cert'), 
+        key: fs.readFileSync('./certificates/priv.key')
+    },
+    http2: true
     ...
 }    
 ```
 
-To support HTTP2 only, please configure as follows
+To support HTTP/2 only, please configure as follows
 
 ```javascript
 // config/default.js
@@ -1336,11 +1343,39 @@ import fs from 'fs';
 
 export default {
     ...
+    http: false, // disables http
+    https: {
+        port: 3001,        
+        cert: fs.readFileSync('./certificates/pub.cert'), 
+        key: fs.readFileSync('./certificates/priv.key')
+    },    
     http2: {
         allowHTTP1: false
     }
     ...
 }    
+```
+
+Once HTTP/2 enabled, files can be pushed to clients as below.
+Files to push must be under the static files root folder.
+
+```javascript
+'use strict';
+
+import { controller, get } from 'kikwit';
+
+@controller
+export class Home {
+
+    @get
+    index(context) {
+
+        context.push('css/default.css', 'text/css');
+        context.push('js/main.js', 'application/javascript');
+
+        context.render({ message: 'Hello' });
+    }
+}
 ```
 
 ### Using the cluster module
